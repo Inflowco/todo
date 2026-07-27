@@ -1,0 +1,3656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='11' fill='%234a90d9'/><path d='M7 12l3 3 7-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --text: #333;
+      --text-light: #666;
+      --text-lighter: #999;
+      --heading: #222;
+      --card-bg: #fff;
+      --card-shadow: rgba(0,0,0,0.1);
+      --border: #ddd;
+      --border-light: #f0f0f0;
+      --tab-bg: #e8ecf0;
+      --tab-hover: #dde3e9;
+      --tab-active-bg: #fff;
+      --tab-active-text: #333;
+      --th-bg: #f0f4f8;
+      --th-hover: #e4eaf0;
+      --th-text: #555;
+      --row-hover: #fafbfc;
+      --accent: #4a90d9;
+      --accent-hover: #357abd;
+      --danger: #c44;
+      --danger-hover: #a00;
+      --success: #4caf50;
+      --success-hover: #388e3c;
+      --done-text: #aaa;
+      --badge-bg: #4a90d9;
+      --badge-archived-bg: #888;
+      --project-tag-bg: #e8edf2;
+      --project-tag-text: #555;
+      --person-tag-bg: #e8f5e9;
+      --person-tag-text: #2e7d32;
+      --input-bg: #fff;
+      --detail-bg: #f8f9fa;
+      --subtask-bg: #fff;
+      --notes-bg: #fff;
+      --drag-highlight: #e3f0ff;
+      --contact-bg: #f0e8f5;
+      --contact-text: #6b3fa0;
+      --attach-bg: #fff8e1;
+      --attach-text: #8d6e00;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #aaa;
+      --text-lighter: #777;
+      --heading: #f0f0f0;
+      --card-bg: #16213e;
+      --card-shadow: rgba(0,0,0,0.3);
+      --border: #2a2a4a;
+      --border-light: #222244;
+      --tab-bg: #1a1a3e;
+      --tab-hover: #222250;
+      --tab-active-bg: #16213e;
+      --tab-active-text: #e0e0e0;
+      --th-bg: #1a1a3e;
+      --th-hover: #222250;
+      --th-text: #aaa;
+      --row-hover: #1e2a4a;
+      --accent: #5a9fe9;
+      --accent-hover: #4a8fd9;
+      --danger: #e55;
+      --danger-hover: #c33;
+      --success: #5cbf60;
+      --success-hover: #4caf50;
+      --done-text: #555;
+      --badge-bg: #5a9fe9;
+      --badge-archived-bg: #666;
+      --project-tag-bg: #2a2a4a;
+      --project-tag-text: #aaa;
+      --person-tag-bg: #1a3a2a;
+      --person-tag-text: #6dcf72;
+      --input-bg: #1e2a4a;
+      --detail-bg: #1a1a3e;
+      --subtask-bg: #16213e;
+      --notes-bg: #1e2a4a;
+      --drag-highlight: #2a3a5a;
+      --contact-bg: #2a1a3e;
+      --contact-text: #b89cdf;
+      --attach-bg: #2e2a1a;
+      --attach-text: #d4b84a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      color: var(--heading);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      right: 0;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .tab {
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 2px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      background: var(--tab-bg);
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab:hover { background: var(--tab-hover); }
+
+    .tab.active {
+      background: var(--tab-active-bg);
+      color: var(--tab-active-text);
+      border-color: var(--border);
+    }
+
+    .tab .badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--badge-bg);
+      color: #fff;
+    }
+
+    .tab .badge.archived { background: var(--badge-archived-bg); }
+
+    .io-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .io-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .io-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Add Form */
+    .add-form {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px var(--card-shadow);
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-group.task-name { flex: 2; min-width: 180px; }
+    .form-group.project-type { flex: 1; min-width: 120px; }
+    .form-group.follow-up { flex: 1; min-width: 130px; }
+    .form-group.tags-input { flex: 1; min-width: 150px; }
+    .form-group.contact-input { flex: 1; min-width: 130px; }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 8px 10px;
+      font-size: 14px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--input-bg);
+      color: var(--text);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group input[type="number"] { width: 70px; }
+    .form-group input[type="date"] { width: 145px; }
+
+    .add-btn {
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      height: 38px;
+      align-self: end;
+    }
+
+    .add-btn:hover { background: var(--accent-hover); }
+
+    /* Filter Bar */
+    .filter-bar {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px var(--card-shadow);
+    }
+
+    .filter-bar .form-row { align-items: end; }
+
+    .filter-bar .form-group input,
+    .filter-bar .form-group select {
+      padding: 6px 8px;
+      font-size: 13px;
+    }
+
+    .filter-bar label { font-size: 11px; }
+
+    .clear-filter-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--text-light);
+      cursor: pointer;
+      height: 34px;
+      align-self: end;
+    }
+    .clear-filter-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* Table */
+    .todo-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px var(--card-shadow);
+    }
+
+    .todo-table th {
+      background: var(--th-bg);
+      padding: 10px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--th-text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .todo-table th:hover { background: var(--th-hover); }
+    .todo-table th .sort-arrow { font-size: 10px; margin-left: 4px; color: var(--text-lighter); }
+    .todo-table th .sort-arrow.active { color: var(--accent); }
+
+    .todo-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+
+    .todo-table tr:last-child td { border-bottom: none; }
+    .todo-table tr.done td { color: var(--done-text); }
+    .todo-table tr.done .task-text { text-decoration: line-through; }
+    .todo-table tr:hover td { background: var(--row-hover); }
+    .todo-table td.center { text-align: center; }
+
+    .todo-table input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .task-text { word-break: break-word; font-weight: 500; }
+
+    /* Priority badge */
+    .priority-badge {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Project type tag */
+    .project-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--project-tag-bg);
+      color: var(--project-tag-text);
+      white-space: nowrap;
+    }
+
+    /* Follow-up person tag */
+    .person-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--person-tag-bg);
+      color: var(--person-tag-text);
+      white-space: nowrap;
+    }
+
+    /* Category tag chips */
+    .tag-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      margin: 1px 2px;
+      white-space: nowrap;
+    }
+
+    .tags-cell { max-width: 160px; }
+
+    /* Contact info */
+    .contact-cell { white-space: nowrap; font-size: 12px; }
+    .contact-line { display: block; line-height: 1.5; }
+    .contact-line a { color: var(--accent); text-decoration: none; }
+    .contact-line a:hover { text-decoration: underline; }
+    .contact-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--contact-bg);
+      color: var(--contact-text);
+      margin: 1px 0;
+    }
+
+    /* Date styling */
+    .date-cell { font-size: 12px; white-space: nowrap; }
+    .date-cell.overdue { color: #c44; font-weight: 600; }
+    .date-cell.today { color: #e89200; font-weight: 600; }
+    .date-cell.upcoming { color: var(--th-text); }
+    .reminder-active { color: var(--accent); font-weight: 600; }
+
+    .action-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 3px;
+      line-height: 1;
+    }
+
+    .delete-btn { color: var(--danger); }
+    .delete-btn:hover { color: var(--danger-hover); }
+    .archive-btn { color: var(--accent); }
+    .archive-btn:hover { color: var(--accent-hover); }
+    .restore-btn { color: var(--success); }
+    .restore-btn:hover { color: var(--success-hover); }
+    .expand-btn { color: var(--text-light); font-size: 14px; }
+    .expand-btn:hover { color: var(--accent); }
+
+    .empty {
+      text-align: center;
+      color: var(--text-lighter);
+      margin-top: 32px;
+    }
+
+    .section-hidden { display: none; }
+
+    /* Detail row (subtasks/notes/attachments) */
+    .detail-row td {
+      background: var(--detail-bg);
+      padding: 12px 16px;
+    }
+
+    .detail-content {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .subtasks-section, .notes-section, .attachments-section, .contact-section {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .contact-section {
+      min-width: 180px;
+      max-width: 250px;
+    }
+
+    .subtasks-section h4, .notes-section h4, .attachments-section h4, .contact-section h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .subtask-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+    }
+
+    .subtask-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+    }
+
+    .subtask-item .subtask-text {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .subtask-item .subtask-text.st-done {
+      text-decoration: line-through;
+      color: var(--done-text);
+    }
+
+    .subtask-item .subtask-del {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+    }
+
+    .add-subtask-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .add-subtask-row input {
+      flex: 1;
+      padding: 4px 8px;
+      font-size: 13px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: var(--subtask-bg);
+      color: var(--text);
+      outline: none;
+    }
+    .add-subtask-row input:focus { border-color: var(--accent); }
+
+    .add-subtask-row button {
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .notes-section textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: var(--notes-bg);
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+    }
+    .notes-section textarea:focus { border-color: var(--accent); }
+
+    .contact-edit-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .contact-edit-row label {
+      font-size: 12px;
+      color: var(--text-light);
+      min-width: 45px;
+    }
+
+    .contact-edit-row input {
+      flex: 1;
+      padding: 6px 8px;
+      font-size: 13px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: var(--subtask-bg);
+      color: var(--text);
+      outline: none;
+    }
+
+    .contact-edit-row input:focus { border-color: var(--accent); }
+
+    /* Attachments */
+    .attach-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+
+    .attach-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .attach-name {
+      flex: 1;
+      word-break: break-all;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .attach-name:hover { text-decoration: underline; }
+
+    .attach-size {
+      font-size: 11px;
+      color: var(--text-lighter);
+      white-space: nowrap;
+    }
+
+    .attach-del {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+    }
+
+    .attach-add-row {
+      margin-top: 6px;
+    }
+
+    .attach-add-btn {
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .attach-warn {
+      font-size: 10px;
+      color: var(--text-lighter);
+      margin-top: 4px;
+    }
+
+    /* Inline editing */
+    .inline-edit {
+      padding: 4px 6px;
+      font-size: 13px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      background: var(--input-bg);
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    td[data-editable]:not(.cb-cell):not(.actions-cell) {
+      cursor: default;
+    }
+
+    /* Drag and drop */
+    .drag-handle {
+      cursor: grab;
+      color: var(--text-lighter);
+      font-size: 16px;
+      user-select: none;
+      padding: 0 4px;
+    }
+    .drag-handle:active { cursor: grabbing; }
+
+    .todo-table tr.drag-over td {
+      border-top: 3px solid var(--accent);
+    }
+
+    .drag-disabled .drag-handle {
+      visibility: hidden;
+    }
+
+    .drag-hint {
+      font-size: 11px;
+      color: var(--text-lighter);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* Category Bar */
+    .category-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 6px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+
+    .cat-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      background: var(--card-bg);
+      color: var(--text-light);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .cat-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cat-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .cat-badge {
+      display: inline-block;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 9px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(0,0,0,0.15);
+      color: inherit;
+    }
+
+    .cat-btn:not(.active) .cat-badge {
+      background: var(--border);
+      color: var(--text-lighter);
+    }
+
+    /* Sales tab */
+    .stage-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .stage-Lead { background: #9e9e9e; }
+    .stage-Qualified { background: #2196f3; }
+    .stage-Proposal { background: #ff9800; }
+    .stage-Negotiation { background: #9c27b0; }
+    .stage-Won { background: #4caf50; }
+    .stage-Lost { background: #f44336; }
+
+    .money {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .pipeline-bar {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px var(--card-shadow);
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pipeline-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .pipeline-stat .label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-lighter);
+    }
+
+    .pipeline-stat .value {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--heading);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    .pipeline-stat .value.won { color: #4caf50; }
+    .pipeline-stat .value.lost { color: #f44336; }
+    .pipeline-stat .value.pipeline { color: var(--accent); }
+
+    tr.sales-closed td { color: var(--done-text); }
+    tr.sales-closed .task-text { text-decoration: line-through; }
+
+    /* Tab drop target during cross-tab drag */
+    .tab.drop-target {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .convert-btn { color: var(--text-light); font-weight: 700; font-size: 13px; padding: 0 5px; }
+    .convert-btn:hover { color: var(--accent); }
+
+    /* Subscriptions tab */
+    .sub-status {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .status-Active { background: #4caf50; }
+    .status-Paused { background: #ff9800; }
+    .status-Cancelled { background: #9e9e9e; }
+
+    .cat-pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .cat-Inflow { background: #e3f2fd; color: #0277bd; }
+    .cat-Personal { background: #f3e5f5; color: #6a1b9a; }
+
+    tr.sub-paused td { opacity: 0.55; }
+    tr.sub-due-soon td { background: #fff8e1; }
+    tr.sub-overdue td { background: #ffebee; }
+
+    .sub-widgets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .sub-widget {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 4px var(--card-shadow);
+      font-size: 13px;
+    }
+    .sub-widget h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-lighter);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .sub-widget .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .sub-widget .row:last-child { border-bottom: none; }
+    .sub-widget .row .name { color: var(--text); }
+    .sub-widget .row .val { color: var(--text-light); font-family: ui-monospace, Menlo, Consolas, monospace; }
+    .sub-widget .empty-msg { color: var(--text-lighter); font-style: italic; font-size: 12px; }
+
+    .sub-cancelled-section {
+      margin-top: 24px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px 16px;
+      box-shadow: 0 1px 4px var(--card-shadow);
+    }
+    .sub-cancelled-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .sub-cancelled-header h3 {
+      font-size: 13px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+    .sub-cancelled-list { margin-top: 10px; }
+
+    .form-group.stage-select { flex: 1; min-width: 130px; }
+    .form-group.deal-value { min-width: 110px; }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .todo-table, .todo-table thead, .todo-table tbody, .todo-table tr, .todo-table th, .todo-table td {
+        display: block;
+      }
+      .todo-table thead { display: none; }
+      .todo-table tr {
+        margin-bottom: 12px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+      .todo-table tr.detail-row {
+        display: block;
+        margin-top: -12px;
+        border-radius: 0 0 8px 8px;
+      }
+      .todo-table td { border-bottom: none; padding: 4px 6px; }
+      .todo-table td::before {
+        content: attr(data-label);
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text-lighter);
+        text-transform: uppercase;
+        display: block;
+      }
+      .todo-table td.center { text-align: left; }
+      .todo-table td.cb-cell::before,
+      .todo-table td.actions-cell::before,
+      .todo-table td.drag-cell::before,
+      .todo-table td.expand-cell::before { display: none; }
+      .todo-table td.actions-cell { margin-left: auto; }
+      .drag-handle { display: none; }
+      .cat-btn { padding: 6px 12px; font-size: 12px; }
+
+      /* Phone layout: toolbar, tabs, forms, category bar */
+      body { padding: 10px; }
+      .toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+      .tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+      .tab { padding: 8px 12px; font-size: 13px; white-space: nowrap; flex: 0 0 auto; }
+      .io-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+      .io-btn { flex: 1 1 auto; min-height: 40px; }
+      .category-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+      .cat-btn { white-space: nowrap; flex: 0 0 auto; }
+      .form-row { flex-direction: column; align-items: stretch; }
+      .form-row .form-group { width: 100%; min-width: 0; }
+      .form-row input, .form-row select, .form-row button { width: 100%; min-height: 42px; box-sizing: border-box; }
+      input, select, textarea { font-size: 16px; } /* prevents iOS zoom-on-focus */
+      .todo-table td { min-height: 24px; }
+      .actions-cell button { min-height: 36px; min-width: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Todo</h1>
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">Dark</button>
+    </div>
+
+    <!-- Category Bar -->
+    <div class="category-bar" id="category-bar"></div>
+
+    <!-- Toolbar: Tabs + Import/Export -->
+    <div class="toolbar">
+      <div class="tabs">
+        <div class="tab active" id="tab-active" onclick="switchTab('active')">
+          Active <span class="badge" id="badge-active">0</span>
+        </div>
+        <div class="tab" id="tab-sales" onclick="switchTab('sales')">
+          Sales <span class="badge" id="badge-sales">0</span>
+        </div>
+        <div class="tab" id="tab-invoiced" onclick="switchTab('invoiced')">
+          Invoiced <span class="badge" id="badge-invoiced">0</span>
+        </div>
+        <div class="tab" id="tab-subs" onclick="switchTab('subs')">
+          Subs <span class="badge" id="badge-subs">0</span>
+        </div>
+        <div class="tab" id="tab-archived" onclick="switchTab('archived')">
+          Archived <span class="badge archived" id="badge-archived">0</span>
+        </div>
+      </div>
+      <div class="io-buttons">
+        <button class="io-btn" id="dbx-btn" onclick="handleDbxClick()" style="display:none">Connect Dropbox</button>
+        <button class="io-btn" id="sync-btn" onclick="handleSyncClick()" style="display:none">Link data file</button>
+        <button class="io-btn" onclick="exportData()">Export JSON</button>
+        <button class="io-btn" onclick="document.getElementById('import-file').click()">Import JSON</button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+      </div>
+    </div>
+
+    <!-- Add Form (active tab only) -->
+    <div class="add-form" id="add-form">
+      <div class="form-row">
+        <div class="form-group task-name">
+          <label>Task</label>
+          <input type="text" id="input" placeholder="What needs to be done?" />
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="dueDate" />
+        </div>
+        <div class="form-group">
+          <label>Priority (1-10)</label>
+          <input type="number" id="priority" min="1" max="10" placeholder="5" />
+        </div>
+        <div class="form-group project-type">
+          <label>Project Type</label>
+          <input type="text" id="projectType" list="projectTypes" placeholder="General" />
+          <datalist id="projectTypes"></datalist>
+        </div>
+        <div class="form-group follow-up">
+          <label>Follow-up Person</label>
+          <input type="text" id="followUpPerson" list="followUpPersons" placeholder="Name" />
+          <datalist id="followUpPersons"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Reminder</label>
+          <input type="date" id="reminderDate" />
+        </div>
+        <div class="form-group tags-input">
+          <label>Tags (comma-separated)</label>
+          <input type="text" id="tagsInput" list="tagsList" placeholder="work, urgent" />
+          <datalist id="tagsList"></datalist>
+        </div>
+        <div class="form-group contact-input">
+          <label>Phone</label>
+          <input type="tel" id="contactPhone" placeholder="+1 555-0123" />
+        </div>
+        <div class="form-group contact-input">
+          <label>Email</label>
+          <input type="email" id="contactEmail" placeholder="name@example.com" />
+        </div>
+        <div class="form-group" style="flex:1;min-width:130px;">
+          <label>Customer Name</label>
+          <input type="text" id="customerName" list="customerNames" placeholder="Customer" />
+          <datalist id="customerNames"></datalist>
+        </div>
+        <div class="form-group" style="flex:1;min-width:150px;">
+          <label>Location Details</label>
+          <input type="text" id="locationDetails" placeholder="Building, area, etc." />
+        </div>
+        <button class="add-btn" onclick="addTodo()">Add</button>
+      </div>
+    </div>
+
+    <!-- Sales Add Form (sales tab only) -->
+    <div class="add-form" id="add-form-sales" style="display:none;">
+      <div class="form-row">
+        <div class="form-group task-name">
+          <label>Deal / Task</label>
+          <input type="text" id="s-input" placeholder="What's the deal?" />
+        </div>
+        <div class="form-group" style="flex:1;min-width:140px;">
+          <label>Customer</label>
+          <input type="text" id="s-customer" list="customerNames" placeholder="Customer" />
+        </div>
+        <div class="form-group stage-select">
+          <label>Stage</label>
+          <select id="s-stage">
+            <option value="Lead">Lead</option>
+            <option value="Qualified">Qualified</option>
+            <option value="Proposal">Proposal</option>
+            <option value="Negotiation">Negotiation</option>
+            <option value="Won">Won</option>
+            <option value="Lost">Lost</option>
+          </select>
+        </div>
+        <div class="form-group deal-value">
+          <label>Deal Value ($)</label>
+          <input type="number" id="s-dealValue" min="0" step="100" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label>Close Date</label>
+          <input type="date" id="s-closeDate" />
+        </div>
+        <div class="form-group">
+          <label>Priority (1-10)</label>
+          <input type="number" id="s-priority" min="1" max="10" placeholder="5" />
+        </div>
+        <div class="form-group project-type">
+          <label>Project Type</label>
+          <input type="text" id="s-projectType" list="projectTypes" placeholder="General" />
+        </div>
+        <div class="form-group follow-up">
+          <label>Follow-up Person</label>
+          <input type="text" id="s-followUpPerson" list="followUpPersons" placeholder="Name" />
+        </div>
+        <div class="form-group">
+          <label>Reminder</label>
+          <input type="date" id="s-reminderDate" />
+        </div>
+        <div class="form-group contact-input">
+          <label>Phone</label>
+          <input type="tel" id="s-contactPhone" placeholder="+1 555-0123" />
+        </div>
+        <div class="form-group contact-input">
+          <label>Email</label>
+          <input type="email" id="s-contactEmail" placeholder="name@example.com" />
+        </div>
+        <button class="add-btn" onclick="addSalesTodo()">Add</button>
+      </div>
+    </div>
+
+    <!-- Filter Bar (active tab only) -->
+    <div class="filter-bar" id="filter-bar">
+      <div class="form-row">
+        <div class="form-group" style="flex:2;min-width:150px;">
+          <label>Search</label>
+          <input type="text" id="filterText" placeholder="Search tasks..." oninput="applyFilters()" />
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;">
+          <label>Project</label>
+          <select id="filterProject" onchange="applyFilters()">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;">
+          <label>Person</label>
+          <select id="filterPerson" onchange="applyFilters()">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;min-width:100px;">
+          <label>Tag</label>
+          <select id="filterTag" onchange="applyFilters()">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="form-group" style="min-width:60px;">
+          <label>Pri Min</label>
+          <input type="number" id="filterPriMin" min="1" max="10" placeholder="-" oninput="applyFilters()" style="width:60px;" />
+        </div>
+        <div class="form-group" style="min-width:60px;">
+          <label>Pri Max</label>
+          <input type="number" id="filterPriMax" min="1" max="10" placeholder="-" oninput="applyFilters()" style="width:60px;" />
+        </div>
+        <button class="clear-filter-btn" onclick="clearFilters()">Clear</button>
+      </div>
+    </div>
+
+    <!-- Active Table -->
+    <div id="section-active">
+      <table class="todo-table" id="table-active" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortBy('done')" style="width:36px;">
+              <span class="sort-arrow" id="sort-done"></span>
+            </th>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortBy('text')">Task <span class="sort-arrow" id="sort-text"></span></th>
+            <th onclick="sortBy('customerName')">Customer <span class="sort-arrow" id="sort-customerName"></span></th>
+            <th onclick="sortBy('locationDetails')">Location <span class="sort-arrow" id="sort-locationDetails"></span></th>
+            <th onclick="sortBy('dueDate')">Due <span class="sort-arrow" id="sort-dueDate"></span></th>
+            <th onclick="sortBy('priority')">Pri <span class="sort-arrow" id="sort-priority"></span></th>
+            <th onclick="sortBy('projectType')">Project <span class="sort-arrow" id="sort-projectType"></span></th>
+            <th onclick="sortBy('followUpPerson')">Follow-up <span class="sort-arrow" id="sort-followUpPerson"></span></th>
+            <th onclick="sortBy('tags')">Tags <span class="sort-arrow" id="sort-tags"></span></th>
+            <th onclick="sortBy('reminderDate')">Reminder <span class="sort-arrow" id="sort-reminderDate"></span></th>
+            <th style="width:60px;cursor:default;"></th>
+          </tr>
+        </thead>
+        <tbody id="list-active"></tbody>
+      </table>
+      <p class="empty" id="empty-active">No active todos. Add one above!</p>
+      <p class="drag-hint" id="drag-hint" style="display:none;">Drag rows to reorder (only when unsorted and unfiltered)</p>
+    </div>
+
+    <!-- Sales Section -->
+    <div id="section-sales" class="section-hidden">
+      <div class="pipeline-bar" id="pipeline-bar"></div>
+      <table class="todo-table" id="table-sales" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortSales('done')" style="width:36px;">
+              <span class="sort-arrow" id="ssort-done"></span>
+            </th>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortSales('text')">Deal <span class="sort-arrow" id="ssort-text"></span></th>
+            <th onclick="sortSales('customerName')">Customer <span class="sort-arrow" id="ssort-customerName"></span></th>
+            <th onclick="sortSales('salesStage')">Stage <span class="sort-arrow" id="ssort-salesStage"></span></th>
+            <th onclick="sortSales('dealValue')">Deal $ <span class="sort-arrow" id="ssort-dealValue"></span></th>
+            <th onclick="sortSales('closeDate')">Close <span class="sort-arrow" id="ssort-closeDate"></span></th>
+            <th onclick="sortSales('priority')">Pri <span class="sort-arrow" id="ssort-priority"></span></th>
+            <th onclick="sortSales('projectType')">Project <span class="sort-arrow" id="ssort-projectType"></span></th>
+            <th onclick="sortSales('followUpPerson')">Follow-up <span class="sort-arrow" id="ssort-followUpPerson"></span></th>
+            <th onclick="sortSales('reminderDate')">Reminder <span class="sort-arrow" id="ssort-reminderDate"></span></th>
+            <th style="width:60px;cursor:default;"></th>
+          </tr>
+        </thead>
+        <tbody id="list-sales"></tbody>
+      </table>
+      <p class="empty" id="empty-sales">No sales deals yet. Add one above!</p>
+    </div>
+
+    <!-- Invoiced Section -->
+    <div id="section-invoiced" class="section-hidden">
+      <div class="pipeline-bar" id="invoiced-bar"></div>
+      <table class="todo-table" id="table-invoiced" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortInvoice('done')" style="width:36px;">
+              <span class="sort-arrow" id="isort-done"></span>
+            </th>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortInvoice('text')">Task <span class="sort-arrow" id="isort-text"></span></th>
+            <th onclick="sortInvoice('customerName')">Customer <span class="sort-arrow" id="isort-customerName"></span></th>
+            <th onclick="sortInvoice('invoiceNumber')">Invoice # <span class="sort-arrow" id="isort-invoiceNumber"></span></th>
+            <th onclick="sortInvoice('invoiceAmount')">Amount <span class="sort-arrow" id="isort-invoiceAmount"></span></th>
+            <th onclick="sortInvoice('invoiceDate')">Invoiced <span class="sort-arrow" id="isort-invoiceDate"></span></th>
+            <th onclick="sortInvoice('paymentDueDate')">Due <span class="sort-arrow" id="isort-paymentDueDate"></span></th>
+            <th>Days Out</th>
+            <th onclick="sortInvoice('followUpPerson')">Follow-up <span class="sort-arrow" id="isort-followUpPerson"></span></th>
+            <th style="width:90px;cursor:default;"></th>
+          </tr>
+        </thead>
+        <tbody id="list-invoiced"></tbody>
+      </table>
+      <p class="empty" id="empty-invoiced">No invoiced items. Drag a task here when you've sent the invoice.</p>
+    </div>
+
+    <!-- Subscriptions Section -->
+    <div id="section-subs" class="section-hidden">
+      <!-- Stats bar -->
+      <div class="pipeline-bar" id="subs-bar"></div>
+
+      <!-- Add Subscription Form -->
+      <div class="add-form">
+        <div class="form-row">
+          <div class="form-group" style="flex:2;min-width:160px;">
+            <label>Service</label>
+            <input type="text" id="sub-name" placeholder="Netflix, Claude, AT&amp;T..." />
+          </div>
+          <div class="form-group" style="min-width:100px;">
+            <label>Amount ($)</label>
+            <input type="number" id="sub-amount" min="0" step="0.01" placeholder="0.00" />
+          </div>
+          <div class="form-group" style="min-width:120px;">
+            <label>Cycle</label>
+            <select id="sub-cycle">
+              <option value="Monthly" selected>Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Yearly">Yearly</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Daily">Daily</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Next Bill</label>
+            <input type="date" id="sub-next" />
+          </div>
+          <div class="form-group" style="min-width:110px;">
+            <label>Category</label>
+            <select id="sub-category">
+              <option value="Personal">Personal</option>
+              <option value="Inflow">Inflow</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1;min-width:130px;">
+            <label>Payment</label>
+            <input type="text" id="sub-payment" placeholder="Visa-1234" />
+          </div>
+          <div class="form-group" style="flex:1;min-width:140px;">
+            <label>URL (optional)</label>
+            <input type="text" id="sub-url" placeholder="netflix.com/account" />
+          </div>
+          <button class="add-btn" onclick="addSubscription()">Add</button>
+        </div>
+      </div>
+
+      <!-- Widgets row (renewal forecast, paused, recently added, largest yearly) -->
+      <div class="sub-widgets" id="subs-widgets"></div>
+
+      <!-- Active + Paused subscriptions table -->
+      <table class="todo-table" id="table-subs" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortSub('name')">Service <span class="sort-arrow" id="bsort-name"></span></th>
+            <th onclick="sortSub('amount')">Amount <span class="sort-arrow" id="bsort-amount"></span></th>
+            <th onclick="sortSub('cycle')">Cycle <span class="sort-arrow" id="bsort-cycle"></span></th>
+            <th onclick="sortSub('_monthly')">$/mo <span class="sort-arrow" id="bsort-_monthly"></span></th>
+            <th onclick="sortSub('_yearly')">$/yr <span class="sort-arrow" id="bsort-_yearly"></span></th>
+            <th onclick="sortSub('nextBillDate')">Next Bill <span class="sort-arrow" id="bsort-nextBillDate"></span></th>
+            <th>Days</th>
+            <th onclick="sortSub('category')">Category <span class="sort-arrow" id="bsort-category"></span></th>
+            <th onclick="sortSub('paymentMethod')">Payment <span class="sort-arrow" id="bsort-paymentMethod"></span></th>
+            <th onclick="sortSub('status')">Status <span class="sort-arrow" id="bsort-status"></span></th>
+            <th style="width:120px;cursor:default;"></th>
+          </tr>
+        </thead>
+        <tbody id="list-subs"></tbody>
+      </table>
+      <p class="empty" id="empty-subs">No subscriptions yet. Add one above.</p>
+
+      <!-- Cancelled subscriptions side-list -->
+      <div class="sub-cancelled-section" id="sub-cancelled-section" style="display:none;">
+        <div class="sub-cancelled-header" onclick="toggleCancelledList()">
+          <h3>Cancelled / Inactive (<span id="cancelled-count">0</span>) — <span id="cancelled-total">$0/mo if reactivated</span></h3>
+          <span id="cancelled-toggle">&#x25B6;</span>
+        </div>
+        <div class="sub-cancelled-list" id="sub-cancelled-list" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Archived Table -->
+    <div id="section-archived" class="section-hidden">
+      <table class="todo-table" id="table-archived" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortArchive('text')">Task <span class="sort-arrow" id="asort-text"></span></th>
+            <th onclick="sortArchive('customerName')">Customer <span class="sort-arrow" id="asort-customerName"></span></th>
+            <th onclick="sortArchive('locationDetails')">Location <span class="sort-arrow" id="asort-locationDetails"></span></th>
+            <th onclick="sortArchive('completedTimestamp')">Completed <span class="sort-arrow" id="asort-completedTimestamp"></span></th>
+            <th onclick="sortArchive('dueDate')">Due <span class="sort-arrow" id="asort-dueDate"></span></th>
+            <th onclick="sortArchive('priority')">Pri <span class="sort-arrow" id="asort-priority"></span></th>
+            <th onclick="sortArchive('projectType')">Project <span class="sort-arrow" id="asort-projectType"></span></th>
+            <th onclick="sortArchive('followUpPerson')">Follow-up <span class="sort-arrow" id="asort-followUpPerson"></span></th>
+            <th onclick="sortArchive('tags')">Tags <span class="sort-arrow" id="asort-tags"></span></th>
+            <th style="width:60px;cursor:default;"></th>
+          </tr>
+        </thead>
+        <tbody id="list-archived"></tbody>
+      </table>
+      <p class="empty" id="empty-archived">No archived todos yet.</p>
+    </div>
+  </div>
+
+  <script>
+    const CATEGORIES = ["Master", "Inflow-ToDo's", "Home", "Claude", "Mx3", "CAAI", "SanDiego", "Other"];
+    let todos = JSON.parse(localStorage.getItem("todos") || "[]");
+    let archived = JSON.parse(localStorage.getItem("todos_archived") || "[]");
+    let subscriptions = JSON.parse(localStorage.getItem("subscriptions") || "[]");
+    let cancelledExpanded = false;
+    let subSort = { key: "nextBillDate", asc: true };
+    const SUB_CYCLES = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
+    const SUB_CATEGORIES = ["Inflow", "Personal"];
+    const SUB_STATUSES = ["Active", "Paused", "Cancelled"];
+    let currentTab = "active";
+    let currentCategory = localStorage.getItem("todo_category") || "Inflow-ToDo's";
+    if (!CATEGORIES.includes(currentCategory)) currentCategory = "Inflow-ToDo's";
+    let activeSort = { key: null, asc: true };
+    let salesSort = { key: null, asc: true };
+    let invoiceSort = { key: "invoiceDate", asc: true };
+    let archiveSort = { key: "completedTimestamp", asc: false };
+    const SALES_STAGES = ["Lead", "Qualified", "Proposal", "Negotiation", "Won", "Lost"];
+    const SALES_OPEN_STAGES = ["Lead", "Qualified", "Proposal", "Negotiation"];
+    let expandedSet = new Set();
+    let editingCell = null; // { idx, field }
+    let dragItem = null; // { tab: "active"|"sales"|"invoiced"|"archived"|"subs", idx }
+
+    // Ensure backwards compat for old todos without new fields
+    function ensureFields(todo) {
+      if (!todo.tags) todo.tags = [];
+      if (!todo.subtasks) todo.subtasks = [];
+      if (todo.notes === undefined) todo.notes = "";
+      if (todo.contactPhone === undefined) todo.contactPhone = "";
+      if (todo.contactEmail === undefined) todo.contactEmail = "";
+      if (!todo.attachments) todo.attachments = [];
+      if (!todo.category) todo.category = "Inflow-ToDo's";
+      if (todo.customerName === undefined) todo.customerName = "";
+      if (todo.locationDetails === undefined) todo.locationDetails = "";
+      if (todo.completedTimestamp === undefined) todo.completedTimestamp = null;
+      if (todo.isSales === undefined) todo.isSales = false;
+      if (todo.salesStage === undefined) todo.salesStage = "";
+      if (todo.dealValue === undefined) todo.dealValue = null;
+      if (todo.closeDate === undefined) todo.closeDate = null;
+      if (todo.isInvoiced === undefined) todo.isInvoiced = false;
+      if (todo.invoiceNumber === undefined) todo.invoiceNumber = "";
+      if (todo.invoiceDate === undefined) todo.invoiceDate = null;
+      if (todo.invoiceAmount === undefined) todo.invoiceAmount = null;
+      if (todo.paymentDueDate === undefined) todo.paymentDueDate = null;
+    }
+    todos.forEach(ensureFields);
+    archived.forEach(ensureFields);
+
+    function ensureSubFields(s) {
+      if (s.name === undefined) s.name = "";
+      if (s.amount === undefined || s.amount === null) s.amount = 0;
+      if (!s.cycle) s.cycle = "Monthly";
+      if (s.nextBillDate === undefined) s.nextBillDate = null;
+      if (!s.category) s.category = "Personal";
+      if (!s.status) s.status = "Active";
+      if (s.paymentMethod === undefined) s.paymentMethod = "";
+      if (s.startedDate === undefined) s.startedDate = null;
+      if (s.notes === undefined) s.notes = "";
+      if (s.url === undefined) s.url = "";
+      if (s.addedDate === undefined) s.addedDate = null;
+      if (s.cancelledDate === undefined) s.cancelledDate = null;
+    }
+    subscriptions.forEach(ensureSubFields);
+
+    function save() {
+      localStorage.setItem("todos", JSON.stringify(todos));
+      localStorage.setItem("todos_archived", JSON.stringify(archived));
+      localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
+      scheduleSync();
+    }
+
+    // --- Auto-sync to todo-data.json (File System Access API) ---
+    // Mirrors {todos, archived, subscriptions} to a JSON file on every save,
+    // so tools outside the browser (e.g. the morning brief) can read the data.
+    const SYNC_DB = "todo_sync";
+    let syncHandle = null;
+    let syncTimer = null;
+
+    function syncSupported() { return "showSaveFilePicker" in window; }
+
+    function idbOpen() {
+      return new Promise((res, rej) => {
+        const req = indexedDB.open(SYNC_DB, 1);
+        req.onupgradeneeded = () => req.result.createObjectStore("handles");
+        req.onsuccess = () => res(req.result);
+        req.onerror = () => rej(req.error);
+      });
+    }
+    async function idbSet(key, val) {
+      const db = await idbOpen();
+      return new Promise((res, rej) => {
+        const tx = db.transaction("handles", "readwrite");
+        tx.objectStore("handles").put(val, key);
+        tx.oncomplete = res;
+        tx.onerror = () => rej(tx.error);
+      });
+    }
+    async function idbGet(key) {
+      const db = await idbOpen();
+      return new Promise((res, rej) => {
+        const req = db.transaction("handles").objectStore("handles").get(key);
+        req.onsuccess = () => res(req.result);
+        req.onerror = () => rej(req.error);
+      });
+    }
+
+    function setSyncBtn(state) {
+      const btn = document.getElementById("sync-btn");
+      if (!btn) return;
+      btn.style.display = "";
+      if (!syncSupported()) {
+        // Firefox/Safari fallback: manual one-click download of todo-data.json
+        const dirty = localStorage.getItem("todo_data_dirty") === "1";
+        btn.textContent = dirty ? "Save data file •" : "Save data file";
+        btn.title = dirty
+          ? "Data changed since last save — click to download todo-data.json (save it over the copy in this folder)"
+          : "Download todo-data.json (save it over the copy in this folder)";
+        return;
+      }
+      if (state === "on") { btn.textContent = "Sync: on"; btn.title = "Data auto-saves to todo-data.json"; }
+      else if (state === "resume") { btn.textContent = "Resume sync"; btn.title = "Click to re-allow writing todo-data.json"; }
+      else { btn.textContent = "Link data file"; btn.title = "Pick where to auto-save todo-data.json (one time)"; }
+    }
+
+    function downloadDataFile() {
+      const data = { todos, archived, subscriptions, syncedAt: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "todo-data.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      localStorage.setItem("todo_data_dirty", "0");
+      setSyncBtn();
+    }
+
+    async function handleSyncClick() {
+      if (!syncSupported()) { downloadDataFile(); return; }
+      try {
+        if (!syncHandle) {
+          syncHandle = await window.showSaveFilePicker({
+            suggestedName: "todo-data.json",
+            types: [{ description: "JSON", accept: { "application/json": [".json"] } }]
+          });
+          await idbSet("dataFile", syncHandle);
+        }
+        const perm = await syncHandle.requestPermission({ mode: "readwrite" });
+        if (perm === "granted") { setSyncBtn("on"); await syncToFile(); }
+        else setSyncBtn("resume");
+      } catch (e) { /* picker cancelled */ }
+    }
+
+    async function syncToFile() {
+      if (!syncHandle) return;
+      try {
+        if ((await syncHandle.queryPermission({ mode: "readwrite" })) !== "granted") { setSyncBtn("resume"); return; }
+        const data = { todos, archived, subscriptions, syncedAt: new Date().toISOString() };
+        const w = await syncHandle.createWritable();
+        await w.write(JSON.stringify(data, null, 2));
+        await w.close();
+        setSyncBtn("on");
+      } catch (e) { console.warn("todo-data.json sync failed", e); }
+    }
+
+    function scheduleSync() {
+      if (HOSTED) { scheduleDbxSave(); return; }
+      if (!syncSupported()) {
+        localStorage.setItem("todo_data_dirty", "1");
+        setSyncBtn();
+        return;
+      }
+      if (!syncHandle) return;
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(syncToFile, 800);
+    }
+
+    async function initSync() {
+      if (!syncSupported()) { setSyncBtn(); return; }
+      try { syncHandle = await idbGet("dataFile"); } catch (e) {}
+      if (!syncHandle) { setSyncBtn("link"); return; }
+      const perm = await syncHandle.queryPermission({ mode: "readwrite" });
+      if (perm === "granted") { setSyncBtn("on"); syncToFile(); }
+      else setSyncBtn("resume");
+    }
+
+    // --- Dropbox cloud sync (hosted mode: phone + PC share one file) ---
+    // Data lives at DBX_PATH in Pete's Dropbox; the desktop Dropbox client
+    // mirrors it to disk, so the local file and the morning brief stay in sync.
+    const HOSTED = location.protocol === "https:" || location.protocol === "http:";
+    const DBX_PATH = localStorage.getItem("dbx_path") || "/CLAUDE PROJECTS/todo-data.json";
+    let dbxRev = null;
+    let dbxTimer = null;
+    let dbxSaving = false;
+    let dbxDirty = false;
+
+    function setDbxBtn(state, msg) {
+      const btn = document.getElementById("dbx-btn");
+      if (!btn) return;
+      btn.style.display = HOSTED ? "" : "none";
+      const labels = {
+        connect: ["Connect Dropbox", "Sign in with Dropbox so this device syncs your tasks"],
+        synced: ["Dropbox: synced", "All changes saved to Dropbox. Click to sync now."],
+        saving: ["Dropbox: saving…", "Uploading changes"],
+        offline: ["Dropbox: offline", "Could not reach Dropbox — changes are kept on this device; click to retry"],
+        error: ["Dropbox: reconnect", msg || "Session expired — click to sign in again"]
+      };
+      const [text, title] = labels[state] || labels.connect;
+      btn.textContent = text;
+      btn.title = title;
+    }
+
+    function dbxTokens() {
+      try { return JSON.parse(localStorage.getItem("dbx_tokens") || "null"); } catch (e) { return null; }
+    }
+
+    function b64url(bytes) {
+      return btoa(String.fromCharCode(...new Uint8Array(bytes)))
+        .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    async function dbxStartAuth() {
+      let appKey = localStorage.getItem("dbx_app_key");
+      if (!appKey) {
+        appKey = (window.prompt("Paste your Dropbox App Key (from dropbox.com/developers → your app):") || "").trim();
+        if (!appKey) return;
+        localStorage.setItem("dbx_app_key", appKey);
+      }
+      const verifier = b64url(crypto.getRandomValues(new Uint8Array(48)));
+      sessionStorage.setItem("dbx_verifier", verifier);
+      const challenge = b64url(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier)));
+      const redirect = location.origin + location.pathname;
+      location.href = "https://www.dropbox.com/oauth2/authorize?client_id=" + encodeURIComponent(appKey)
+        + "&response_type=code&code_challenge=" + challenge + "&code_challenge_method=S256"
+        + "&redirect_uri=" + encodeURIComponent(redirect) + "&token_access_type=offline";
+    }
+
+    async function dbxExchangeCode(code) {
+      const appKey = localStorage.getItem("dbx_app_key");
+      const verifier = sessionStorage.getItem("dbx_verifier");
+      const redirect = location.origin + location.pathname;
+      const body = new URLSearchParams({ code, grant_type: "authorization_code", code_verifier: verifier, client_id: appKey, redirect_uri: redirect });
+      const r = await fetch("https://api.dropboxapi.com/oauth2/token", { method: "POST", body });
+      if (!r.ok) throw new Error("token exchange failed: " + await r.text());
+      const t = await r.json();
+      localStorage.setItem("dbx_tokens", JSON.stringify({
+        access: t.access_token, refresh: t.refresh_token,
+        exp: Date.now() + (t.expires_in - 60) * 1000
+      }));
+    }
+
+    async function dbxAccessToken() {
+      let t = dbxTokens();
+      if (!t) return null;
+      if (Date.now() < t.exp) return t.access;
+      const appKey = localStorage.getItem("dbx_app_key");
+      const body = new URLSearchParams({ grant_type: "refresh_token", refresh_token: t.refresh, client_id: appKey });
+      const r = await fetch("https://api.dropboxapi.com/oauth2/token", { method: "POST", body });
+      if (!r.ok) { localStorage.removeItem("dbx_tokens"); setDbxBtn("error"); return null; }
+      const n = await r.json();
+      t = { access: n.access_token, refresh: n.refresh_token || t.refresh, exp: Date.now() + (n.expires_in - 60) * 1000 };
+      localStorage.setItem("dbx_tokens", JSON.stringify(t));
+      return t.access;
+    }
+
+    async function dbxDownload() {
+      const token = await dbxAccessToken();
+      if (!token) return null;
+      const r = await fetch("https://content.dropboxapi.com/2/files/download", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + token, "Dropbox-API-Arg": JSON.stringify({ path: DBX_PATH }) }
+      });
+      if (r.status === 409) return { missing: true }; // no file yet
+      if (!r.ok) throw new Error("download failed: " + r.status);
+      const meta = JSON.parse(r.headers.get("dropbox-api-result"));
+      const data = JSON.parse(await r.text());
+      return { data, rev: meta.rev };
+    }
+
+    async function dbxUpload() {
+      const token = await dbxAccessToken();
+      if (!token) return false;
+      const payload = JSON.stringify({ todos, archived, subscriptions, syncedAt: new Date().toISOString() }, null, 2);
+      const mode = dbxRev ? { ".tag": "update", update: dbxRev } : "add";
+      const r = await fetch("https://content.dropboxapi.com/2/files/upload", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/octet-stream",
+          "Dropbox-API-Arg": JSON.stringify({ path: DBX_PATH, mode, autorename: false, mute: true })
+        },
+        body: payload
+      });
+      if (r.status === 409) return "conflict";
+      if (!r.ok) throw new Error("upload failed: " + r.status);
+      dbxRev = (await r.json()).rev;
+      return true;
+    }
+
+    function dbxApplyRemote(data) {
+      todos = Array.isArray(data.todos) ? data.todos : [];
+      archived = Array.isArray(data.archived) ? data.archived : [];
+      subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
+      todos.forEach(ensureFields);
+      archived.forEach(ensureFields);
+      subscriptions.forEach(ensureSubFields);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      localStorage.setItem("todos_archived", JSON.stringify(archived));
+      localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
+      updateCategoryBar();
+      updateDataLists();
+      render();
+    }
+
+    async function dbxSyncNow() {
+      if (dbxSaving) { dbxDirty = true; return; }
+      dbxSaving = true;
+      setDbxBtn("saving");
+      try {
+        let result = await dbxUpload();
+        if (result === "conflict") {
+          // Someone else (phone/PC) saved first: take the latest remote copy,
+          // then re-save so nothing typed here is silently thrown away.
+          const remote = await dbxDownload();
+          if (remote && !remote.missing) {
+            const mine = JSON.stringify({ todos, archived, subscriptions });
+            dbxRev = remote.rev;
+            const theirs = JSON.stringify({ todos: remote.data.todos, archived: remote.data.archived, subscriptions: remote.data.subscriptions });
+            if (mine !== theirs) {
+              if (confirm("This list was changed on another device.\nOK = keep the other device's version.\nCancel = overwrite it with this device's version.")) {
+                dbxApplyRemote(remote.data);
+              } else {
+                await dbxUpload();
+              }
+            }
+          }
+        }
+        setDbxBtn("synced");
+      } catch (e) {
+        console.warn("Dropbox sync failed", e);
+        setDbxBtn("offline");
+      }
+      dbxSaving = false;
+      if (dbxDirty) { dbxDirty = false; scheduleDbxSave(); }
+    }
+
+    function scheduleDbxSave() {
+      if (!HOSTED || !dbxTokens()) return;
+      clearTimeout(dbxTimer);
+      dbxTimer = setTimeout(dbxSyncNow, 1200);
+    }
+
+    async function dbxRefreshFromRemote() {
+      try {
+        const remote = await dbxDownload();
+        if (!remote) return;
+        if (remote.missing) { dbxRev = null; await dbxSyncNow(); return; } // first run: publish local data
+        if (remote.rev !== dbxRev) {
+          dbxRev = remote.rev;
+          dbxApplyRemote(remote.data);
+        }
+        setDbxBtn("synced");
+      } catch (e) {
+        console.warn("Dropbox refresh failed", e);
+        setDbxBtn("offline");
+      }
+    }
+
+    async function handleDbxClick() {
+      if (!dbxTokens()) { dbxStartAuth(); return; }
+      await dbxRefreshFromRemote();
+      if (dbxTokens()) await dbxSyncNow();
+    }
+
+    async function initDropbox() {
+      setDbxBtn(dbxTokens() ? "saving" : "connect");
+      const params = new URLSearchParams(location.search);
+      if (params.get("code")) {
+        try {
+          await dbxExchangeCode(params.get("code"));
+        } catch (e) {
+          console.warn(e);
+          alert("Dropbox sign-in failed. Check the App Key and that this page's URL is listed as a Redirect URI in your Dropbox app settings.");
+        }
+        history.replaceState({}, "", location.pathname);
+      }
+      if (!dbxTokens()) { setDbxBtn("connect"); return; }
+      await dbxRefreshFromRemote();
+      window.addEventListener("focus", () => { if (!dbxSaving) dbxRefreshFromRemote(); });
+      document.addEventListener("visibilitychange", () => { if (!document.hidden && !dbxSaving) dbxRefreshFromRemote(); });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      const d = document.createElement("div");
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function priorityColor(p) {
+      if (!p) return "#bbb";
+      if (p <= 2) return "#e53935";
+      if (p <= 4) return "#f57c00";
+      if (p <= 6) return "#ff9800";
+      if (p <= 8) return "#8bc34a";
+      return "#4caf50";
+    }
+
+    function tagColor(tag) {
+      let hash = 0;
+      for (let i = 0; i < tag.length; i++) {
+        hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const hue = ((hash % 360) + 360) % 360;
+      return `hsl(${hue}, 55%, 45%)`;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return "\u2014";
+      const d = new Date(dateStr + "T00:00:00");
+      return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function formatTimestamp(isoStr) {
+      if (!isoStr) return "\u2014";
+      const d = new Date(isoStr);
+      return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) +
+        " " + d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    }
+
+    function dateCssClass(dateStr) {
+      if (!dateStr) return "";
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const d = new Date(dateStr + "T00:00:00");
+      if (d < today) return "overdue";
+      if (d.getTime() === today.getTime()) return "today";
+      return "upcoming";
+    }
+
+    function todayStr() {
+      return new Date().toISOString().split("T")[0];
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    function renderContactCell(todo) {
+      const phone = todo.contactPhone;
+      const email = todo.contactEmail;
+      if (!phone && !email) return "\u2014";
+      let html = "";
+      if (phone) html += `<span class="contact-line"><span class="contact-tag">&#x260E; ${escapeHtml(phone)}</span></span>`;
+      if (email) html += `<span class="contact-line"><span class="contact-tag">&#x2709; ${escapeHtml(email)}</span></span>`;
+      return html;
+    }
+
+    function updateDataLists() {
+      const allItems = [...todos, ...archived];
+      const types = [...new Set(allItems.map(t => t.projectType).filter(Boolean))];
+      document.getElementById("projectTypes").innerHTML =
+        types.map(t => `<option value="${escapeHtml(t)}">`).join("");
+
+      const persons = [...new Set(allItems.map(t => t.followUpPerson).filter(Boolean))];
+      document.getElementById("followUpPersons").innerHTML =
+        persons.map(p => `<option value="${escapeHtml(p)}">`).join("");
+
+      const allTags = [...new Set(allItems.flatMap(t => t.tags || []))];
+      document.getElementById("tagsList").innerHTML =
+        allTags.map(t => `<option value="${escapeHtml(t)}">`).join("");
+
+      const customers = [...new Set(allItems.map(t => t.customerName).filter(Boolean))];
+      document.getElementById("customerNames").innerHTML =
+        customers.map(c => `<option value="${escapeHtml(c)}">`).join("");
+
+      // Update filter dropdowns
+      const fpSel = document.getElementById("filterProject");
+      const currentFP = fpSel.value;
+      fpSel.innerHTML = '<option value="">All</option>' +
+        types.map(t => `<option value="${escapeHtml(t)}"${t === currentFP ? ' selected' : ''}>${escapeHtml(t)}</option>`).join("");
+
+      const fPerSel = document.getElementById("filterPerson");
+      const currentFPer = fPerSel.value;
+      fPerSel.innerHTML = '<option value="">All</option>' +
+        persons.map(p => `<option value="${escapeHtml(p)}"${p === currentFPer ? ' selected' : ''}>${escapeHtml(p)}</option>`).join("");
+
+      const fTagSel = document.getElementById("filterTag");
+      const currentFTag = fTagSel.value;
+      fTagSel.innerHTML = '<option value="">All</option>' +
+        allTags.map(t => `<option value="${escapeHtml(t)}"${t === currentFTag ? ' selected' : ''}>${escapeHtml(t)}</option>`).join("");
+    }
+
+    // --- Dark Mode ---
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute("data-theme") === "dark";
+      html.setAttribute("data-theme", isDark ? "light" : "dark");
+      document.getElementById("theme-btn").textContent = isDark ? "Dark" : "Light";
+      localStorage.setItem("todo_theme", isDark ? "light" : "dark");
+    }
+
+    function loadTheme() {
+      const theme = localStorage.getItem("todo_theme") || "light";
+      document.documentElement.setAttribute("data-theme", theme);
+      document.getElementById("theme-btn").textContent = theme === "dark" ? "Light" : "Dark";
+    }
+
+    // --- Export / Import ---
+    function exportData() {
+      const data = { todos, archived, subscriptions };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "todo-backup-" + todayStr() + ".json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importData(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (!data.todos || !Array.isArray(data.todos) || !data.archived || !Array.isArray(data.archived)) {
+            alert("Invalid file format. Expected {todos: [...], archived: [...]}");
+            return;
+          }
+          if (!confirm("This will replace all current data. Continue?")) return;
+          todos = data.todos;
+          archived = data.archived;
+          subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
+          todos.forEach(ensureFields);
+          archived.forEach(ensureFields);
+          subscriptions.forEach(ensureSubFields);
+          save();
+          updateDataLists();
+          expandedSet.clear();
+          render();
+        } catch (err) {
+          alert("Failed to parse JSON: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+      input.value = "";
+    }
+
+    // --- Tabs ---
+    function switchTab(tab) {
+      currentTab = tab;
+      ["active","sales","invoiced","subs","archived"].forEach(t => {
+        document.getElementById("tab-" + t).classList.toggle("active", tab === t);
+        document.getElementById("section-" + t).classList.toggle("section-hidden", tab !== t);
+      });
+      document.getElementById("add-form").style.display = tab === "active" ? "block" : "none";
+      document.getElementById("add-form-sales").style.display = tab === "sales" ? "block" : "none";
+      document.getElementById("filter-bar").style.display = (tab === "active" || tab === "sales" || tab === "invoiced") ? "block" : "none";
+      // Category bar applies only to todo-based tabs (not subs/archived)
+      document.getElementById("category-bar").style.display = (tab === "subs") ? "none" : "flex";
+      render();
+    }
+
+    // --- Filtering ---
+    function isFiltered() {
+      return document.getElementById("filterText").value.trim() !== "" ||
+        document.getElementById("filterProject").value !== "" ||
+        document.getElementById("filterPerson").value !== "" ||
+        document.getElementById("filterTag").value !== "" ||
+        document.getElementById("filterPriMin").value !== "" ||
+        document.getElementById("filterPriMax").value !== "";
+    }
+
+    function getFilteredTodos() {
+      const text = document.getElementById("filterText").value.trim().toLowerCase();
+      const project = document.getElementById("filterProject").value;
+      const person = document.getElementById("filterPerson").value;
+      const tag = document.getElementById("filterTag").value;
+      const priMin = parseInt(document.getElementById("filterPriMin").value) || 0;
+      const priMax = parseInt(document.getElementById("filterPriMax").value) || 11;
+
+      const categoryFiltered = currentCategory === "Master"
+        ? todos.map((t, i) => ({ ...t, _origIdx: i })).filter(t => !t.isSales && !t.isInvoiced && t.priority && t.priority <= 2)
+        : todos.map((t, i) => ({ ...t, _origIdx: i })).filter(t => !t.isSales && !t.isInvoiced && t.category === currentCategory);
+      return categoryFiltered.filter(t => {
+        if (text && !t.text.toLowerCase().includes(text) &&
+            !(t.projectType || "").toLowerCase().includes(text) &&
+            !(t.followUpPerson || "").toLowerCase().includes(text) &&
+            !(t.notes || "").toLowerCase().includes(text) &&
+            !(t.contactPhone || "").toLowerCase().includes(text) &&
+            !(t.contactEmail || "").toLowerCase().includes(text)) return false;
+        if (project && t.projectType !== project) return false;
+        if (person && t.followUpPerson !== person) return false;
+        if (tag && !(t.tags || []).includes(tag)) return false;
+        const pri = t.priority || 0;
+        if (priMin > 0 && pri < priMin) return false;
+        if (priMax < 11 && pri > priMax) return false;
+        return true;
+      });
+    }
+
+    function applyFilters() {
+      render();
+    }
+
+    function clearFilters() {
+      document.getElementById("filterText").value = "";
+      document.getElementById("filterProject").value = "";
+      document.getElementById("filterPerson").value = "";
+      document.getElementById("filterTag").value = "";
+      document.getElementById("filterPriMin").value = "";
+      document.getElementById("filterPriMax").value = "";
+      render();
+    }
+
+    // --- Sorting ---
+    function getSorted(items, sort) {
+      const arr = [...items];
+      if (!sort.key) return arr;
+      arr.sort((a, b) => {
+        let va = a[sort.key];
+        let vb = b[sort.key];
+        if (sort.key === "done") {
+          va = va ? 1 : 0;
+          vb = vb ? 1 : 0;
+        } else if (sort.key === "priority") {
+          va = va || 0;
+          vb = vb || 0;
+        } else if (sort.key === "tags") {
+          va = (va || []).join(",").toLowerCase();
+          vb = (vb || []).join(",").toLowerCase();
+        } else {
+          va = (va || "").toString().toLowerCase();
+          vb = (vb || "").toString().toLowerCase();
+        }
+        if (va < vb) return sort.asc ? -1 : 1;
+        if (va > vb) return sort.asc ? 1 : -1;
+        return 0;
+      });
+      return arr;
+    }
+
+    function updateSortArrows(prefix, sort) {
+      document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => {
+        el.textContent = "";
+        el.classList.remove("active");
+      });
+      if (sort.key) {
+        const el = document.getElementById(prefix + sort.key);
+        if (el) {
+          el.textContent = sort.asc ? "\u25B2" : "\u25BC";
+          el.classList.add("active");
+        }
+      }
+    }
+
+    function sortBy(key) {
+      if (activeSort.key === key) {
+        if (activeSort.asc) { activeSort.asc = false; }
+        else { activeSort.key = null; activeSort.asc = true; }
+      } else {
+        activeSort.key = key;
+        activeSort.asc = true;
+      }
+      render();
+    }
+
+    function sortArchive(key) {
+      if (archiveSort.key === key) {
+        if (archiveSort.asc) { archiveSort.asc = false; }
+        else { archiveSort.key = null; archiveSort.asc = true; }
+      } else {
+        archiveSort.key = key;
+        archiveSort.asc = true;
+      }
+      render();
+    }
+
+    function sortSales(key) {
+      if (salesSort.key === key) {
+        if (salesSort.asc) { salesSort.asc = false; }
+        else { salesSort.key = null; salesSort.asc = true; }
+      } else {
+        salesSort.key = key;
+        salesSort.asc = true;
+      }
+      render();
+    }
+
+    function sortInvoice(key) {
+      if (invoiceSort.key === key) {
+        if (invoiceSort.asc) { invoiceSort.asc = false; }
+        else { invoiceSort.key = null; invoiceSort.asc = true; }
+      } else {
+        invoiceSort.key = key;
+        invoiceSort.asc = true;
+      }
+      render();
+    }
+
+    function daysBetween(d1, d2) {
+      // d1, d2 = "YYYY-MM-DD" or Date or ISO string; returns floor((d2-d1) days)
+      const a = (typeof d1 === "string" && d1.length === 10) ? new Date(d1 + "T00:00:00") : new Date(d1);
+      const b = (typeof d2 === "string" && d2.length === 10) ? new Date(d2 + "T00:00:00") : new Date(d2);
+      return Math.floor((b - a) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatMoney(n) {
+      if (n === null || n === undefined || n === "") return "\u2014";
+      const num = Number(n);
+      if (!isFinite(num)) return "\u2014";
+      return "$" + num.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+
+    // --- Actions ---
+    function addTodo() {
+      const input = document.getElementById("input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const dueDate = document.getElementById("dueDate").value || null;
+      const priorityVal = parseInt(document.getElementById("priority").value);
+      const priority = (priorityVal >= 1 && priorityVal <= 10) ? priorityVal : null;
+      const projectType = document.getElementById("projectType").value.trim() || null;
+      const followUpPerson = document.getElementById("followUpPerson").value.trim() || null;
+      const reminderDate = document.getElementById("reminderDate").value || null;
+      const tagsRaw = document.getElementById("tagsInput").value;
+      const tags = tagsRaw.split(",").map(t => t.trim()).filter(Boolean);
+      const contactPhone = document.getElementById("contactPhone").value.trim() || "";
+      const contactEmail = document.getElementById("contactEmail").value.trim() || "";
+      const customerName = document.getElementById("customerName").value.trim() || "";
+      const locationDetails = document.getElementById("locationDetails").value.trim() || "";
+
+      const todoCategory = currentCategory === "Master" ? "Inflow-ToDo's" : currentCategory;
+      todos.push({ text, done: false, dueDate, priority, projectType, followUpPerson, reminderDate, tags, subtasks: [], notes: "", contactPhone, contactEmail, customerName, locationDetails, attachments: [], category: todoCategory, completedTimestamp: null, isSales: false, salesStage: "", dealValue: null, closeDate: null, isInvoiced: false, invoiceNumber: "", invoiceDate: null, invoiceAmount: null, paymentDueDate: null });
+
+      input.value = "";
+      document.getElementById("dueDate").value = "";
+      document.getElementById("priority").value = "";
+      document.getElementById("projectType").value = "";
+      document.getElementById("followUpPerson").value = "";
+      document.getElementById("reminderDate").value = "";
+      document.getElementById("tagsInput").value = "";
+      document.getElementById("contactPhone").value = "";
+      document.getElementById("contactEmail").value = "";
+      document.getElementById("customerName").value = "";
+      document.getElementById("locationDetails").value = "";
+
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function addSalesTodo() {
+      const input = document.getElementById("s-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const customerName = document.getElementById("s-customer").value.trim() || "";
+      const salesStage = document.getElementById("s-stage").value || "Lead";
+      const dealValRaw = document.getElementById("s-dealValue").value;
+      const dealValue = dealValRaw === "" ? null : Math.max(0, Number(dealValRaw));
+      const closeDate = document.getElementById("s-closeDate").value || null;
+      const priorityVal = parseInt(document.getElementById("s-priority").value);
+      const priority = (priorityVal >= 1 && priorityVal <= 10) ? priorityVal : null;
+      const projectType = document.getElementById("s-projectType").value.trim() || null;
+      const followUpPerson = document.getElementById("s-followUpPerson").value.trim() || null;
+      const reminderDate = document.getElementById("s-reminderDate").value || null;
+      const contactPhone = document.getElementById("s-contactPhone").value.trim() || "";
+      const contactEmail = document.getElementById("s-contactEmail").value.trim() || "";
+
+      const todoCategory = currentCategory === "Master" ? "Inflow-ToDo's" : currentCategory;
+      todos.push({
+        text, done: false, dueDate: null, priority, projectType, followUpPerson,
+        reminderDate, tags: [], subtasks: [], notes: "", contactPhone, contactEmail,
+        customerName, locationDetails: "", attachments: [], category: todoCategory,
+        completedTimestamp: null,
+        isSales: true, salesStage, dealValue, closeDate,
+        isInvoiced: false, invoiceNumber: "", invoiceDate: null, invoiceAmount: null, paymentDueDate: null
+      });
+
+      ["s-input","s-customer","s-dealValue","s-closeDate","s-priority","s-projectType",
+       "s-followUpPerson","s-reminderDate","s-contactPhone","s-contactEmail"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+      document.getElementById("s-stage").value = "Lead";
+
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function toggle(i) {
+      todos[i].done = !todos[i].done;
+      save();
+      render();
+    }
+
+    function archiveTodo(i) {
+      const todo = todos.splice(i, 1)[0];
+      todo.done = true;
+      todo.completedDate = todayStr();
+      todo.completedTimestamp = new Date().toISOString();
+      archived.unshift(todo);
+      expandedSet.delete(i);
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function restoreTodo(i) {
+      const todo = archived.splice(i, 1)[0];
+      todo.done = false;
+      delete todo.completedDate;
+      todos.push(todo);
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function removeActive(i) {
+      todos.splice(i, 1);
+      expandedSet.delete(i);
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function removeArchived(i) {
+      archived.splice(i, 1);
+      save();
+      updateDataLists();
+      render();
+    }
+
+    // --- Subtasks / Notes ---
+    function toggleExpand(origIdx) {
+      if (expandedSet.has(origIdx)) {
+        expandedSet.delete(origIdx);
+      } else {
+        expandedSet.add(origIdx);
+      }
+      render();
+    }
+
+    function addSubtask(origIdx) {
+      const inp = document.getElementById("st-input-" + origIdx);
+      const text = inp.value.trim();
+      if (!text) return;
+      ensureFields(todos[origIdx]);
+      todos[origIdx].subtasks.push({ text, done: false });
+      inp.value = "";
+      save();
+      render();
+    }
+
+    function toggleSubtask(origIdx, si) {
+      todos[origIdx].subtasks[si].done = !todos[origIdx].subtasks[si].done;
+      save();
+      render();
+    }
+
+    function removeSubtask(origIdx, si) {
+      todos[origIdx].subtasks.splice(si, 1);
+      save();
+      render();
+    }
+
+    function updateNotes(origIdx, text) {
+      todos[origIdx].notes = text;
+      save();
+    }
+
+    function updateContact(origIdx, field, value) {
+      todos[origIdx][field] = value.trim();
+      save();
+    }
+
+    // --- Attachments ---
+    function triggerAttachInput(origIdx) {
+      document.getElementById("attach-input-" + origIdx).click();
+    }
+
+    function handleAttachFiles(origIdx, input) {
+      const files = input.files;
+      if (!files.length) return;
+      const todo = todos[origIdx];
+      ensureFields(todo);
+
+      let pending = files.length;
+      for (const file of files) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert("File \"" + file.name + "\" exceeds 5 MB limit and was skipped.");
+          pending--;
+          if (!pending) { save(); render(); }
+          continue;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          todo.attachments.push({
+            name: file.name,
+            type: file.type || "application/octet-stream",
+            size: file.size,
+            dataUrl: e.target.result
+          });
+          pending--;
+          if (!pending) {
+            save();
+            render();
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+      input.value = "";
+    }
+
+    function downloadAttachment(origIdx, ai) {
+      const att = todos[origIdx].attachments[ai];
+      const a = document.createElement("a");
+      a.href = att.dataUrl;
+      a.download = att.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function removeAttachment(origIdx, ai) {
+      todos[origIdx].attachments.splice(ai, 1);
+      save();
+      render();
+    }
+
+    // --- Inline Editing ---
+    function startEdit(origIdx, field, cellEl) {
+      if (editingCell && editingCell.idx === origIdx && editingCell.field === field) return;
+      editingCell = { idx: origIdx, field };
+
+      const todo = todos[origIdx];
+      let inputHtml = "";
+      const val = todo[field];
+
+      if (field === "text" || field === "contactPhone" || field === "contactEmail" || field === "customerName" || field === "locationDetails" || field === "invoiceNumber") {
+        const type = field === "contactEmail" ? "email" : (field === "contactPhone" ? "tel" : "text");
+        const listAttr = field === "customerName" ? ' list="customerNames"' : '';
+        inputHtml = `<input class="inline-edit" type="${type}" value="${escapeHtml(val || "")}"${listAttr} onblur="saveEdit(${origIdx},'${field}',this.value)" onkeydown="editKeydown(event,${origIdx},'${field}',this)" />`;
+      } else if (field === "dueDate" || field === "reminderDate" || field === "closeDate" || field === "invoiceDate" || field === "paymentDueDate") {
+        inputHtml = `<input class="inline-edit" type="date" value="${val || ""}" onblur="saveEdit(${origIdx},'${field}',this.value)" onkeydown="editKeydown(event,${origIdx},'${field}',this)" />`;
+      } else if (field === "priority") {
+        inputHtml = `<input class="inline-edit" type="number" min="1" max="10" value="${val || ""}" onblur="saveEdit(${origIdx},'${field}',this.value)" onkeydown="editKeydown(event,${origIdx},'${field}',this)" style="width:60px;" />`;
+      } else if (field === "dealValue" || field === "invoiceAmount") {
+        inputHtml = `<input class="inline-edit" type="number" min="0" step="100" value="${val !== null && val !== undefined ? val : ""}" onblur="saveEdit(${origIdx},'${field}',this.value)" onkeydown="editKeydown(event,${origIdx},'${field}',this)" style="width:110px;" />`;
+      } else if (field === "salesStage") {
+        const opts = SALES_STAGES.map(s => `<option value="${s}"${s === (val || "Lead") ? " selected" : ""}>${s}</option>`).join("");
+        inputHtml = `<select class="inline-edit" onchange="saveEdit(${origIdx},'salesStage',this.value)" onblur="saveEdit(${origIdx},'salesStage',this.value)" onkeydown="editKeydown(event,${origIdx},'salesStage',this)">${opts}</select>`;
+      } else if (field === "projectType" || field === "followUpPerson") {
+        inputHtml = `<input class="inline-edit" type="text" value="${escapeHtml(val || "")}" list="${field === 'projectType' ? 'projectTypes' : 'followUpPersons'}" onblur="saveEdit(${origIdx},'${field}',this.value)" onkeydown="editKeydown(event,${origIdx},'${field}',this)" />`;
+      } else if (field === "tags") {
+        const tagStr = (val || []).join(", ");
+        inputHtml = `<input class="inline-edit" type="text" value="${escapeHtml(tagStr)}" list="tagsList" onblur="saveEditTags(${origIdx},this.value)" onkeydown="editKeydownTags(event,${origIdx},this)" placeholder="comma-separated" />`;
+      } else if (field === "contact") {
+        // Special: show two inputs for phone + email
+        inputHtml = `
+          <input class="inline-edit" type="tel" value="${escapeHtml(todo.contactPhone || "")}" placeholder="Phone" style="margin-bottom:4px;" id="edit-phone-${origIdx}" onkeydown="editKeydownContact(event,${origIdx})" />
+          <input class="inline-edit" type="email" value="${escapeHtml(todo.contactEmail || "")}" placeholder="Email" id="edit-email-${origIdx}" onblur="saveEditContact(${origIdx})" onkeydown="editKeydownContact(event,${origIdx})" />
+        `;
+      }
+
+      cellEl.innerHTML = inputHtml;
+      const inp = cellEl.querySelector("input");
+      if (inp) inp.focus();
+    }
+
+    function saveEdit(origIdx, field, value) {
+      const todo = todos[origIdx];
+      if (field === "priority") {
+        const v = parseInt(value);
+        todo[field] = (v >= 1 && v <= 10) ? v : null;
+      } else if (field === "dealValue" || field === "invoiceAmount") {
+        if (value === "" || value === null) {
+          todo[field] = null;
+        } else {
+          const v = Number(value);
+          todo[field] = isFinite(v) && v >= 0 ? v : null;
+        }
+      } else if (field === "salesStage") {
+        todo[field] = SALES_STAGES.includes(value) ? value : "Lead";
+      } else if (field === "contactPhone" || field === "contactEmail" || field === "customerName" || field === "locationDetails" || field === "invoiceNumber") {
+        todo[field] = value.trim();
+      } else {
+        todo[field] = (typeof value === "string" ? value.trim() : value) || null;
+      }
+      editingCell = null;
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function saveEditTags(origIdx, value) {
+      todos[origIdx].tags = value.split(",").map(t => t.trim()).filter(Boolean);
+      editingCell = null;
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function saveEditContact(origIdx) {
+      const phoneEl = document.getElementById("edit-phone-" + origIdx);
+      const emailEl = document.getElementById("edit-email-" + origIdx);
+      if (!phoneEl || !emailEl) return;
+      // Only save when both inputs have lost focus (i.e. focus is outside the cell)
+      setTimeout(() => {
+        const active = document.activeElement;
+        if (active === phoneEl || active === emailEl) return;
+        todos[origIdx].contactPhone = phoneEl.value.trim();
+        todos[origIdx].contactEmail = emailEl.value.trim();
+        editingCell = null;
+        save();
+        render();
+      }, 100);
+    }
+
+    function editKeydown(e, origIdx, field, inp) {
+      if (e.key === "Enter") {
+        inp.blur();
+      } else if (e.key === "Escape") {
+        editingCell = null;
+        render();
+      }
+    }
+
+    function editKeydownTags(e, origIdx, inp) {
+      if (e.key === "Enter") {
+        inp.blur();
+      } else if (e.key === "Escape") {
+        editingCell = null;
+        render();
+      }
+    }
+
+    function editKeydownContact(e, origIdx) {
+      if (e.key === "Enter") {
+        const phoneEl = document.getElementById("edit-phone-" + origIdx);
+        const emailEl = document.getElementById("edit-email-" + origIdx);
+        todos[origIdx].contactPhone = phoneEl.value.trim();
+        todos[origIdx].contactEmail = emailEl.value.trim();
+        editingCell = null;
+        save();
+        render();
+      } else if (e.key === "Escape") {
+        editingCell = null;
+        render();
+      }
+    }
+
+    // --- Drag and Drop ---
+    function canReorder(tab) {
+      switch (tab) {
+        case "active":   return !activeSort.key  && !isFiltered();
+        case "sales":    return !salesSort.key   && !isFiltered();
+        case "invoiced": return !invoiceSort.key && !isFiltered();
+        case "archived": return !archiveSort.key;
+        case "subs":     return !subSort.key;
+        default:         return false;
+      }
+    }
+    function canReorderActive() { return canReorder("active"); }
+
+    function handleDragStart(e, origIdx, tab) {
+      dragItem = { tab, idx: origIdx };
+      e.dataTransfer.effectAllowed = "move";
+      try { e.dataTransfer.setData("text/plain", tab + ":" + origIdx); } catch (_) {}
+      e.target.closest("tr").style.opacity = "0.4";
+    }
+
+    function handleDragOver(e, origIdx, tab) {
+      tab = tab || "active";
+      if (!dragItem || dragItem.tab !== tab || !canReorder(tab)) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      const rows = document.querySelectorAll("#list-" + tab + " tr:not(.detail-row)");
+      rows.forEach(r => r.classList.remove("drag-over"));
+      e.target.closest("tr").classList.add("drag-over");
+    }
+
+    function handleDragLeave(e) {
+      e.target.closest("tr")?.classList.remove("drag-over");
+    }
+
+    function handleDrop(e, origIdx, tab) {
+      tab = tab || "active";
+      e.preventDefault();
+      if (!dragItem || dragItem.tab !== tab || dragItem.idx === origIdx || !canReorder(tab)) return;
+      const arr = tab === "archived" ? archived
+                : tab === "subs"     ? subscriptions
+                : todos;
+      const item = arr.splice(dragItem.idx, 1)[0];
+      arr.splice(origIdx, 0, item);
+      expandedSet.clear();
+      dragItem = null;
+      save();
+      render();
+    }
+
+    function handleDragEnd(e) {
+      dragItem = null;
+      document.querySelectorAll("tr").forEach(r => {
+        r.style.opacity = "";
+        r.classList.remove("drag-over");
+      });
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("drop-target"));
+    }
+
+    // --- Cross-tab drag & drop ---
+    function handleTabDragOver(e, targetTab) {
+      if (!dragItem || dragItem.tab === targetTab) return;
+      // Subs is a different data shape — no cross-tab drag in/out
+      if (dragItem.tab === "subs" || targetTab === "subs") return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      document.getElementById("tab-" + targetTab).classList.add("drop-target");
+    }
+
+    function handleTabDragLeave(e) {
+      e.target.closest(".tab")?.classList.remove("drop-target");
+    }
+
+    function setTabFlags(todo, targetTab) {
+      // Mutually exclusive flags
+      todo.isSales = (targetTab === "sales");
+      todo.isInvoiced = (targetTab === "invoiced");
+      if (targetTab === "sales" && !todo.salesStage) todo.salesStage = "Lead";
+      if (targetTab === "invoiced") {
+        if (!todo.invoiceDate) todo.invoiceDate = todayStr();
+        // Carry over Sales deal value to invoice amount on first invoice
+        if ((todo.invoiceAmount === null || todo.invoiceAmount === undefined) && todo.dealValue) {
+          todo.invoiceAmount = todo.dealValue;
+        }
+      }
+    }
+
+    function handleTabDrop(e, targetTab) {
+      e.preventDefault();
+      document.getElementById("tab-" + targetTab).classList.remove("drop-target");
+      if (!dragItem) return;
+      const { tab: srcTab, idx } = dragItem;
+      dragItem = null;
+      if (srcTab === targetTab) return;
+
+      const liveTabs = ["active", "sales", "invoiced"];
+
+      if (liveTabs.includes(srcTab) && liveTabs.includes(targetTab)) {
+        setTabFlags(todos[idx], targetTab);
+      } else if (liveTabs.includes(srcTab) && targetTab === "archived") {
+        const todo = todos.splice(idx, 1)[0];
+        todo.done = true;
+        todo.completedDate = todayStr();
+        todo.completedTimestamp = new Date().toISOString();
+        archived.unshift(todo);
+        expandedSet.clear();
+      } else if (srcTab === "archived" && liveTabs.includes(targetTab)) {
+        const todo = archived.splice(idx, 1)[0];
+        todo.done = false;
+        delete todo.completedDate;
+        setTabFlags(todo, targetTab);
+        todos.push(todo);
+      }
+
+      save();
+      updateDataLists();
+      switchTab(targetTab);
+    }
+
+    // --- Convert buttons (fallback for touch / mobile) ---
+    function moveToSales(i) {
+      setTabFlags(todos[i], "sales");
+      save();
+      render();
+    }
+
+    function moveToActive(i) {
+      setTabFlags(todos[i], "active");
+      save();
+      render();
+    }
+
+    function moveToInvoiced(i) {
+      setTabFlags(todos[i], "invoiced");
+      save();
+      render();
+    }
+
+    function restoreToSales(i) {
+      const todo = archived.splice(i, 1)[0];
+      todo.done = false;
+      delete todo.completedDate;
+      setTabFlags(todo, "sales");
+      todos.push(todo);
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function restoreToInvoiced(i) {
+      const todo = archived.splice(i, 1)[0];
+      todo.done = false;
+      delete todo.completedDate;
+      setTabFlags(todo, "invoiced");
+      todos.push(todo);
+      save();
+      updateDataLists();
+      render();
+    }
+
+    function checkReminders() {
+      const ts = todayStr();
+      todos.forEach(todo => {
+        if (todo.reminderDate === ts && !todo.done && !todo._reminded) {
+          todo._reminded = true;
+          setTimeout(() => alert("Reminder: " + todo.text), 100);
+        }
+      });
+    }
+
+    // --- Category Bar ---
+    function switchCategory(cat) {
+      currentCategory = cat;
+      localStorage.setItem("todo_category", cat);
+      expandedSet.clear();
+      editingCell = null;
+      activeSort = { key: null, asc: true };
+      render();
+    }
+
+    function updateCategoryBar() {
+      const bar = document.getElementById("category-bar");
+      const source = currentTab === "archived" ? archived : todos;
+      let saleMatch;
+      if (currentTab === "archived") saleMatch = () => true;
+      else if (currentTab === "sales") saleMatch = t => t.isSales && !t.isInvoiced;
+      else if (currentTab === "invoiced") saleMatch = t => t.isInvoiced;
+      else saleMatch = t => !t.isSales && !t.isInvoiced;
+      bar.innerHTML = CATEGORIES.map(cat => {
+        const count = cat === "Master"
+          ? source.filter(t => saleMatch(t) && t.priority && t.priority <= 2).length
+          : source.filter(t => saleMatch(t) && t.category === cat).length;
+        const cls = cat === currentCategory ? "cat-btn active" : "cat-btn";
+        return `<button class="${cls}" onclick="switchCategory('${cat.replace(/'/g, "\\'")}')">${escapeHtml(cat)} <span class="cat-badge">${count}</span></button>`;
+      }).join("");
+    }
+
+    // --- Render ---
+    function render() {
+      const inCat = t => currentCategory === "Master"
+        ? (t.priority && t.priority <= 2)
+        : t.category === currentCategory;
+
+      const catActive = todos.filter(t => !t.isSales && !t.isInvoiced && inCat(t));
+      const catSales = todos.filter(t => t.isSales && !t.isInvoiced && inCat(t));
+      const catInvoiced = todos.filter(t => t.isInvoiced && inCat(t));
+      const catArchived = archived.filter(t => inCat(t));
+      const activeSubs = subscriptions.filter(s => s.status !== "Cancelled");
+      document.getElementById("badge-active").textContent = catActive.length;
+      document.getElementById("badge-sales").textContent = catSales.length;
+      document.getElementById("badge-invoiced").textContent = catInvoiced.length;
+      document.getElementById("badge-subs").textContent = activeSubs.length;
+      document.getElementById("badge-archived").textContent = catArchived.length;
+
+      updateCategoryBar();
+      renderActive();
+      renderSales();
+      renderInvoiced();
+      renderSubs();
+      renderArchived();
+    }
+
+    function renderActive() {
+      const list = document.getElementById("list-active");
+      const table = document.getElementById("table-active");
+      const empty = document.getElementById("empty-active");
+      const hint = document.getElementById("drag-hint");
+      list.innerHTML = "";
+
+      const filtered = getFilteredTodos();
+
+      if (!filtered.length) {
+        table.style.display = "none";
+        empty.style.display = "block";
+        hint.style.display = "none";
+        return;
+      }
+      table.style.display = "table";
+      empty.style.display = "none";
+
+      const dragOk = canReorderActive();
+      table.classList.toggle("drag-disabled", !dragOk);
+      hint.style.display = filtered.length > 1 ? "block" : "none";
+
+      const sorted = getSorted(filtered, activeSort);
+      const totalCols = 13;
+
+      sorted.forEach(todo => {
+        const i = todo._origIdx;
+        const tr = document.createElement("tr");
+        if (todo.done) tr.classList.add("done");
+
+        tr.draggable = true;
+        tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "active"));
+        tr.addEventListener("dragend", handleDragEnd);
+        if (dragOk) {
+          tr.addEventListener("dragover", (e) => handleDragOver(e, i, "active"));
+          tr.addEventListener("dragleave", handleDragLeave);
+          tr.addEventListener("drop", (e) => handleDrop(e, i, "active"));
+        }
+
+        const dueCls = todo.done ? "" : dateCssClass(todo.dueDate);
+        const remCls = todo.done ? "" : dateCssClass(todo.reminderDate);
+        const tagsHtml = (todo.tags || []).map(t => `<span class="tag-chip" style="background:${tagColor(t)}">${escapeHtml(t)}</span>`).join("");
+        const expandIcon = expandedSet.has(i) ? "&#x25BC;" : "&#x25B6;";
+        const attachCount = (todo.attachments || []).length;
+        const attachBadge = attachCount ? ` <span style="font-size:10px;color:var(--text-lighter);">(${attachCount})</span>` : "";
+
+        tr.innerHTML = `
+          <td class="drag-cell center" data-label="">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
+          <td class="center cb-cell">
+            <input type="checkbox" ${todo.done ? "checked" : ""} onchange="toggle(${i})" />
+          </td>
+          <td class="expand-cell center">
+            <button class="action-btn expand-btn" onclick="toggleExpand(${i})" title="Expand">${expandIcon}${attachBadge}</button>
+          </td>
+          <td data-label="Task" data-editable ondblclick="startEdit(${i},'text',this)"><span class="task-text">${escapeHtml(todo.text)}</span></td>
+          <td data-label="Customer" data-editable ondblclick="startEdit(${i},'customerName',this)">${escapeHtml(todo.customerName) || "\u2014"}</td>
+          <td data-label="Location" data-editable ondblclick="startEdit(${i},'locationDetails',this)">${escapeHtml(todo.locationDetails) || "\u2014"}</td>
+          <td data-label="Due" data-editable ondblclick="startEdit(${i},'dueDate',this)"><span class="date-cell ${dueCls}">${formatDate(todo.dueDate)}</span></td>
+          <td class="center" data-label="Priority" data-editable ondblclick="startEdit(${i},'priority',this)">
+            ${todo.priority ? `<span class="priority-badge" style="background:${priorityColor(todo.priority)}">${todo.priority}</span>` : "\u2014"}
+          </td>
+          <td data-label="Project" data-editable ondblclick="startEdit(${i},'projectType',this)">
+            ${todo.projectType ? `<span class="project-tag">${escapeHtml(todo.projectType)}</span>` : "\u2014"}
+          </td>
+          <td data-label="Follow-up" data-editable ondblclick="startEdit(${i},'followUpPerson',this)">
+            ${todo.followUpPerson ? `<span class="person-tag">${escapeHtml(todo.followUpPerson)}</span>` : "\u2014"}
+          </td>
+          <td data-label="Tags" class="tags-cell" data-editable ondblclick="startEdit(${i},'tags',this)">
+            ${tagsHtml || "\u2014"}
+          </td>
+          <td data-label="Reminder" data-editable ondblclick="startEdit(${i},'reminderDate',this)"><span class="date-cell ${remCls} ${remCls === 'today' ? 'reminder-active' : ''}">${formatDate(todo.reminderDate)}</span></td>
+          <td class="center actions-cell" style="white-space:nowrap;">
+            <button class="action-btn convert-btn" onclick="moveToSales(${i})" title="Move to Sales">$</button>
+            <button class="action-btn convert-btn" onclick="moveToInvoiced(${i})" title="Move to Invoiced">I</button>
+            <button class="action-btn archive-btn" onclick="archiveTodo(${i})" title="Archive">&#x2713;</button>
+            <button class="action-btn delete-btn" onclick="removeActive(${i})" title="Delete">&times;</button>
+          </td>
+        `;
+        list.appendChild(tr);
+
+        // Detail row (subtasks + notes + attachments)
+        if (expandedSet.has(i)) {
+          const dtr = document.createElement("tr");
+          dtr.className = "detail-row";
+          const dtd = document.createElement("td");
+          dtd.colSpan = totalCols;
+
+          const subtasksHtml = (todo.subtasks || []).map((st, si) => `
+            <div class="subtask-item">
+              <input type="checkbox" ${st.done ? "checked" : ""} onchange="toggleSubtask(${i},${si})" />
+              <span class="subtask-text ${st.done ? 'st-done' : ''}">${escapeHtml(st.text)}</span>
+              <button class="subtask-del" onclick="removeSubtask(${i},${si})">&times;</button>
+            </div>
+          `).join("");
+
+          const attachmentsHtml = (todo.attachments || []).map((att, ai) => `
+            <div class="attach-item">
+              <span class="attach-icon">&#x1F4CE;</span>
+              <a class="attach-name" onclick="downloadAttachment(${i},${ai})" title="Download ${escapeHtml(att.name)}">${escapeHtml(att.name)}</a>
+              <span class="attach-size">${formatFileSize(att.size || 0)}</span>
+              <button class="attach-del" onclick="removeAttachment(${i},${ai})" title="Remove">&times;</button>
+            </div>
+          `).join("");
+
+          const phoneVal = escapeHtml(todo.contactPhone || "");
+          const emailVal = escapeHtml(todo.contactEmail || "");
+
+          dtd.innerHTML = `
+            <div class="detail-content">
+              <div class="subtasks-section">
+                <h4>Subtasks</h4>
+                ${subtasksHtml}
+                <div class="add-subtask-row">
+                  <input type="text" id="st-input-${i}" placeholder="Add subtask..." onkeydown="if(event.key==='Enter')addSubtask(${i})" />
+                  <button onclick="addSubtask(${i})">Add</button>
+                </div>
+              </div>
+              <div class="notes-section">
+                <h4>Notes</h4>
+                <textarea placeholder="Add notes..." onblur="updateNotes(${i},this.value)">${escapeHtml(todo.notes)}</textarea>
+              </div>
+              <div class="contact-section">
+                <h4>Contact Info</h4>
+                <div class="contact-edit-row">
+                  <label>Phone:</label>
+                  <input type="tel" value="${phoneVal}" placeholder="+1 555-0123" onblur="updateContact(${i},'contactPhone',this.value)" />
+                </div>
+                <div class="contact-edit-row">
+                  <label>Email:</label>
+                  <input type="email" value="${emailVal}" placeholder="name@example.com" onblur="updateContact(${i},'contactEmail',this.value)" />
+                </div>
+              </div>
+              <div class="attachments-section">
+                <h4>Attachments</h4>
+                ${attachmentsHtml || '<div style="font-size:12px;color:var(--text-lighter);">No attachments</div>'}
+                <div class="attach-add-row">
+                  <input type="file" id="attach-input-${i}" multiple style="display:none;" onchange="handleAttachFiles(${i},this)" />
+                  <button class="attach-add-btn" onclick="triggerAttachInput(${i})">Attach File</button>
+                  <div class="attach-warn">Max 5 MB per file. Files stored in browser storage.</div>
+                </div>
+              </div>
+            </div>
+          `;
+          dtr.appendChild(dtd);
+          list.appendChild(dtr);
+        }
+      });
+      updateSortArrows("sort-", activeSort);
+    }
+
+    function getFilteredSales() {
+      const text = document.getElementById("filterText").value.trim().toLowerCase();
+      const project = document.getElementById("filterProject").value;
+      const person = document.getElementById("filterPerson").value;
+      const tag = document.getElementById("filterTag").value;
+      const priMin = parseInt(document.getElementById("filterPriMin").value) || 0;
+      const priMax = parseInt(document.getElementById("filterPriMax").value) || 11;
+
+      const categoryFiltered = currentCategory === "Master"
+        ? todos.map((t, i) => ({ ...t, _origIdx: i })).filter(t => t.isSales && !t.isInvoiced && t.priority && t.priority <= 2)
+        : todos.map((t, i) => ({ ...t, _origIdx: i })).filter(t => t.isSales && !t.isInvoiced && t.category === currentCategory);
+      return categoryFiltered.filter(t => {
+        if (text && !t.text.toLowerCase().includes(text) &&
+            !(t.customerName || "").toLowerCase().includes(text) &&
+            !(t.salesStage || "").toLowerCase().includes(text) &&
+            !(t.projectType || "").toLowerCase().includes(text) &&
+            !(t.followUpPerson || "").toLowerCase().includes(text) &&
+            !(t.notes || "").toLowerCase().includes(text) &&
+            !(t.contactPhone || "").toLowerCase().includes(text) &&
+            !(t.contactEmail || "").toLowerCase().includes(text)) return false;
+        if (project && t.projectType !== project) return false;
+        if (person && t.followUpPerson !== person) return false;
+        if (tag && !(t.tags || []).includes(tag)) return false;
+        const pri = t.priority || 0;
+        if (priMin > 0 && pri < priMin) return false;
+        if (priMax < 11 && pri > priMax) return false;
+        return true;
+      });
+    }
+
+    function computePipelineStats(items) {
+      let open = 0, openCount = 0, won = 0, wonCount = 0, lost = 0, lostCount = 0;
+      const thisYear = new Date().getFullYear();
+      items.forEach(t => {
+        const v = Number(t.dealValue) || 0;
+        if (t.salesStage === "Won") {
+          // YTD Won by closeDate year (fallback to any Won if no date)
+          const y = t.closeDate ? new Date(t.closeDate + "T00:00:00").getFullYear() : thisYear;
+          if (y === thisYear) { won += v; wonCount++; }
+        } else if (t.salesStage === "Lost") {
+          const y = t.closeDate ? new Date(t.closeDate + "T00:00:00").getFullYear() : thisYear;
+          if (y === thisYear) { lost += v; lostCount++; }
+        } else {
+          open += v; openCount++;
+        }
+      });
+      return { open, openCount, won, wonCount, lost, lostCount };
+    }
+
+    function renderSales() {
+      const list = document.getElementById("list-sales");
+      const table = document.getElementById("table-sales");
+      const empty = document.getElementById("empty-sales");
+      const pipeBar = document.getElementById("pipeline-bar");
+      list.innerHTML = "";
+
+      const filtered = getFilteredSales();
+      const stats = computePipelineStats(filtered);
+      pipeBar.innerHTML = `
+        <div class="pipeline-stat">
+          <span class="label">Open Pipeline</span>
+          <span class="value pipeline">${formatMoney(stats.open)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Open Deals</span>
+          <span class="value">${stats.openCount}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Won YTD</span>
+          <span class="value won">${formatMoney(stats.won)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Won Count</span>
+          <span class="value">${stats.wonCount}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Lost YTD</span>
+          <span class="value lost">${formatMoney(stats.lost)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Lost Count</span>
+          <span class="value">${stats.lostCount}</span>
+        </div>
+      `;
+
+      if (!filtered.length) {
+        table.style.display = "none";
+        empty.style.display = "block";
+        updateSortArrows("ssort-", salesSort);
+        return;
+      }
+      table.style.display = "table";
+      empty.style.display = "none";
+
+      const sorted = getSorted(filtered, salesSort);
+      const totalCols = 12;
+      const dragOk = canReorder("sales");
+      document.getElementById("table-sales").classList.toggle("drag-disabled", !dragOk);
+
+      sorted.forEach(todo => {
+        const i = todo._origIdx;
+        const tr = document.createElement("tr");
+        const closed = todo.salesStage === "Won" || todo.salesStage === "Lost";
+        if (todo.done || closed) tr.classList.add("sales-closed");
+
+        tr.draggable = true;
+        tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "sales"));
+        tr.addEventListener("dragend", handleDragEnd);
+        if (dragOk) {
+          tr.addEventListener("dragover", (e) => handleDragOver(e, i, "sales"));
+          tr.addEventListener("dragleave", handleDragLeave);
+          tr.addEventListener("drop", (e) => handleDrop(e, i, "sales"));
+        }
+
+        const closeCls = todo.done || closed ? "" : dateCssClass(todo.closeDate);
+        const remCls = todo.done || closed ? "" : dateCssClass(todo.reminderDate);
+        const stage = todo.salesStage || "Lead";
+        const stageHtml = `<span class="stage-tag stage-${stage}">${escapeHtml(stage)}</span>`;
+        const expandIcon = expandedSet.has(i) ? "&#x25BC;" : "&#x25B6;";
+        const attachCount = (todo.attachments || []).length;
+        const attachBadge = attachCount ? ` <span style="font-size:10px;color:var(--text-lighter);">(${attachCount})</span>` : "";
+
+        tr.innerHTML = `
+          <td class="drag-cell center" data-label="">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
+          <td class="center cb-cell">
+            <input type="checkbox" ${todo.done ? "checked" : ""} onchange="toggle(${i})" />
+          </td>
+          <td class="expand-cell center">
+            <button class="action-btn expand-btn" onclick="toggleExpand(${i})" title="Expand">${expandIcon}${attachBadge}</button>
+          </td>
+          <td data-label="Deal" data-editable ondblclick="startEdit(${i},'text',this)"><span class="task-text">${escapeHtml(todo.text)}</span></td>
+          <td data-label="Customer" data-editable ondblclick="startEdit(${i},'customerName',this)">${escapeHtml(todo.customerName) || "\u2014"}</td>
+          <td data-label="Stage" data-editable ondblclick="startEdit(${i},'salesStage',this)">${stageHtml}</td>
+          <td data-label="Deal $" class="money" data-editable ondblclick="startEdit(${i},'dealValue',this)">${formatMoney(todo.dealValue)}</td>
+          <td data-label="Close" data-editable ondblclick="startEdit(${i},'closeDate',this)"><span class="date-cell ${closeCls}">${formatDate(todo.closeDate)}</span></td>
+          <td class="center" data-label="Priority" data-editable ondblclick="startEdit(${i},'priority',this)">
+            ${todo.priority ? `<span class="priority-badge" style="background:${priorityColor(todo.priority)}">${todo.priority}</span>` : "\u2014"}
+          </td>
+          <td data-label="Project" data-editable ondblclick="startEdit(${i},'projectType',this)">
+            ${todo.projectType ? `<span class="project-tag">${escapeHtml(todo.projectType)}</span>` : "\u2014"}
+          </td>
+          <td data-label="Follow-up" data-editable ondblclick="startEdit(${i},'followUpPerson',this)">
+            ${todo.followUpPerson ? `<span class="person-tag">${escapeHtml(todo.followUpPerson)}</span>` : "\u2014"}
+          </td>
+          <td data-label="Reminder" data-editable ondblclick="startEdit(${i},'reminderDate',this)"><span class="date-cell ${remCls} ${remCls === 'today' ? 'reminder-active' : ''}">${formatDate(todo.reminderDate)}</span></td>
+          <td class="center actions-cell" style="white-space:nowrap;">
+            <button class="action-btn convert-btn" onclick="moveToActive(${i})" title="Move to Active Todos">T</button>
+            <button class="action-btn convert-btn" onclick="moveToInvoiced(${i})" title="Move to Invoiced">I</button>
+            <button class="action-btn archive-btn" onclick="archiveTodo(${i})" title="Archive">&#x2713;</button>
+            <button class="action-btn delete-btn" onclick="removeActive(${i})" title="Delete">&times;</button>
+          </td>
+        `;
+        list.appendChild(tr);
+
+        if (expandedSet.has(i)) {
+          const dtr = document.createElement("tr");
+          dtr.className = "detail-row";
+          const dtd = document.createElement("td");
+          dtd.colSpan = totalCols;
+
+          const subtasksHtml = (todo.subtasks || []).map((st, si) => `
+            <div class="subtask-item">
+              <input type="checkbox" ${st.done ? "checked" : ""} onchange="toggleSubtask(${i},${si})" />
+              <span class="subtask-text ${st.done ? 'st-done' : ''}">${escapeHtml(st.text)}</span>
+              <button class="subtask-del" onclick="removeSubtask(${i},${si})">&times;</button>
+            </div>
+          `).join("");
+
+          const attachmentsHtml = (todo.attachments || []).map((att, ai) => `
+            <div class="attach-item">
+              <span class="attach-icon">&#x1F4CE;</span>
+              <a class="attach-name" onclick="downloadAttachment(${i},${ai})" title="Download ${escapeHtml(att.name)}">${escapeHtml(att.name)}</a>
+              <span class="attach-size">${formatFileSize(att.size || 0)}</span>
+              <button class="attach-del" onclick="removeAttachment(${i},${ai})" title="Remove">&times;</button>
+            </div>
+          `).join("");
+
+          const phoneVal = escapeHtml(todo.contactPhone || "");
+          const emailVal = escapeHtml(todo.contactEmail || "");
+
+          dtd.innerHTML = `
+            <div class="detail-content">
+              <div class="subtasks-section">
+                <h4>Next Steps / Subtasks</h4>
+                ${subtasksHtml}
+                <div class="add-subtask-row">
+                  <input type="text" id="st-input-${i}" placeholder="Add next step..." onkeydown="if(event.key==='Enter')addSubtask(${i})" />
+                  <button onclick="addSubtask(${i})">Add</button>
+                </div>
+              </div>
+              <div class="notes-section">
+                <h4>Notes</h4>
+                <textarea placeholder="Deal notes, history, concerns..." onblur="updateNotes(${i},this.value)">${escapeHtml(todo.notes)}</textarea>
+              </div>
+              <div class="contact-section">
+                <h4>Contact Info</h4>
+                <div class="contact-edit-row">
+                  <label>Phone:</label>
+                  <input type="tel" value="${phoneVal}" placeholder="+1 555-0123" onblur="updateContact(${i},'contactPhone',this.value)" />
+                </div>
+                <div class="contact-edit-row">
+                  <label>Email:</label>
+                  <input type="email" value="${emailVal}" placeholder="name@example.com" onblur="updateContact(${i},'contactEmail',this.value)" />
+                </div>
+              </div>
+              <div class="attachments-section">
+                <h4>Attachments</h4>
+                ${attachmentsHtml || '<div style="font-size:12px;color:var(--text-lighter);">No attachments</div>'}
+                <div class="attach-add-row">
+                  <input type="file" id="attach-input-${i}" multiple style="display:none;" onchange="handleAttachFiles(${i},this)" />
+                  <button class="attach-add-btn" onclick="triggerAttachInput(${i})">Attach File</button>
+                  <div class="attach-warn">Max 5 MB per file. Files stored in browser storage.</div>
+                </div>
+              </div>
+            </div>
+          `;
+          dtr.appendChild(dtd);
+          list.appendChild(dtr);
+        }
+      });
+      updateSortArrows("ssort-", salesSort);
+    }
+
+    function getFilteredInvoiced() {
+      const text = document.getElementById("filterText").value.trim().toLowerCase();
+      const project = document.getElementById("filterProject").value;
+      const person = document.getElementById("filterPerson").value;
+      const tag = document.getElementById("filterTag").value;
+      const priMin = parseInt(document.getElementById("filterPriMin").value) || 0;
+      const priMax = parseInt(document.getElementById("filterPriMax").value) || 11;
+
+      const categoryFiltered = currentCategory === "Master"
+        ? todos.map((t, i) => ({ ...t, _origIdx: i })).filter(t => t.isInvoiced && t.priority && t.priority <= 2)
+        : todos.map((t, i) => ({ ...t, _origIdx: i })).filter(t => t.isInvoiced && t.category === currentCategory);
+      return categoryFiltered.filter(t => {
+        if (text && !t.text.toLowerCase().includes(text) &&
+            !(t.customerName || "").toLowerCase().includes(text) &&
+            !(t.invoiceNumber || "").toLowerCase().includes(text) &&
+            !(t.projectType || "").toLowerCase().includes(text) &&
+            !(t.followUpPerson || "").toLowerCase().includes(text) &&
+            !(t.notes || "").toLowerCase().includes(text)) return false;
+        if (project && t.projectType !== project) return false;
+        if (person && t.followUpPerson !== person) return false;
+        if (tag && !(t.tags || []).includes(tag)) return false;
+        const pri = t.priority || 0;
+        if (priMin > 0 && pri < priMin) return false;
+        if (priMax < 11 && pri > priMax) return false;
+        return true;
+      });
+    }
+
+    function computeInvoiceStats(items) {
+      const today = todayStr();
+      let outstanding = 0, overdueAmt = 0, overdueCount = 0;
+      let oldestDays = 0;
+      items.forEach(t => {
+        const v = Number(t.invoiceAmount) || 0;
+        outstanding += v;
+        if (t.paymentDueDate && t.paymentDueDate < today) {
+          overdueAmt += v;
+          overdueCount++;
+        }
+        if (t.invoiceDate) {
+          const d = daysBetween(t.invoiceDate, today);
+          if (d > oldestDays) oldestDays = d;
+        }
+      });
+      return { outstanding, count: items.length, overdueAmt, overdueCount, oldestDays };
+    }
+
+    function computePaidInvoiceStats() {
+      // Paid invoices = archived items that had isInvoiced AND have invoiceAmount/invoiceDate
+      const thisYear = new Date().getFullYear();
+      let paidYTD = 0, paidCount = 0, totalDSO = 0, dsoCount = 0;
+      let lastPaidDate = null, lastPaidAmt = 0;
+      archived.forEach(t => {
+        if (!t.isInvoiced && !t.invoiceDate) return; // not an invoice
+        if (!t.invoiceAmount && !t.invoiceDate) return;
+        const paidISO = t.completedTimestamp || (t.completedDate ? t.completedDate + "T00:00:00" : null);
+        if (!paidISO) return;
+        const paidD = new Date(paidISO);
+        if (paidD.getFullYear() !== thisYear) return;
+        const v = Number(t.invoiceAmount) || 0;
+        paidYTD += v;
+        paidCount++;
+        if (t.invoiceDate) {
+          const days = daysBetween(t.invoiceDate, paidD);
+          if (days >= 0) { totalDSO += days; dsoCount++; }
+        }
+        if (!lastPaidDate || paidD > lastPaidDate) {
+          lastPaidDate = paidD;
+          lastPaidAmt = v;
+        }
+      });
+      return {
+        paidYTD, paidCount,
+        avgDSO: dsoCount ? Math.round(totalDSO / dsoCount) : null,
+        lastPaidDate, lastPaidAmt
+      };
+    }
+
+    function renderInvoiced() {
+      const list = document.getElementById("list-invoiced");
+      const table = document.getElementById("table-invoiced");
+      const empty = document.getElementById("empty-invoiced");
+      const bar = document.getElementById("invoiced-bar");
+      list.innerHTML = "";
+
+      const filtered = getFilteredInvoiced();
+      const open = computeInvoiceStats(filtered);
+      const paid = computePaidInvoiceStats();
+      const lastPaidStr = paid.lastPaidDate
+        ? paid.lastPaidDate.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " (" + formatMoney(paid.lastPaidAmt) + ")"
+        : "\u2014";
+
+      bar.innerHTML = `
+        <div class="pipeline-stat">
+          <span class="label">Outstanding</span>
+          <span class="value pipeline">${formatMoney(open.outstanding)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Open Invoices</span>
+          <span class="value">${open.count}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Overdue $</span>
+          <span class="value lost">${formatMoney(open.overdueAmt)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Overdue Count</span>
+          <span class="value lost">${open.overdueCount}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Oldest (days)</span>
+          <span class="value">${open.oldestDays || 0}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Paid YTD</span>
+          <span class="value won">${formatMoney(paid.paidYTD)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Paid Count YTD</span>
+          <span class="value">${paid.paidCount}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Avg Days to Paid</span>
+          <span class="value">${paid.avgDSO !== null ? paid.avgDSO : "\u2014"}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Last Paid</span>
+          <span class="value" style="font-size:14px;">${lastPaidStr}</span>
+        </div>
+      `;
+
+      if (!filtered.length) {
+        table.style.display = "none";
+        empty.style.display = "block";
+        updateSortArrows("isort-", invoiceSort);
+        return;
+      }
+      table.style.display = "table";
+      empty.style.display = "none";
+
+      const sorted = getSorted(filtered, invoiceSort);
+      const totalCols = 12;
+      const today = todayStr();
+      const dragOk = canReorder("invoiced");
+      document.getElementById("table-invoiced").classList.toggle("drag-disabled", !dragOk);
+
+      sorted.forEach(todo => {
+        const i = todo._origIdx;
+        const tr = document.createElement("tr");
+        if (todo.done) tr.classList.add("done");
+
+        tr.draggable = true;
+        tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "invoiced"));
+        tr.addEventListener("dragend", handleDragEnd);
+        if (dragOk) {
+          tr.addEventListener("dragover", (e) => handleDragOver(e, i, "invoiced"));
+          tr.addEventListener("dragleave", handleDragLeave);
+          tr.addEventListener("drop", (e) => handleDrop(e, i, "invoiced"));
+        }
+
+        const dueCls = (todo.paymentDueDate && todo.paymentDueDate < today) ? "overdue" : (todo.paymentDueDate === today ? "today" : "upcoming");
+        const daysOut = todo.invoiceDate ? daysBetween(todo.invoiceDate, today) : "\u2014";
+        const expandIcon = expandedSet.has(i) ? "&#x25BC;" : "&#x25B6;";
+        const attachCount = (todo.attachments || []).length;
+        const attachBadge = attachCount ? ` <span style="font-size:10px;color:var(--text-lighter);">(${attachCount})</span>` : "";
+        const daysCls = (typeof daysOut === "number" && todo.paymentDueDate && todo.paymentDueDate < today) ? "overdue" : "";
+
+        tr.innerHTML = `
+          <td class="drag-cell center" data-label="">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
+          <td class="center cb-cell">
+            <input type="checkbox" ${todo.done ? "checked" : ""} onchange="toggle(${i})" />
+          </td>
+          <td class="expand-cell center">
+            <button class="action-btn expand-btn" onclick="toggleExpand(${i})" title="Expand">${expandIcon}${attachBadge}</button>
+          </td>
+          <td data-label="Task" data-editable ondblclick="startEdit(${i},'text',this)"><span class="task-text">${escapeHtml(todo.text)}</span></td>
+          <td data-label="Customer" data-editable ondblclick="startEdit(${i},'customerName',this)">${escapeHtml(todo.customerName) || "\u2014"}</td>
+          <td data-label="Invoice #" data-editable ondblclick="startEdit(${i},'invoiceNumber',this)">${escapeHtml(todo.invoiceNumber) || "\u2014"}</td>
+          <td data-label="Amount" class="money" data-editable ondblclick="startEdit(${i},'invoiceAmount',this)">${formatMoney(todo.invoiceAmount)}</td>
+          <td data-label="Invoiced" data-editable ondblclick="startEdit(${i},'invoiceDate',this)"><span class="date-cell">${formatDate(todo.invoiceDate)}</span></td>
+          <td data-label="Due" data-editable ondblclick="startEdit(${i},'paymentDueDate',this)"><span class="date-cell ${todo.paymentDueDate ? dueCls : ''}">${formatDate(todo.paymentDueDate)}</span></td>
+          <td class="center" data-label="Days Out"><span class="date-cell ${daysCls}">${daysOut}</span></td>
+          <td data-label="Follow-up" data-editable ondblclick="startEdit(${i},'followUpPerson',this)">
+            ${todo.followUpPerson ? `<span class="person-tag">${escapeHtml(todo.followUpPerson)}</span>` : "\u2014"}
+          </td>
+          <td class="center actions-cell" style="white-space:nowrap;">
+            <button class="action-btn convert-btn" onclick="moveToActive(${i})" title="Move to Active">T</button>
+            <button class="action-btn convert-btn" onclick="moveToSales(${i})" title="Move to Sales">$</button>
+            <button class="action-btn archive-btn" onclick="archiveTodo(${i})" title="Mark Paid &amp; Archive">&#x2713;</button>
+            <button class="action-btn delete-btn" onclick="removeActive(${i})" title="Delete">&times;</button>
+          </td>
+        `;
+        list.appendChild(tr);
+
+        if (expandedSet.has(i)) {
+          const dtr = document.createElement("tr");
+          dtr.className = "detail-row";
+          const dtd = document.createElement("td");
+          dtd.colSpan = totalCols;
+
+          const subtasksHtml = (todo.subtasks || []).map((st, si) => `
+            <div class="subtask-item">
+              <input type="checkbox" ${st.done ? "checked" : ""} onchange="toggleSubtask(${i},${si})" />
+              <span class="subtask-text ${st.done ? 'st-done' : ''}">${escapeHtml(st.text)}</span>
+              <button class="subtask-del" onclick="removeSubtask(${i},${si})">&times;</button>
+            </div>
+          `).join("");
+
+          const phoneVal = escapeHtml(todo.contactPhone || "");
+          const emailVal = escapeHtml(todo.contactEmail || "");
+
+          dtd.innerHTML = `
+            <div class="detail-content">
+              <div class="subtasks-section">
+                <h4>Tasks / Notes for Collection</h4>
+                ${subtasksHtml}
+                <div class="add-subtask-row">
+                  <input type="text" id="st-input-${i}" placeholder="Add subtask..." onkeydown="if(event.key==='Enter')addSubtask(${i})" />
+                  <button onclick="addSubtask(${i})">Add</button>
+                </div>
+              </div>
+              <div class="notes-section">
+                <h4>Notes</h4>
+                <textarea placeholder="Invoice notes, payment status, etc..." onblur="updateNotes(${i},this.value)">${escapeHtml(todo.notes)}</textarea>
+              </div>
+              <div class="contact-section">
+                <h4>Contact Info</h4>
+                <div class="contact-edit-row">
+                  <label>Phone:</label>
+                  <input type="tel" value="${phoneVal}" placeholder="+1 555-0123" onblur="updateContact(${i},'contactPhone',this.value)" />
+                </div>
+                <div class="contact-edit-row">
+                  <label>Email:</label>
+                  <input type="email" value="${emailVal}" placeholder="name@example.com" onblur="updateContact(${i},'contactEmail',this.value)" />
+                </div>
+              </div>
+            </div>
+          `;
+          dtr.appendChild(dtd);
+          list.appendChild(dtr);
+        }
+      });
+      updateSortArrows("isort-", invoiceSort);
+    }
+
+    // ============== SUBSCRIPTIONS ==============
+    function subMonthlyEquiv(s) {
+      const a = Number(s.amount) || 0;
+      switch (s.cycle) {
+        case "Daily":     return a * 30.44;
+        case "Weekly":    return a * 4.33;
+        case "Monthly":   return a;
+        case "Quarterly": return a / 3;
+        case "Yearly":    return a / 12;
+        default:          return a;
+      }
+    }
+    function subYearlyEquiv(s) { return subMonthlyEquiv(s) * 12; }
+
+    function daysFromToday(dateStr) {
+      if (!dateStr) return null;
+      return daysBetween(todayStr(), dateStr);
+    }
+
+    function sortSub(key) {
+      if (subSort.key === key) {
+        if (subSort.asc) { subSort.asc = false; }
+        else { subSort.key = null; subSort.asc = true; }
+      } else {
+        subSort.key = key;
+        subSort.asc = true;
+      }
+      render();
+    }
+
+    function addSubscription() {
+      const name = document.getElementById("sub-name").value.trim();
+      if (!name) return;
+      const amount = parseFloat(document.getElementById("sub-amount").value) || 0;
+      const cycle = document.getElementById("sub-cycle").value || "Monthly";
+      const nextBillDate = document.getElementById("sub-next").value || null;
+      const category = document.getElementById("sub-category").value || "Personal";
+      const paymentMethod = document.getElementById("sub-payment").value.trim() || "";
+      const url = document.getElementById("sub-url").value.trim() || "";
+      subscriptions.push({
+        name, amount, cycle, nextBillDate, category,
+        status: "Active", paymentMethod, url,
+        startedDate: nextBillDate, notes: "",
+        addedDate: todayStr(), cancelledDate: null
+      });
+      ["sub-name","sub-amount","sub-next","sub-payment","sub-url"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("sub-cycle").value = "Monthly";
+      document.getElementById("sub-category").value = "Personal";
+      save();
+      render();
+    }
+
+    function pauseSub(i)      { subscriptions[i].status = "Paused"; save(); render(); }
+    function activateSub(i)   {
+      subscriptions[i].status = "Active";
+      subscriptions[i].cancelledDate = null;
+      save(); render();
+    }
+    function cancelSub(i)     {
+      if (!confirm("Cancel " + subscriptions[i].name + "? It moves to the inactive list.")) return;
+      subscriptions[i].status = "Cancelled";
+      subscriptions[i].cancelledDate = todayStr();
+      save(); render();
+    }
+    function deleteSub(i) {
+      if (!confirm("Delete " + subscriptions[i].name + " permanently?")) return;
+      subscriptions.splice(i, 1);
+      save(); render();
+    }
+    function toggleCancelledList() {
+      cancelledExpanded = !cancelledExpanded;
+      document.getElementById("sub-cancelled-list").style.display = cancelledExpanded ? "block" : "none";
+      document.getElementById("cancelled-toggle").innerHTML = cancelledExpanded ? "&#x25BC;" : "&#x25B6;";
+    }
+
+    // Inline edit for subscription fields
+    function startSubEdit(i, field, cellEl) {
+      const sub = subscriptions[i];
+      let html = "";
+      const v = sub[field];
+      if (field === "amount") {
+        html = `<input class="inline-edit" type="number" min="0" step="0.01" value="${v}" onblur="saveSubEdit(${i},'amount',this.value)" onkeydown="if(event.key==='Enter')this.blur(); if(event.key==='Escape'){editingCell=null;render();}" />`;
+      } else if (field === "cycle") {
+        const opts = SUB_CYCLES.map(c => `<option value="${c}"${c===v?' selected':''}>${c}</option>`).join("");
+        html = `<select class="inline-edit" onchange="saveSubEdit(${i},'cycle',this.value)" onblur="saveSubEdit(${i},'cycle',this.value)">${opts}</select>`;
+      } else if (field === "category") {
+        const opts = SUB_CATEGORIES.map(c => `<option value="${c}"${c===v?' selected':''}>${c}</option>`).join("");
+        html = `<select class="inline-edit" onchange="saveSubEdit(${i},'category',this.value)" onblur="saveSubEdit(${i},'category',this.value)">${opts}</select>`;
+      } else if (field === "nextBillDate") {
+        html = `<input class="inline-edit" type="date" value="${v||""}" onblur="saveSubEdit(${i},'nextBillDate',this.value)" onkeydown="if(event.key==='Enter')this.blur();" />`;
+      } else { // name, paymentMethod
+        html = `<input class="inline-edit" type="text" value="${escapeHtml(v||"")}" onblur="saveSubEdit(${i},'${field}',this.value)" onkeydown="if(event.key==='Enter')this.blur();" />`;
+      }
+      cellEl.innerHTML = html;
+      const inp = cellEl.querySelector("input,select");
+      if (inp) inp.focus();
+    }
+    function saveSubEdit(i, field, value) {
+      if (field === "amount") subscriptions[i][field] = Math.max(0, parseFloat(value) || 0);
+      else if (field === "nextBillDate") subscriptions[i][field] = value || null;
+      else subscriptions[i][field] = (value || "").trim();
+      save(); render();
+    }
+
+    function fmtMoney(n) {
+      const num = Number(n) || 0;
+      return "$" + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function renderSubs() {
+      const bar = document.getElementById("subs-bar");
+      const widgets = document.getElementById("subs-widgets");
+      const list = document.getElementById("list-subs");
+      const table = document.getElementById("table-subs");
+      const empty = document.getElementById("empty-subs");
+
+      const all = subscriptions.map((s, i) => ({ ...s, _i: i, _monthly: subMonthlyEquiv(s), _yearly: subYearlyEquiv(s) }));
+      const live = all.filter(s => s.status !== "Cancelled");  // active + paused
+      const active = live.filter(s => s.status === "Active");
+      const paused = live.filter(s => s.status === "Paused");
+      const cancelled = all.filter(s => s.status === "Cancelled");
+
+      // ---------- Stats bar ----------
+      const totalMonthly = active.reduce((sum, s) => sum + s._monthly, 0);
+      const totalYearly = totalMonthly * 12;
+      const inflow = active.filter(s => s.category === "Inflow");
+      const personal = active.filter(s => s.category === "Personal");
+      const inflowMo = inflow.reduce((s, x) => s + x._monthly, 0);
+      const personalMo = personal.reduce((s, x) => s + x._monthly, 0);
+
+      const today = todayStr();
+      const upcoming7 = active.filter(s => s.nextBillDate && daysFromToday(s.nextBillDate) >= 0 && daysFromToday(s.nextBillDate) <= 7);
+      const upcoming30 = active.filter(s => s.nextBillDate && daysFromToday(s.nextBillDate) >= 0 && daysFromToday(s.nextBillDate) <= 30);
+      const sum7 = upcoming7.reduce((s, x) => s + Number(x.amount || 0), 0);
+      const sum30 = upcoming30.reduce((s, x) => s + Number(x.amount || 0), 0);
+
+      const biggest = active.slice().sort((a, b) => b._monthly - a._monthly)[0];
+      const biggestStr = biggest
+        ? escapeHtml(biggest.name) + " (" + fmtMoney(biggest._monthly) + "/mo)"
+        : "\u2014";
+
+      bar.innerHTML = `
+        <div class="pipeline-stat">
+          <span class="label">Total Monthly</span>
+          <span class="value pipeline">${fmtMoney(totalMonthly)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Total Yearly</span>
+          <span class="value">${fmtMoney(totalYearly)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Active</span>
+          <span class="value">${active.length}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Inflow $/mo · /yr</span>
+          <span class="value" style="font-size:14px;">${fmtMoney(inflowMo)} · ${fmtMoney(inflowMo*12)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Personal $/mo · /yr</span>
+          <span class="value" style="font-size:14px;">${fmtMoney(personalMo)} · ${fmtMoney(personalMo*12)}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Next 7 Days</span>
+          <span class="value">${fmtMoney(sum7)} · ${upcoming7.length}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Next 30 Days</span>
+          <span class="value">${fmtMoney(sum30)} · ${upcoming30.length}</span>
+        </div>
+        <div class="pipeline-stat">
+          <span class="label">Biggest Sub</span>
+          <span class="value" style="font-size:14px;">${biggestStr}</span>
+        </div>
+      `;
+
+      // ---------- Widgets ----------
+      // Widget 1: Upcoming renewals (next 30 days)
+      const renewals = active
+        .filter(s => s.nextBillDate && daysFromToday(s.nextBillDate) >= 0 && daysFromToday(s.nextBillDate) <= 30)
+        .sort((a, b) => a.nextBillDate.localeCompare(b.nextBillDate));
+      const wRenewals = `
+        <div class="sub-widget">
+          <h4>Upcoming Renewals (next 30 days)</h4>
+          ${renewals.length
+            ? renewals.map(s => `<div class="row"><span class="name">${escapeHtml(s.name)} · ${formatDate(s.nextBillDate)}</span><span class="val">${fmtMoney(s.amount)}</span></div>`).join("")
+            : '<div class="empty-msg">None in next 30 days.</div>'}
+        </div>`;
+
+      // Widget 2: Paused — savings if reactivated
+      const pausedMonthly = paused.reduce((s, x) => s + x._monthly, 0);
+      const wPaused = `
+        <div class="sub-widget">
+          <h4>Paused — would add if reactivated</h4>
+          ${paused.length
+            ? `<div class="row"><span class="name">${paused.length} paused</span><span class="val">${fmtMoney(pausedMonthly)}/mo</span></div>` +
+              paused.map(s => `<div class="row"><span class="name">${escapeHtml(s.name)}</span><span class="val">${fmtMoney(s._monthly)}/mo</span></div>`).join("")
+            : '<div class="empty-msg">None paused.</div>'}
+        </div>`;
+
+      // Widget 3: Recently added (last 90 days)
+      const recent = active.filter(s => s.addedDate && daysFromToday(s.addedDate) <= 0 && daysFromToday(s.addedDate) >= -90)
+        .sort((a, b) => (b.addedDate || "").localeCompare(a.addedDate || ""));
+      const wRecent = `
+        <div class="sub-widget">
+          <h4>Added in Last 90 Days</h4>
+          ${recent.length
+            ? recent.map(s => `<div class="row"><span class="name">${escapeHtml(s.name)} · ${formatDate(s.addedDate)}</span><span class="val">${fmtMoney(s._monthly)}/mo</span></div>`).join("")
+            : '<div class="empty-msg">No new subs in last 90 days.</div>'}
+        </div>`;
+
+      // Widget 4: Top 3 by yearly cost
+      const top3 = active.slice().sort((a, b) => b._yearly - a._yearly).slice(0, 3);
+      const wTop = `
+        <div class="sub-widget">
+          <h4>Largest Subs (annual)</h4>
+          ${top3.length
+            ? top3.map(s => `<div class="row"><span class="name">${escapeHtml(s.name)}</span><span class="val">${fmtMoney(s._yearly)}/yr</span></div>`).join("")
+            : '<div class="empty-msg">No active subs.</div>'}
+        </div>`;
+
+      widgets.innerHTML = wRenewals + wPaused + wRecent + wTop;
+
+      // ---------- Live table ----------
+      list.innerHTML = "";
+      if (!live.length) {
+        table.style.display = "none";
+        empty.style.display = "block";
+      } else {
+        table.style.display = "table";
+        empty.style.display = "none";
+
+        const sorted = live.slice().sort((a, b) => {
+          let va = a[subSort.key], vb = b[subSort.key];
+          if (typeof va === "number" || typeof vb === "number") {
+            va = va || 0; vb = vb || 0;
+          } else {
+            va = (va || "").toString().toLowerCase();
+            vb = (vb || "").toString().toLowerCase();
+          }
+          if (va < vb) return subSort.asc ? -1 : 1;
+          if (va > vb) return subSort.asc ? 1 : -1;
+          return 0;
+        });
+
+        const dragOk = canReorder("subs");
+        document.getElementById("table-subs").classList.toggle("drag-disabled", !dragOk);
+        sorted.forEach(s => {
+          const i = s._i;
+          const tr = document.createElement("tr");
+          if (s.status === "Paused") tr.classList.add("sub-paused");
+          const days = s.nextBillDate ? daysFromToday(s.nextBillDate) : null;
+          if (days !== null && days < 0) tr.classList.add("sub-overdue");
+          else if (days !== null && days <= 7) tr.classList.add("sub-due-soon");
+
+          tr.draggable = true;
+          tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "subs"));
+          tr.addEventListener("dragend", handleDragEnd);
+          if (dragOk) {
+            tr.addEventListener("dragover", (e) => handleDragOver(e, i, "subs"));
+            tr.addEventListener("dragleave", handleDragLeave);
+            tr.addEventListener("drop", (e) => handleDrop(e, i, "subs"));
+          }
+
+          const urlHtml = s.url
+            ? `<a href="${escapeHtml(s.url.startsWith("http") ? s.url : "https://" + s.url)}" target="_blank" style="color:var(--accent);text-decoration:none;" title="${escapeHtml(s.url)}">&#x1F517;</a>`
+            : "";
+          const daysStr = days === null ? "\u2014" : (days < 0 ? `${days}` : `${days}`);
+
+          tr.innerHTML = `
+            <td class="drag-cell center">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
+            <td data-editable ondblclick="startSubEdit(${i},'name',this)"><strong>${escapeHtml(s.name)}</strong> ${urlHtml}</td>
+            <td class="money" data-editable ondblclick="startSubEdit(${i},'amount',this)">${fmtMoney(s.amount)}</td>
+            <td data-editable ondblclick="startSubEdit(${i},'cycle',this)">${escapeHtml(s.cycle)}</td>
+            <td class="money">${fmtMoney(s._monthly)}</td>
+            <td class="money">${fmtMoney(s._yearly)}</td>
+            <td data-editable ondblclick="startSubEdit(${i},'nextBillDate',this)"><span class="date-cell">${formatDate(s.nextBillDate)}</span></td>
+            <td class="center">${daysStr}</td>
+            <td data-editable ondblclick="startSubEdit(${i},'category',this)"><span class="cat-pill cat-${s.category}">${escapeHtml(s.category)}</span></td>
+            <td data-editable ondblclick="startSubEdit(${i},'paymentMethod',this)">${escapeHtml(s.paymentMethod) || "\u2014"}</td>
+            <td><span class="sub-status status-${s.status}">${escapeHtml(s.status)}</span></td>
+            <td class="center actions-cell" style="white-space:nowrap;">
+              ${s.status === "Active"
+                ? `<button class="action-btn convert-btn" onclick="pauseSub(${i})" title="Pause">&#x23F8;</button>`
+                : `<button class="action-btn convert-btn" onclick="activateSub(${i})" title="Reactivate">&#x25B6;</button>`}
+              <button class="action-btn convert-btn" onclick="cancelSub(${i})" title="Cancel">C</button>
+              <button class="action-btn delete-btn" onclick="deleteSub(${i})" title="Delete">&times;</button>
+            </td>
+          `;
+          list.appendChild(tr);
+        });
+      }
+      updateSortArrows("bsort-", subSort);
+
+      // ---------- Cancelled side-list ----------
+      const csec = document.getElementById("sub-cancelled-section");
+      const ccount = document.getElementById("cancelled-count");
+      const ctotal = document.getElementById("cancelled-total");
+      const clist = document.getElementById("sub-cancelled-list");
+      if (cancelled.length === 0) {
+        csec.style.display = "none";
+      } else {
+        csec.style.display = "block";
+        ccount.textContent = cancelled.length;
+        const cMonthly = cancelled.reduce((s, x) => s + x._monthly, 0);
+        ctotal.textContent = fmtMoney(cMonthly) + "/mo if reactivated";
+        clist.innerHTML = cancelled
+          .sort((a, b) => (b.cancelledDate || "").localeCompare(a.cancelledDate || ""))
+          .map(s => `
+            <div class="row" style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border-light);">
+              <span><strong>${escapeHtml(s.name)}</strong> — ${fmtMoney(s.amount)}/${escapeHtml(s.cycle).toLowerCase()} · cancelled ${formatDate(s.cancelledDate)} <span class="cat-pill cat-${s.category}" style="margin-left:6px;">${escapeHtml(s.category)}</span></span>
+              <span>
+                <button class="action-btn convert-btn" onclick="activateSub(${s._i})" title="Reactivate">&#x25B6;</button>
+                <button class="action-btn delete-btn" onclick="deleteSub(${s._i})" title="Delete">&times;</button>
+              </span>
+            </div>
+          `).join("");
+      }
+    }
+
+    function renderArchived() {
+      const list = document.getElementById("list-archived");
+      const table = document.getElementById("table-archived");
+      const empty = document.getElementById("empty-archived");
+      list.innerHTML = "";
+
+      const catArchived = currentCategory === "Master"
+        ? archived.map((t, i) => ({ ...t, _origIdx: i })).filter(t => t.priority && t.priority <= 2)
+        : archived.map((t, i) => ({ ...t, _origIdx: i })).filter(t => t.category === currentCategory);
+      if (!catArchived.length) {
+        table.style.display = "none";
+        empty.style.display = "block";
+        return;
+      }
+      table.style.display = "table";
+      empty.style.display = "none";
+
+      const sorted = getSorted(catArchived, archiveSort);
+      const dragOk = canReorder("archived");
+      document.getElementById("table-archived").classList.toggle("drag-disabled", !dragOk);
+      sorted.forEach(todo => {
+        const i = todo._origIdx;
+        const tr = document.createElement("tr");
+        tr.draggable = true;
+        tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "archived"));
+        tr.addEventListener("dragend", handleDragEnd);
+        if (dragOk) {
+          tr.addEventListener("dragover", (e) => handleDragOver(e, i, "archived"));
+          tr.addEventListener("dragleave", handleDragLeave);
+          tr.addEventListener("drop", (e) => handleDrop(e, i, "archived"));
+        }
+        const tagsHtml = (todo.tags || []).map(t => `<span class="tag-chip" style="background:${tagColor(t)}">${escapeHtml(t)}</span>`).join("");
+
+        tr.innerHTML = `
+          <td class="drag-cell center">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
+          <td data-label="Task"><span class="task-text" style="text-decoration:line-through;color:#888;">${escapeHtml(todo.text)}</span></td>
+          <td data-label="Customer">${escapeHtml(todo.customerName) || "\u2014"}</td>
+          <td data-label="Location">${escapeHtml(todo.locationDetails) || "\u2014"}</td>
+          <td data-label="Completed"><span class="date-cell">${formatTimestamp(todo.completedTimestamp) || formatDate(todo.completedDate)}</span></td>
+          <td data-label="Due"><span class="date-cell">${formatDate(todo.dueDate)}</span></td>
+          <td class="center" data-label="Priority">
+            ${todo.priority ? `<span class="priority-badge" style="background:${priorityColor(todo.priority)}">${todo.priority}</span>` : "\u2014"}
+          </td>
+          <td data-label="Project">
+            ${todo.projectType ? `<span class="project-tag">${escapeHtml(todo.projectType)}</span>` : "\u2014"}
+          </td>
+          <td data-label="Follow-up">
+            ${todo.followUpPerson ? `<span class="person-tag">${escapeHtml(todo.followUpPerson)}</span>` : "\u2014"}
+          </td>
+          <td data-label="Tags" class="tags-cell">${tagsHtml || "\u2014"}</td>
+          <td class="center actions-cell" style="white-space:nowrap;">
+            <button class="action-btn restore-btn" onclick="restoreTodo(${i})" title="Restore to Active">&#x21A9;</button>
+            <button class="action-btn convert-btn" onclick="restoreToSales(${i})" title="Restore to Sales">$</button>
+            <button class="action-btn convert-btn" onclick="restoreToInvoiced(${i})" title="Restore to Invoiced">I</button>
+            <button class="action-btn delete-btn" onclick="removeArchived(${i})" title="Delete">&times;</button>
+          </td>
+        `;
+        list.appendChild(tr);
+      });
+      updateSortArrows("asort-", archiveSort);
+    }
+
+    document.getElementById("input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addTodo();
+    });
+    document.getElementById("s-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addSalesTodo();
+    });
+    document.getElementById("sub-name").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addSubscription();
+    });
+
+    // Cross-tab drag drop targets — Subs is intentionally excluded (separate data model)
+    ["active", "sales", "invoiced", "archived"].forEach(tab => {
+      const el = document.getElementById("tab-" + tab);
+      el.addEventListener("dragover", (e) => handleTabDragOver(e, tab));
+      el.addEventListener("dragleave", handleTabDragLeave);
+      el.addEventListener("drop", (e) => handleTabDrop(e, tab));
+    });
+
+    loadTheme();
+    updateCategoryBar();
+    updateDataLists();
+    render();
+    checkReminders();
+    if (HOSTED) { initDropbox(); } else { initSync(); }
+  </script>
+</body>
+</html>
