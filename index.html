@@ -854,6 +854,19 @@
     .links-add { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
     .links-add input { flex:1; min-width:120px; padding:5px 8px; border:1px solid var(--border); border-radius:4px; background: var(--input-bg); color: var(--text); font-size:12px; }
     .links-add button { padding:5px 10px; border:none; border-radius:4px; background: var(--accent); color:#fff; font-size:12px; cursor:pointer; }
+    .meter { width:74px; height:7px; border-radius:4px; background: var(--border-light); overflow:hidden; display:inline-block; vertical-align:middle; }
+    .meter > span { display:block; height:100%; border-radius:4px; }
+    .meter-wrap { display:flex; flex-direction:column; gap:3px; font-size:10px; color: var(--text-lighter); white-space:nowrap; }
+    .meter-wrap .ml { display:flex; align-items:center; gap:5px; cursor:pointer; }
+    .meter-wrap .ml b { color: var(--text); font-size:11px; min-width:26px; text-align:right; }
+    .stale { color:#e53935; font-weight:700; }
+    .attn { background: var(--card-bg); border-radius:8px; padding:10px 14px; margin-bottom:12px; box-shadow: 0 1px 4px var(--card-shadow); border-left:4px solid #e53935; }
+    .attn h4 { font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color: var(--text-lighter); margin-bottom:6px; }
+    .attn .attn-row { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12px; padding:3px 0; }
+    .attn .attn-row .nm { font-weight:600; cursor:pointer; color: var(--accent); }
+    .attn .flag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:10px; font-weight:700; color:#fff; }
+    .flag-overdue { background:#e53935; } .flag-soon { background:#f57c00; } .flag-notask { background:#6b3fa0; } .flag-stale { background:#8d6e00; } .flag-taskdue { background:#c62828; }
+    .proj-link-chip { display:inline-block; margin-left:4px; padding:1px 6px; border-radius:10px; font-size:10px; font-weight:700; background: var(--contact-bg); color: var(--contact-text); cursor:pointer; white-space:nowrap; }
     .print-title { display:none; }
     tr.proj-done td { color: var(--done-text); }
     tr.proj-done .proj-name { text-decoration:line-through; }
@@ -868,6 +881,7 @@
       .todo-table td, .todo-table th { border:1px solid #999; padding:3px 4px; vertical-align:top; }
       .proj-text.clamp { display:block; -webkit-line-clamp:unset; overflow:visible; }
       .proj-links { display:none; }
+      .attn { display:none; }
       .proj-text-row td { background:#fff; }
       #table-projects thead th { position:static; }
       .stage-tag, .priority-badge { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -1272,6 +1286,7 @@
     <div id="section-projects" class="section-hidden">
       <div class="print-title" id="print-title"></div>
       <div class="pipeline-bar" id="projects-bar"></div>
+      <div class="attn" id="projects-attn" style="display:none;"></div>
       <div class="proj-tools">
         <button class="io-btn" onclick="autoRankProjects()" title="Order by priority, then deadline, then last activity">Auto-rank</button>
         <button class="io-btn" onclick="toggleShowDoneProjects()" id="proj-showdone-btn">Show done</button>
@@ -1288,6 +1303,7 @@
             <th style="width:30px;cursor:default;"></th>
             <th onclick="sortProj('name')">Project <span class="sort-arrow" id="psort-name"></span></th>
             <th onclick="sortProj('priority')">Pri <span class="sort-arrow" id="psort-priority"></span></th>
+            <th onclick="sortProj('_score')" title="Priority meter (score) and progress meter">Meters <span class="sort-arrow" id="psort-_score"></span></th>
             <th onclick="sortProj('stage')">Stage <span class="sort-arrow" id="psort-stage"></span></th>
             <th onclick="sortProj('deadline')">Deadline <span class="sort-arrow" id="psort-deadline"></span></th>
             <th onclick="sortProj('lastActivity')">Last <span class="sort-arrow" id="psort-lastActivity"></span></th>
@@ -1563,6 +1579,7 @@
       if (p.createdDate === undefined) p.createdDate = null;
       if (p.doneDate === undefined) p.doneDate = null;
       if (!Array.isArray(p.links)) p.links = [];
+      if (p.progress === undefined) p.progress = null;   // manual 0-100; null = use linked task completion
     }
     projects.forEach(ensureProjectFields);
     todos.forEach(ensureFields);
@@ -1671,7 +1688,7 @@
           await idbSet("dataFile", syncHandle);
         }
         const perm = await syncHandle.requestPermission({ mode: "readwrite" });
-        if (perm === "granted") { setSyncBtn("on"); await syncToFile(); }
+        if (perm === "granted") { setSyncBtn("on"); const pulled = await pullFromFile(); if (!pulled) await syncToFile(); }
         else setSyncBtn("resume");
       } catch (e) { /* picker cancelled */ }
     }
@@ -1684,8 +1701,28 @@
         const w = await syncHandle.createWritable();
         await w.write(JSON.stringify(data, null, 2));
         await w.close();
+        localStorage.setItem("todo_last_synced", data.syncedAt);
         setSyncBtn("on");
       } catch (e) { console.warn("todo-data.json sync failed", e); }
+    }
+    // Pull todo-data.json into the app when someone else (Claude, the phone via Dropbox) wrote it since we last synced.
+    let pullingFromFile = false;
+    async function pullFromFile() {
+      if (!syncHandle || pullingFromFile || syncTimer) return false;   // never pull over unsaved local edits
+      pullingFromFile = true;
+      try {
+        if ((await syncHandle.queryPermission({ mode: "readwrite" })) !== "granted") return false;
+        const f = await syncHandle.getFile();
+        const txt = await f.text(); if (!txt.trim()) return false;
+        const data = JSON.parse(txt);
+        const last = localStorage.getItem("todo_last_synced") || "";
+        if (!data.syncedAt || data.syncedAt === last) return false;
+        if (!Array.isArray(data.todos) || !Array.isArray(data.archived)) return false;
+        dbxApplyRemote(data);   // same merge as the hosted copy: replace lists, keep local projects if the file has none
+        localStorage.setItem("todo_last_synced", data.syncedAt);
+        return true;
+      } catch (e) { console.warn("todo-data.json pull failed", e); return false; }
+      finally { pullingFromFile = false; }
     }
 
     function scheduleSync() {
@@ -1705,8 +1742,10 @@
       try { syncHandle = await idbGet("dataFile"); } catch (e) {}
       if (!syncHandle) { setSyncBtn("link"); return; }
       const perm = await syncHandle.queryPermission({ mode: "readwrite" });
-      if (perm === "granted") { setSyncBtn("on"); syncToFile(); }
+      if (perm === "granted") { setSyncBtn("on"); const pulled = await pullFromFile(); if (!pulled) syncToFile(); }
       else setSyncBtn("resume");
+      window.addEventListener("focus", () => { pullFromFile(); });
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) pullFromFile(); });
     }
 
     // --- Dropbox cloud sync (hosted mode: phone + PC share one file) ---
@@ -2163,6 +2202,8 @@
         } else if (sort.key === "priority") {
           va = va || 0;
           vb = vb || 0;
+        } else if (sort.key === "_score") {
+          va = projectScore(a).score; vb = projectScore(b).score;
         } else if (sort.key === "_projRank") {
           va = projectRankOf(a) * 100 + (a.priority || 11);
           vb = projectRankOf(b) * 100 + (b.priority || 11);
@@ -2358,6 +2399,74 @@
       const open = list.filter(x => !x.t.done && x.t.dueDate).map(x => x.t.dueDate).sort();
       return open.length ? open[0] : null;
     }
+    const STALE_DAYS = 14;
+    function projectScore(p) {
+      // Priority meter: 0-100. Priority sets the base, deadline, overdue tasks and staleness push it up.
+      const today = todayStr();
+      const flags = [];
+      let s = (11 - (p.priority || 6)) * 8;               // pri 1 = 80, pri 5 = 48, pri 10 = 8
+      if (p.deadline) {
+        const dd = daysBetween(today, p.deadline);
+        if (p.deadline < today) { s += 25; flags.push("overdue"); }
+        else if (dd <= 7) { s += 15; flags.push("soon"); }
+        else if (dd <= 30) s += 5;
+      }
+      const lt = linkedTasks(p);
+      const openT = lt.filter(x => !x.t.done);
+      if (openT.some(x => x.t.dueDate && x.t.dueDate < today)) { s += 10; flags.push("taskdue"); }
+      const live = p.stage === "Active" || p.stage === "Review";
+      if (live && !openT.length) { s += 5; flags.push("notask"); }
+      if (live && p.lastActivity && daysBetween(p.lastActivity, today) >= STALE_DAYS) { s += 10; flags.push("stale"); }
+      if (p.stage === "Done") s = 0; else if (p.stage === "Parked") s = Math.min(s, 20);
+      return { score: Math.max(0, Math.min(100, Math.round(s))), flags, openT, lt };
+    }
+    function projectProgress(p, lt) {
+      if (p.progress !== null && p.progress !== undefined) return { pct: p.progress, manual: true };
+      const l = lt || linkedTasks(p);
+      if (!l.length) return { pct: p.stage === "Done" ? 100 : 0, manual: false };
+      return { pct: Math.round(100 * l.filter(x => x.t.done).length / l.length), manual: false };
+    }
+    function scoreColor(s) { return s >= 70 ? "#e53935" : s >= 45 ? "#f57c00" : "#4caf50"; }
+    function setProjectProgress(pi, v) {
+      const p = projects[pi];
+      if (v === "" || v === null) p.progress = null;
+      else { const n = parseInt(v); p.progress = isFinite(n) ? Math.max(0, Math.min(100, n)) : null; }
+      p.lastActivity = todayStr();
+      save(); render();
+    }
+    function editProgress(pi) {
+      const p = projects[pi];
+      const v = window.prompt("Progress for \"" + p.name + "\" (0 to 100). Leave blank to use linked task completion.", p.progress === null ? "" : p.progress);
+      if (v === null) return;
+      setProjectProgress(pi, v.trim());
+    }
+    function openProject(pid) {
+      const i = projects.findIndex(p => p.id === pid);
+      if (i < 0) return;
+      expandedSet.add("p" + i);
+      if (currentTab !== "projects") switchTab("projects"); else render();
+      const row = document.querySelector("#list-projects tr[data-pid='" + pid + "']");
+      if (row) row.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    function renderAttention(visibleProjects) {
+      const box = document.getElementById("projects-attn");
+      const rows = [];
+      const names = { overdue: "Deadline passed", soon: "Due within 7 days", taskdue: "Task overdue", notask: "No open task", stale: "No movement " + STALE_DAYS + "+ days" };
+      visibleProjects.forEach(p => {
+        if (p.stage === "Done" || p.stage === "Parked") return;
+        const sc = projectScore(projects[p._origIdx]);
+        if (!sc.flags.length) return;
+        rows.push({ p, sc });
+      });
+      if (!rows.length) { box.style.display = "none"; return; }
+      rows.sort((a, b) => b.sc.score - a.sc.score);
+      box.style.display = "block";
+      const collapsed = localStorage.getItem("proj_attn_collapsed") === "1";
+      box.innerHTML = `<h4 style="cursor:pointer;" onclick="localStorage.setItem('proj_attn_collapsed', '${collapsed ? "0" : "1"}'); render();" title="Click to ${collapsed ? "show" : "hide"} the list">Needs attention (${rows.length}) ${collapsed ? "&#x25B6;" : "&#x25BC;"}</h4>` + (collapsed ? "" : rows.map(({ p, sc }) => `
+        <div class="attn-row"><span class="nm" onclick="openProject('${p.id}')">${escapeHtml(p.name.split(" (")[0])}</span>
+          ${sc.flags.map(f => `<span class="flag flag-${f}">${names[f]}</span>`).join("")}
+          <span style="color:var(--text-lighter);">${p.next ? escapeHtml(p.next.slice(0, 90)) + (p.next.length > 90 ? "..." : "") : "no next step written"}</span></div>`).join(""));
+    }
     function addProject() {
       const name = document.getElementById("p-name").value.trim();
       if (!name) return;
@@ -2411,10 +2520,12 @@
       render();
     }
     function autoRankProjects() {
-      if (!confirm("Re-order all projects by priority (1 first), then deadline, then last activity? This replaces your manual ranking.")) return;
+      if (!confirm("Re-order all projects by stage, then priority meter (score), then deadline, then last activity? This replaces your manual ranking.")) return;
       const stageW = { Active: 0, Review: 0, Waiting: 1, Proposal: 1, Parked: 2, Done: 3 };
+      const sc = new Map(projects.map(p => [p.id, projectScore(p).score]));
       projects.sort((a, b) =>
         (stageW[a.stage] ?? 1) - (stageW[b.stage] ?? 1) ||
+        sc.get(b.id) - sc.get(a.id) ||
         (a.priority || 11) - (b.priority || 11) ||
         ((a.deadline || "9999") < (b.deadline || "9999") ? -1 : (a.deadline || "9999") > (b.deadline || "9999") ? 1 : 0) ||
         ((b.lastActivity || "") < (a.lastActivity || "") ? -1 : (b.lastActivity || "") > (a.lastActivity || "") ? 1 : 0));
@@ -2586,12 +2697,13 @@
         <div class="pipeline-stat"><span class="label">Due in 7 days</span><span class="value">${dueWeek}</span></div>
         <div class="pipeline-stat"><span class="label">Open tasks linked</span><span class="value">${linkedCount} / ${liveTodos.length}</span></div>`;
 
-      if (!visible.length) { table.style.display = "none"; empty.style.display = "block"; return; }
+      if (!visible.length) { table.style.display = "none"; empty.style.display = "block"; document.getElementById("projects-attn").style.display = "none"; return; }
       table.style.display = "table"; empty.style.display = "none";
       const dragOk = canReorder("projects") && currentCategory !== "Master";
       table.classList.toggle("drag-disabled", !dragOk);
       const sorted = getSorted(visible, projSort);
-      const totalCols = 10;
+      const totalCols = 11;
+      renderAttention(visible);
       document.getElementById("proj-compact-btn").textContent = projCompact ? "Full text" : "Compact";
       sorted.forEach(p => {
         const i = p._origIdx;
@@ -2607,8 +2719,11 @@
           tr.addEventListener("dragleave", handleDragLeave);
           tr.addEventListener("drop", (e) => handleDrop(e, i, "projects"));
         }
-        const lt = linkedTasks(projects[i]);
-        const openT = lt.filter(x => !x.t.done);
+        const sc = projectScore(projects[i]);
+        const lt = sc.lt, openT = sc.openT;
+        const pg = projectProgress(projects[i], lt);
+        const isStale = sc.flags.includes("stale");
+        tr.dataset.pid = p.id;
         const nd = nextDueOf(lt);
         const ndCls = nd ? dateCssClass(nd) : "";
         const dlCls = p.stage === "Done" ? "" : dateCssClass(p.deadline);
@@ -2619,9 +2734,13 @@
           <td class="expand-cell center"><button class="action-btn expand-btn" onclick="toggleProjExpand(${i})" title="Linked tasks">${expandIcon}</button></td>
           <td data-label="Project"><div data-editable ondblclick="startProjEdit(${i},'name',this)"><span class="proj-name">${escapeHtml(p.name)}</span></div><div data-editable ondblclick="startProjEdit(${i},'client',this)"><span class="proj-client">${escapeHtml(p.client) || "client?"}</span></div></td>
           <td class="center" data-label="Priority" data-editable ondblclick="startProjEdit(${i},'priority',this)">${p.priority ? `<span class="priority-badge" style="background:${priorityColor(p.priority)}">${p.priority}</span>` : "\u2014"}</td>
+          <td data-label="Meters"><div class="meter-wrap">
+            <div class="ml" title="Priority meter: score ${sc.score} of 100 from priority, deadline, overdue tasks and staleness"><span>Pri</span><span class="meter"><span style="width:${sc.score}%;background:${scoreColor(sc.score)};"></span></span><b>${sc.score}</b></div>
+            <div class="ml" onclick="editProgress(${i})" title="Progress: ${pg.manual ? "set by hand, click to change" : "from linked tasks, click to set by hand"}"><span>Prog</span><span class="meter"><span style="width:${pg.pct}%;background:${pg.pct >= 100 ? "#4caf50" : "var(--accent)"};"></span></span><b>${pg.pct}%${pg.manual ? "" : "*"}</b></div>
+          </div></td>
           <td data-label="Stage" data-editable ondblclick="startProjEdit(${i},'stage',this)"><span class="stage-tag stage-${p.stage}">${p.stage}</span></td>
           <td data-label="Deadline" data-editable ondblclick="startProjEdit(${i},'deadline',this)"><span class="date-cell ${dlCls}">${formatDate(p.deadline)}</span></td>
-          <td data-label="Last" data-editable ondblclick="startProjEdit(${i},'lastActivity',this)"><span class="date-cell">${formatDate(p.lastActivity)}</span></td>
+          <td data-label="Last" data-editable ondblclick="startProjEdit(${i},'lastActivity',this)"><span class="date-cell ${isStale ? "stale" : ""}" ${isStale ? 'title="No movement for ' + STALE_DAYS + '+ days"' : ""}>${formatDate(p.lastActivity)}${isStale ? " !" : ""}</span></td>
           <td data-label="Tasks" class="proj-tasks" onclick="toggleProjExpand(${i})" style="cursor:pointer;" title="Open linked tasks">${openT.length} open${lt.length - openT.length ? " / " + (lt.length - openT.length) + " done" : ""}${nd ? `<br><span class="${ndCls}">next ${formatDate(nd)}</span>` : ""}</td>
           <td class="center actions-cell" style="white-space:nowrap;">
             <button class="action-btn convert-btn" onclick="toggleProjExpand(${i}, true)" title="Add a task to this project">+</button>
@@ -2685,6 +2804,12 @@
                 <div data-editable ondblclick="startProjEdit(${i},'keys',this)" style="font-size:12px;padding:4px 0;cursor:text;">${(p.keys || []).map(k => `<span class="project-tag">${escapeHtml(k)}</span>`).join(" ") || "<i>double-click to add</i>"}</div>
                 <h4 style="margin-top:8px;">Category</h4>
                 <div data-editable ondblclick="startProjEdit(${i},'category',this)" style="font-size:12px;cursor:pointer;"><span class="person-tag">${escapeHtml(p.category)}</span></div>
+                <h4 style="margin-top:8px;">Progress <span style="font-weight:400;color:var(--text-lighter);">(${pg.manual ? "set by hand" : "from linked tasks until you set it"})</span></h4>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="range" min="0" max="100" step="5" value="${pg.pct}" style="flex:1;" onchange="setProjectProgress(${i},this.value)" />
+                  <b style="font-size:12px;min-width:34px;">${pg.pct}%</b>
+                  ${pg.manual ? `<button class="subtask-del" onclick="setProjectProgress(${i},'')" title="Back to task-based">auto</button>` : ""}
+                </div>
                 <h4 style="margin-top:8px;">Notes</h4>
                 <textarea placeholder="Notes..." onblur="saveProjNotes(${i},this.value)">${escapeHtml(p.notes || "")}</textarea>
               </div>
@@ -3259,7 +3384,7 @@
             ${todo.priority ? `<span class="priority-badge" style="background:${priorityColor(todo.priority)}">${todo.priority}</span>` : "\u2014"}
           </td>
           <td data-label="Project" data-editable ondblclick="startEdit(${i},'projectType',this)">
-            ${todo.projectType ? `<span class="project-tag">${escapeHtml(todo.projectType)}</span>` : "\u2014"}
+            ${todo.projectType ? `<span class="project-tag">${escapeHtml(todo.projectType)}</span>` : "\u2014"}${(() => { const pp = projectOf(todo); return pp ? `<span class="proj-link-chip" onclick="event.stopPropagation();openProject('${pp.id}')" title="Open project: ${escapeHtml(pp.name)}">&#x2197; ${escapeHtml(pp.name.split(" (")[0].slice(0, 22))}</span>` : ""; })()}
           </td>
           <td data-label="Follow-up" data-editable ondblclick="startEdit(${i},'followUpPerson',this)">
             ${todo.followUpPerson ? `<span class="person-tag">${escapeHtml(todo.followUpPerson)}</span>` : "\u2014"}
