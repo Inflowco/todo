@@ -820,7 +820,14 @@
     .stage-Active { background:#2e7d32; } .stage-Waiting { background:#8d6e00; } .stage-Review { background:#1565c0; }
     .stage-Proposal { background:#6b3fa0; } .stage-Parked { background:#888; } .stage-Done { background:#444; }
     .rank-num { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight:700; color: var(--text-light); }
-    .proj-text { font-size:12px; line-height:1.35; white-space:pre-wrap; max-width:340px; }
+    .proj-text { font-size:12px; line-height:1.4; white-space:pre-wrap; }
+    .proj-text.clamp { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer; }
+    .proj-text-row td { padding:2px 10px 10px 10px; border-bottom:2px solid var(--border); background: var(--detail-bg); }
+    .proj-text-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 18px; }
+    .proj-text-grid h5 { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color: var(--text-lighter); margin:0 0 2px 0; }
+    #table-projects thead th { position:sticky; top:0; z-index:2; }
+    #table-projects tbody tr.proj-main-row td { border-bottom:none; padding-bottom:4px; }
+    @media (max-width: 700px) { .proj-text-grid { grid-template-columns:1fr; } }
     .proj-name { font-weight:600; }
     .proj-client { font-size:12px; color: var(--text-light); }
     .proj-tasks { font-size:12px; white-space:nowrap; }
@@ -844,7 +851,9 @@
       .todo-table { font-size:10px; width:100%; box-shadow:none; }
       .todo-table th { background:#d9d9d9 !important; color:#000 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
       .todo-table td, .todo-table th { border:1px solid #999; padding:3px 4px; vertical-align:top; }
-      .proj-text { max-width:none; }
+      .proj-text.clamp { display:block; -webkit-line-clamp:unset; overflow:visible; }
+      .proj-text-row td { background:#fff; }
+      #table-projects thead th { position:static; }
       .stage-tag, .priority-badge { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
       tr { page-break-inside:avoid; }
       @page { size: landscape; margin: 0.5in; }
@@ -1250,9 +1259,10 @@
       <div class="proj-tools">
         <button class="io-btn" onclick="autoRankProjects()" title="Order by priority, then deadline, then last activity">Auto-rank</button>
         <button class="io-btn" onclick="toggleShowDoneProjects()" id="proj-showdone-btn">Show done</button>
+        <button class="io-btn" onclick="toggleProjCompact()" id="proj-compact-btn">Full text</button>
         <button class="io-btn" onclick="printProjects()">Print list</button>
         <button class="io-btn" onclick="touchAllLinked()" title="Set each project's last activity to the newest linked task change">Refresh dates</button>
-        <span class="hint">Drag rows to rank. Double-click a cell to edit. Click the row arrow to see linked tasks.</span>
+        <span class="hint">Drag rows to rank. Double-click a cell to edit. Click the status text or the row arrow to expand.</span>
       </div>
       <table class="todo-table" id="table-projects" style="display:none;">
         <thead>
@@ -1261,14 +1271,11 @@
             <th style="width:30px;cursor:default;"></th>
             <th style="width:30px;cursor:default;"></th>
             <th onclick="sortProj('name')">Project <span class="sort-arrow" id="psort-name"></span></th>
-            <th onclick="sortProj('client')">Client <span class="sort-arrow" id="psort-client"></span></th>
             <th onclick="sortProj('priority')">Pri <span class="sort-arrow" id="psort-priority"></span></th>
             <th onclick="sortProj('stage')">Stage <span class="sort-arrow" id="psort-stage"></span></th>
             <th onclick="sortProj('deadline')">Deadline <span class="sort-arrow" id="psort-deadline"></span></th>
             <th onclick="sortProj('lastActivity')">Last <span class="sort-arrow" id="psort-lastActivity"></span></th>
             <th style="cursor:default;">Tasks</th>
-            <th style="cursor:default;">Where it stands</th>
-            <th style="cursor:default;">Next / open items</th>
             <th style="width:80px;cursor:default;"></th>
           </tr>
         </thead>
@@ -1480,6 +1487,7 @@
     if (!Array.isArray(projects)) projects = JSON.parse(JSON.stringify(SEED_PROJECTS));
     let projSort = { key: null, asc: true };
     let showDoneProjects = false;
+    let projCompact = localStorage.getItem("proj_compact") !== "0";
     let projEditing = null;
     let cancelledExpanded = false;
     let subSort = { key: "nextBillDate", asc: true };
@@ -2369,6 +2377,12 @@
       p.lastActivity = todayStr();
       save(); render();
     }
+    function toggleProjCompact() {
+      projCompact = !projCompact;
+      localStorage.setItem("proj_compact", projCompact ? "1" : "0");
+      document.getElementById("proj-compact-btn").textContent = projCompact ? "Full text" : "Compact";
+      render();
+    }
     function toggleShowDoneProjects() {
       showDoneProjects = !showDoneProjects;
       document.getElementById("proj-showdone-btn").textContent = showDoneProjects ? "Hide done" : "Show done";
@@ -2508,11 +2522,13 @@
       const dragOk = canReorder("projects") && currentCategory !== "Master";
       table.classList.toggle("drag-disabled", !dragOk);
       const sorted = getSorted(visible, projSort);
-      const totalCols = 13;
+      const totalCols = 10;
+      document.getElementById("proj-compact-btn").textContent = projCompact ? "Full text" : "Compact";
       sorted.forEach(p => {
         const i = p._origIdx;
         const rank = projects.indexOf(projects[i]) + 1;
         const tr = document.createElement("tr");
+        tr.classList.add("proj-main-row");
         if (p.stage === "Done") tr.classList.add("proj-done");
         tr.draggable = true;
         tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "projects"));
@@ -2532,21 +2548,34 @@
           <td class="center" data-label="Rank"><span class="rank-num">${rank}</span></td>
           <td class="drag-cell center">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
           <td class="expand-cell center"><button class="action-btn expand-btn" onclick="toggleProjExpand(${i})" title="Linked tasks">${expandIcon}</button></td>
-          <td data-label="Project" data-editable ondblclick="startProjEdit(${i},'name',this)"><span class="proj-name">${escapeHtml(p.name)}</span></td>
-          <td data-label="Client" data-editable ondblclick="startProjEdit(${i},'client',this)"><span class="proj-client">${escapeHtml(p.client) || "\u2014"}</span></td>
+          <td data-label="Project"><div data-editable ondblclick="startProjEdit(${i},'name',this)"><span class="proj-name">${escapeHtml(p.name)}</span></div><div data-editable ondblclick="startProjEdit(${i},'client',this)"><span class="proj-client">${escapeHtml(p.client) || "client?"}</span></div></td>
           <td class="center" data-label="Priority" data-editable ondblclick="startProjEdit(${i},'priority',this)">${p.priority ? `<span class="priority-badge" style="background:${priorityColor(p.priority)}">${p.priority}</span>` : "\u2014"}</td>
           <td data-label="Stage" data-editable ondblclick="startProjEdit(${i},'stage',this)"><span class="stage-tag stage-${p.stage}">${p.stage}</span></td>
           <td data-label="Deadline" data-editable ondblclick="startProjEdit(${i},'deadline',this)"><span class="date-cell ${dlCls}">${formatDate(p.deadline)}</span></td>
           <td data-label="Last" data-editable ondblclick="startProjEdit(${i},'lastActivity',this)"><span class="date-cell">${formatDate(p.lastActivity)}</span></td>
           <td data-label="Tasks" class="proj-tasks" onclick="toggleProjExpand(${i})" style="cursor:pointer;" title="Open linked tasks">${openT.length} open${lt.length - openT.length ? " / " + (lt.length - openT.length) + " done" : ""}${nd ? `<br><span class="${ndCls}">next ${formatDate(nd)}</span>` : ""}</td>
-          <td data-label="Where it stands" data-editable ondblclick="startProjEdit(${i},'status',this)"><div class="proj-text">${escapeHtml(p.status) || "\u2014"}</div></td>
-          <td data-label="Next" data-editable ondblclick="startProjEdit(${i},'next',this)"><div class="proj-text">${escapeHtml(p.next) || "\u2014"}</div></td>
           <td class="center actions-cell" style="white-space:nowrap;">
             <button class="action-btn convert-btn" onclick="toggleProjExpand(${i}, true)" title="Add a task to this project">+</button>
             <button class="action-btn archive-btn" onclick="markProjectDone(${i})" title="${p.stage === "Done" ? "Reopen" : "Mark done"}">&#x2713;</button>
             <button class="action-btn delete-btn" onclick="removeProject(${i})" title="Delete project">&times;</button>
           </td>`;
         list.appendChild(tr);
+        // second line: status + next, full width, clamped unless expanded or Full text
+        const isOpen = expandedSet.has("p" + i);
+        const clamp = (projCompact && !isOpen) ? " clamp" : "";
+        const ttr = document.createElement("tr"); ttr.className = "proj-text-row detail-row";
+        if (dragOk) {
+          ttr.addEventListener("dragover", (e) => handleDragOver(e, i, "projects"));
+          ttr.addEventListener("dragleave", handleDragLeave);
+          ttr.addEventListener("drop", (e) => handleDrop(e, i, "projects"));
+        }
+        const ttd = document.createElement("td"); ttd.colSpan = totalCols;
+        ttd.innerHTML = `
+          <div class="proj-text-grid">
+            <div><h5>Where it stands</h5><div class="proj-text${clamp}" data-editable ondblclick="startProjEdit(${i},'status',this)" ${clamp ? `onclick="toggleProjExpand(${i})" title="Click to expand"` : ""}>${escapeHtml(p.status) || "\u2014"}</div></div>
+            <div><h5>Next / open items</h5><div class="proj-text${clamp}" data-editable ondblclick="startProjEdit(${i},'next',this)" ${clamp ? `onclick="toggleProjExpand(${i})" title="Click to expand"` : ""}>${escapeHtml(p.next) || "\u2014"}</div></div>
+          </div>`;
+        ttr.appendChild(ttd); list.appendChild(ttr);
         if (expandedSet.has("p" + i)) {
           const dtr = document.createElement("tr"); dtr.className = "detail-row";
           const dtd = document.createElement("td"); dtd.colSpan = totalCols;
