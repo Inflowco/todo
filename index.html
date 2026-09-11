@@ -815,6 +815,41 @@
     .pipeline-stat .value.lost { color: #f44336; }
     .pipeline-stat .value.pipeline { color: var(--accent); }
 
+    /* Projects tab */
+    .stage-tag { display:inline-block; padding:2px 9px; border-radius:12px; font-size:11px; font-weight:700; white-space:nowrap; color:#fff; }
+    .stage-Active { background:#2e7d32; } .stage-Waiting { background:#8d6e00; } .stage-Review { background:#1565c0; }
+    .stage-Proposal { background:#6b3fa0; } .stage-Parked { background:#888; } .stage-Done { background:#444; }
+    .rank-num { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight:700; color: var(--text-light); }
+    .proj-text { font-size:12px; line-height:1.35; white-space:pre-wrap; max-width:340px; }
+    .proj-name { font-weight:600; }
+    .proj-client { font-size:12px; color: var(--text-light); }
+    .proj-tasks { font-size:12px; white-space:nowrap; }
+    .proj-tasks .overdue { color:#e53935; font-weight:700; }
+    .proj-tools { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; align-items:center; }
+    .proj-tools .hint { font-size:12px; color: var(--text-lighter); margin-left:auto; }
+    .proj-tasklist { display:flex; flex-direction:column; gap:4px; }
+    .proj-tasklist .pt-row { display:flex; gap:8px; align-items:center; font-size:13px; }
+    .proj-tasklist .pt-row .pt-done { text-decoration:line-through; color: var(--done-text); }
+    .proj-tasklist .pt-row .pt-meta { font-size:11px; color: var(--text-lighter); white-space:nowrap; }
+    .inline-edit.wide { width:100%; min-height:70px; font-size:12px; font-family:inherit; }
+    .print-title { display:none; }
+    tr.proj-done td { color: var(--done-text); }
+    tr.proj-done .proj-name { text-decoration:line-through; }
+    @media print {
+      body { padding:0; background:#fff; color:#000; }
+      .header, .category-bar, .toolbar, .add-form, .filter-bar, .proj-tools, .drag-hint, .pipeline-bar, .actions-cell, .drag-cell, .expand-cell, .theme-toggle { display:none !important; }
+      #section-active, #section-sales, #section-invoiced, #section-subs, #section-archived { display:none !important; }
+      #section-projects { display:block !important; }
+      .print-title { display:block; font-size:16px; font-weight:700; margin:0 0 8px 0; }
+      .todo-table { font-size:10px; width:100%; box-shadow:none; }
+      .todo-table th { background:#d9d9d9 !important; color:#000 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .todo-table td, .todo-table th { border:1px solid #999; padding:3px 4px; vertical-align:top; }
+      .proj-text { max-width:none; }
+      .stage-tag, .priority-badge { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      tr { page-break-inside:avoid; }
+      @page { size: landscape; margin: 0.5in; }
+    }
+
     tr.sales-closed td { color: var(--done-text); }
     tr.sales-closed .task-text { text-decoration: line-through; }
 
@@ -984,6 +1019,9 @@
     <!-- Toolbar: Tabs + Import/Export -->
     <div class="toolbar">
       <div class="tabs">
+        <div class="tab" id="tab-projects" onclick="switchTab('projects')">
+          Projects <span class="badge" id="badge-projects">0</span>
+        </div>
         <div class="tab active" id="tab-active" onclick="switchTab('active')">
           Active <span class="badge" id="badge-active">0</span>
         </div>
@@ -1156,7 +1194,87 @@
           <input type="number" id="filterPriMax" min="1" max="10" placeholder="-" oninput="applyFilters()" style="width:60px;" />
         </div>
         <button class="clear-filter-btn" onclick="clearFilters()">Clear</button>
+        <button class="clear-filter-btn" onclick="sortBy('_projRank')" title="Order tasks by their project's rank, then task priority">By project rank</button>
       </div>
+    </div>
+
+    <!-- Projects Add Form (projects tab only) -->
+    <div class="add-form" id="add-form-projects" style="display:none;">
+      <div class="form-row">
+        <div class="form-group task-name">
+          <label>Project</label>
+          <input type="text" id="p-name" placeholder="Project name" />
+        </div>
+        <div class="form-group" style="flex:1;min-width:140px;">
+          <label>Client</label>
+          <input type="text" id="p-client" list="customerNames" placeholder="Client" />
+        </div>
+        <div class="form-group">
+          <label>Priority (1-10)</label>
+          <input type="number" id="p-priority" min="1" max="10" placeholder="5" />
+        </div>
+        <div class="form-group stage-select">
+          <label>Stage</label>
+          <select id="p-stage">
+            <option value="Active">Active</option>
+            <option value="Waiting">Waiting</option>
+            <option value="Review">Review</option>
+            <option value="Proposal">Proposal</option>
+            <option value="Parked">Parked</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Deadline</label>
+          <input type="date" id="p-deadline" />
+        </div>
+        <div class="form-group" style="flex:1;min-width:150px;">
+          <label>Match words (comma-separated)</label>
+          <input type="text" id="p-keys" placeholder="links tasks by customer / project / text" />
+        </div>
+        <div class="form-group" style="flex:2;min-width:180px;">
+          <label>Where it stands</label>
+          <input type="text" id="p-status" placeholder="Short status" />
+        </div>
+        <div class="form-group" style="flex:2;min-width:180px;">
+          <label>Next / open items</label>
+          <input type="text" id="p-next" placeholder="What has to happen next" />
+        </div>
+        <button class="add-btn" onclick="addProject()">Add</button>
+      </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div id="section-projects" class="section-hidden">
+      <div class="print-title" id="print-title"></div>
+      <div class="pipeline-bar" id="projects-bar"></div>
+      <div class="proj-tools">
+        <button class="io-btn" onclick="autoRankProjects()" title="Order by priority, then deadline, then last activity">Auto-rank</button>
+        <button class="io-btn" onclick="toggleShowDoneProjects()" id="proj-showdone-btn">Show done</button>
+        <button class="io-btn" onclick="printProjects()">Print list</button>
+        <button class="io-btn" onclick="touchAllLinked()" title="Set each project's last activity to the newest linked task change">Refresh dates</button>
+        <span class="hint">Drag rows to rank. Double-click a cell to edit. Click the row arrow to see linked tasks.</span>
+      </div>
+      <table class="todo-table" id="table-projects" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:30px;cursor:default;">#</th>
+            <th style="width:30px;cursor:default;"></th>
+            <th style="width:30px;cursor:default;"></th>
+            <th onclick="sortProj('name')">Project <span class="sort-arrow" id="psort-name"></span></th>
+            <th onclick="sortProj('client')">Client <span class="sort-arrow" id="psort-client"></span></th>
+            <th onclick="sortProj('priority')">Pri <span class="sort-arrow" id="psort-priority"></span></th>
+            <th onclick="sortProj('stage')">Stage <span class="sort-arrow" id="psort-stage"></span></th>
+            <th onclick="sortProj('deadline')">Deadline <span class="sort-arrow" id="psort-deadline"></span></th>
+            <th onclick="sortProj('lastActivity')">Last <span class="sort-arrow" id="psort-lastActivity"></span></th>
+            <th style="cursor:default;">Tasks</th>
+            <th style="cursor:default;">Where it stands</th>
+            <th style="cursor:default;">Next / open items</th>
+            <th style="width:80px;cursor:default;"></th>
+          </tr>
+        </thead>
+        <tbody id="list-projects"></tbody>
+      </table>
+      <p class="empty" id="empty-projects">No projects yet. Add one above.</p>
     </div>
 
     <!-- Active Table -->
@@ -1355,6 +1473,14 @@
     let todos = JSON.parse(localStorage.getItem("todos") || "[]");
     let archived = JSON.parse(localStorage.getItem("todos_archived") || "[]");
     let subscriptions = JSON.parse(localStorage.getItem("subscriptions") || "[]");
+    // Projects: ranked list (array order = rank). Seeded once from the Project Status Log (9/10/26).
+    const SEED_PROJECTS = [{"id":"p01-abbott-minnetonka-cass-b","name":"Abbott Minnetonka CASS (B4 30 HP, B7 10 HP, B8 50 HP)","client":"Abbott (Mr. Ellingson; Xcel rep Bella Halstead)","category":"Inflow-ToDo's","priority":2,"stage":"Review","deadline":null,"lastActivity":"2026-09-10","status":"Three CASS workbook reports built 9/10/26 (Draft 0.1) from Peter's Abbott starting point template (Rust-Oleum style workbook), one per building folder with PDF: B4 about $14,300/yr, headline ECOs 1/3.1/5/6 $3,900 (27%); B7 about $1,200/yr, ECOs 1/2/6 $700 (58%, all waste); B8 about $12,600/yr, ECOs 1/2/3.1/5/6/7 $2,200 (18%). Flow is estimated from kW (no meter). 00-STATUS checklist and 01-DATA assumptions workbook in each folder.","next":"Peter review pass: rate codes (A15 vs A14 Secondary from the bill), B7 208 V basis, drain timer settings, ECO $ budgets, B4 recip auto start and CDI meters, B8 holiday week cycling and stop timer. Then D/0.1 to F/1.0 and send.","notes":"","keys":["Abbott - Mtka","Mtka"],"createdDate":"2026-09-10","doneDate":null},{"id":"p02-gf-lakeville-dc-cass-60","name":"GF+ Lakeville DC CASS (60 HP: 2x HV-22, IR, IR 15 HP new)","client":"GF Building Flow Solutions / Uponor (Betsy Schultz, Bill Bethke)","category":"Inflow-ToDo's","priority":1,"stage":"Active","deadline":"2026-09-15","lastActivity":"2026-09-10","status":"PO 989670 in hand. IR 15 HP started 9/8; Betsy 9/9 says ready for loggers. Site visit checklist built (00-SITE-VISIT-CHECKLIST in folder). Logger install set for Tue 9/15 2:00 pm with Bill (draft reply to Betsy in Gmail). Dakota Electric rebate 50% up to $2,000; 50% of leak loss must be repaired; app due 11/30/26.","next":"Send the draft to Betsy. Get Bill's cell, floor plan, Dakota bill/premise. Install 4 kW + 2 pressure loggers 9/15; pickup about 9/29; leak walk on pickup day if 9/15 is short.","notes":"","keys":["GF+","Uponor","Lakeville"],"createdDate":"2026-09-10","doneDate":null},{"id":"p03-geotek-g1-cass-100-to-15","name":"Geotek G1 CASS (100 to 150 HP, 3 screws)","client":"Geotek (Isaac Bowe)","category":"Inflow-ToDo's","priority":1,"stage":"Active","deadline":"2026-09-15","lastActivity":"2026-09-10","status":"PO 190107 in hand ($3,990 G1). G2 report v1.0 issued 7/27 and invoiced. G1 logger install Tue 9/15 11:00 am accepted by Isaac. Site visit checklist built in the G1 folder. Peoples Energy $500 flat audit rebate.","next":"Ask Isaac for G1 layout and air map, compressor plates. Ask Marty Walsh for the G1 rate. Install 3 kW + 2 to 3 pressure loggers 9/15, leave by 12:15 for Lakeville; leak walk at pickup about 9/29.","notes":"","keys":["Geotek","GeoTek"],"createdDate":"2026-09-10","doneDate":null},{"id":"p04-metro-transit-ohb-cass-m","name":"Metro Transit OHB CASS (main 2x 75 HP + soot 30 HP)","client":"Metro Transit (Jeff Freeman)","category":"Inflow-ToDo's","priority":2,"stage":"Review","deadline":null,"lastActivity":"2026-09-10","status":"Two-system CASS workbook report Draft 0.1 built from the Fridley DWP/PS5 template (CASSv1.0-MetroTransit-OHB-2sys-26.xlsx + MetroTransit-OHB-CASS-report-2026-d0.1.pdf, 24 pp). Assumed A14 Secondary: $13,200/yr total (main $5,900 at 4.7 kW avg, soot $7,300 at 4.8 kW avg). Headline ECO 1 leaks, 2 drains, 3.2 standby draw, 3.3 setpoints = $2,300/yr (18%). ECO 3.1 combine systems = custom, energy neutral, capacity/pressure case. ECO 3.4 renewal (40 to 50 HP VSD) as alternative.","next":"Peter to review: rate code/premise, receiver plates, FF dryer on which GA55+, FSX flow test air need and min pressure, P-1 regulator setting, CDI flow readings vs 45 acfm duty estimate, drain timer settings, ECO 3.1 $12k and 3.4 $45k budgets.","notes":"","keys":["MetroTransit","Metro Transit","OHB"],"createdDate":"2026-09-10","doneDate":null},{"id":"p05-iwco-ch1-cass-3x-300-hp","name":"IWCO CH1 CASS (3x 300 HP)","client":"IWCO (Nathan Caauwe)","category":"Inflow-ToDo's","priority":2,"stage":"Review","deadline":null,"lastActivity":"2026-09-10","status":"CASS workbook report Draft 0.1 built from the HSL template (CASSv1.0-IWCO-CH1-26.xlsx + d0.1 PDF, 27 pp) with a fresh logger analysis: 395 kW avg, est. 2,127 ACFM, 0.186 kW/ACFM, $387.9k/yr on A15 Secondary. Two of three QSI1500s online 92% at 75% load; wet header up 6 psig since 2017 and cleanup train drop doubled; Memorial Day idle load about 870 ACFM. Headline ECO 1, 3.1, 5, 6, 7, 8, 9 = $34.0k/yr (9%), paybacks 0 to 2.55 yr. Logger analysis xlsx + graphs in iwco data 2026/analysis 2026.","next":"Confirm rate code/account, QSI1500 motor HP (300 vs 350), PCV setpoint and highest point of use pressure, T3 size, tank inspection dates, drains. Review ECO $ placeholders (fleet renewal $600k, idle air $12k, pumps $15k) and whether the 16 yr fleet ECO stays in the table. 8/19 write-up docx (422 kW basis) is superseded.","notes":"","keys":["IWCO"],"createdDate":"2026-09-10","doneDate":null},{"id":"p06-mces-metro-plant-cass-40","name":"MCES Metro Plant CASS (408 + SMB systems)","client":"Met Council (MCES)","category":"Inflow-ToDo's","priority":2,"stage":"Review","deadline":null,"lastActivity":"2026-09-10","status":"CASS workbook report Draft 0.1 built from the HSL template (CASSv1.0-MCES-MetroPlant-26.xlsx + d0.1 PDF, 30 pp). A24 Primary rate: $496k/yr, 4.24M kWh, 484 kW avg. Headline ECO 1, 2, 3.1, 3.3, 6 = $79.8k/yr (16%), paybacks 0.13 to 4.5 yr. AP-10 (SMB) idles unloaded 76% of hours; 70 leaks 141.5 SCFM. System naming corrected: AP-01/02/03 = 408, AP-08/09/10 = SMB.","next":"Confirm rate code and premise #, ZR 315 serials, tie valve between systems, P5 calibration, tank gallons. Review budgetary ECO $. 8/17 draft docs still carry the swapped SMB/408 naming.","notes":"","keys":["MCES","Met Council"],"createdDate":"2026-09-10","doneDate":null},{"id":"p07-abbott-plymouth-water-ha","name":"Abbott Plymouth water hammer","client":"Abbott","category":"Inflow-ToDo's","priority":1,"stage":"Active","deadline":"2026-09-12","lastActivity":"2026-09-10","status":"Report V1.0 sent 9/1. Justin declined the questionnaire 9/9, sent fixture counts by zone, asked for an arrestor make/model. Selection xlsx (Sioux Chief 650 HydraRester, PDI sizing, zone counts, branch calculator) corrected 9/10 and given a Summary tab 9/10 PM so the reply email could be cut to five short paragraphs. Short reply draft sits in the thread without attachment.","next":"Peter: attach PLY_Abbott_Arrestor_Selection.xlsx to the short draft and send before Justin's OoO 9/14; delete the long draft, the corrupt-attachment draft and the 'DELETE ME' draft. Waiting on Justin: which zones sit on the 2 in main (drives Cost Model), one failed arrestor pulled and identified. Invoices 1540/1541 due 10/3.","notes":"","keys":["Abbott-Plymouth","Plymouth","DWSS"],"createdDate":"2026-09-10","doneDate":null},{"id":"p08-xcel-oid-tracker","name":"Xcel OID tracker","client":"Inflow internal","category":"Inflow-ToDo's","priority":3,"stage":"Active","deadline":null,"lastActivity":"2026-09-10","status":"Master xlsx in the Xcel OID Tracker folder (Trade ID A0673). The 4 trade incentives dated 5/18/26 that looked stuck were actually paid 6/4/26; found 9/10/26 in the CPA's uncategorized income. Xcel alternate payee checks land as plain bank deposits the CPA cannot identify.","next":"Correct the 8/31 list sent to Shari. Tell the CPA how to tag Xcel deposits. Reconcile the tracker to the bank.","notes":"","keys":["Xcel","OID"],"createdDate":"2026-09-10","doneDate":null},{"id":"p09-uofmn-st-paul-cass","name":"UofMN St. Paul CASS","client":"U of MN","category":"Inflow-ToDo's","priority":2,"stage":"Review","deadline":null,"lastActivity":"2026-09-09","status":"CASS workbook report Draft 0.1 built from the HSL template (CASSv1.0-UofMN-STP-26.xlsx + d0.1 PDF): 61.6 kW, est. 222 ACFM, $57.6k/yr; ECOs 1, 3.1, 4, 6 = $16.5k/yr (29%).","next":"Rate Primary vs Secondary, far end loop pressure, Sullair LS-16 nameplate, ECO $ review. Report source docx still has old GA37/LS30 wording.","notes":"","keys":["UofMN-StPaul","St. Paul","STP"],"createdDate":"2026-09-10","doneDate":null},{"id":"p10-pioneer-metal-finishing","name":"Pioneer Metal Finishing CASS (50 HP)","client":"Pioneer Metal Finishing","category":"Inflow-ToDo's","priority":2,"stage":"Review","deadline":null,"lastActivity":"2026-09-09","status":"CASS workbook report Draft 0.1 built from the HSL template (CASSv1.0-PioneerFin-26.xlsx + d0.1 PDF): 30.1 kW, est. 130 ACFM, $33.6k/yr on A15 Secondary; ECOs 1, 2, 3.1, 6 = $7.0k/yr (21%). ECO 4 redundant dryer and 4.1 metering added; Pioneer logo on cover.","next":"Confirm rate on bill, receiver gallons, blue canister filters in service, dryer drain. Review ECO $ mapping.","notes":"","keys":["Pioneer"],"createdDate":"2026-09-10","doneDate":null},{"id":"p11-andersen-bayport-b2-m-v","name":"Andersen Bayport B2 M&V (pre-Xcel monitoring)","client":"Andersen Windows","category":"Inflow-ToDo's","priority":1,"stage":"Active","deadline":"2026-09-11","lastActivity":"2026-09-08","status":"Steve Plachinski asked 9/8 for a preliminary (pre-Xcel) monitoring proposal by Wed 9/9. PMV46273.1 built: $3,905 equipment-only (labor carried in MV46259.1, options removed), 2 site visits (10/12 install, 10/23 download/tune), 2 snapshot reports, 18 channels (flow via 4-20 mA pigtails incl. new 400 HP meter), loggers stay in through Xcel window 11/9-11/20. xlsx + PDF in M&V folder; Gmail draft reply ready.","next":"Attach PDF and send to Steve. Revise MV46259.1 dates with Madison Currie (Xcel window now 11/9-11/20). Delete the three earlier drafts ($8,950, $10,850, $3,500). Confirm pigtail access at each flow meter with David Ripley.","notes":"","keys":["M&V","MV46259","PMV46273"],"createdDate":"2026-09-10","doneDate":null},{"id":"p12-abbott-new-brighton-cass","name":"Abbott New Brighton CASS (compressed air)","client":"Abbott","category":"Inflow-ToDo's","priority":1,"stage":"Active","deadline":null,"lastActivity":"2026-09-08","status":"All 3 JHF quotes in: repair existing $71,942 (8/24) vs 2 new Powerex cabinets $69,490 (about $79k installed; $111,400 full package w/ Nano dryers, flow/dew point meters, drains, regulator). 10-yr totals about $7k apart, recommendation now Option B new cabinets. VSD screw withdrawn. Room to be climate controlled. Client Summary V1.1 (Section 8 quote review), lifecycle workbook, ECO text, charts updated. Gmail draft reply to Kelly ready.","next":"Attach V1.1 PDF and send draft. Ask JHF to add dry receiver alternate and confirm Class 1 final filtration. Leah expansion load data.","notes":"","keys":["New Breighton","New Brighton","Powerex"],"createdDate":"2026-09-10","doneDate":null},{"id":"p13-abbott-new-brighton-argo","name":"Abbott New Brighton, argon system review","client":"Abbott","category":"Inflow-ToDo's","priority":2,"stage":"Active","deadline":null,"lastActivity":"2026-09-08","status":"Approved 9/3. 9 Linde invoices in (8/25 to 6/26): about 470 CF/day, about 173k CF/yr, about $19k/yr at $9.225/100 CF. Usage baseline xlsx and Site Visit 1 checklist (docx+PDF) built 9/8. Gmail draft to Kelly asks for Jul/Aug invoices and test instrument/records.","next":"Site Visit 1 Thu 9/10: map, tag leaks, moisture readings. Send draft. Get Jul/Aug 2026 invoices, contract rate, telemetry.","notes":"","keys":["argon","Argon"],"createdDate":"2026-09-10","doneDate":null},{"id":"p14-fluid-power-systems-text","name":"Fluid Power Systems textbook","client":"Inflow / Mkdocs","category":"Claude","priority":5,"stage":"Active","deadline":null,"lastActivity":"2026-09-03","status":"Ch 5 Blowers enriched from 19 PDFs, 3 MicroSims added. Ch 14 AI Smart Monitoring and Ch 15 Safety drafted, uncommitted.","next":"Commit and deploy. Review new chapters.","notes":"","keys":["Fluid Power","textbook","Mkdocs"],"createdDate":"2026-09-10","doneDate":null},{"id":"p15-rust-oleum-bp-cass","name":"Rust-Oleum BP CASS","client":"Rust-Oleum (Xcel reviewer Jerry Borchardt)","category":"Inflow-ToDo's","priority":3,"stage":"Waiting","deadline":null,"lastActivity":"2026-09-03","status":"Xcel review of OID5998399: 5 reviewer questions answered 9/3/26. Proposed diagram PNG and PPTX in the folder. GA45+ runs start/stop (573 starts in 74 hr), AC-03 idles unloaded.","next":"Attach the diagram PNG to the Gmail draft and send. Wait for Xcel reply.","notes":"","keys":["Rust-Oleum","Rustoleum"],"createdDate":"2026-09-10","doneDate":null},{"id":"p16-pio-partners-peer-listen","name":"Pio Partners peer listening class","client":"Hill-Murray (Jenny)","category":"Home","priority":4,"stage":"Active","deadline":"2026-09-25","lastActivity":"2026-09-01","status":"Curriculum v2, Skills Rainbow card, Session 1 and 2 decks built. 9 sessions Sept 2 to 25, roster 16.","next":"Build remaining session decks as sessions approach.","notes":"","keys":["Pio Partners","Hill-Murray","peer"],"createdDate":"2026-09-10","doneDate":null},{"id":"p17-abbott-woodbury-road-com","name":"Abbott Woodbury Road compressor design proposal","client":"Abbott","category":"Inflow-ToDo's","priority":4,"stage":"Waiting","deadline":null,"lastActivity":"2026-09-01","status":"CD46260.1 finalized at $4,900. ECO 6 = 92 psig.","next":"Awaiting Abbott response. Edit xlsx via Excel only.","notes":"","keys":["Woodbury","CD46260"],"createdDate":"2026-09-10","doneDate":null},{"id":"p18-boston-sci-wl2-cass-drye","name":"Boston Sci WL2 CASS + dryer custom rebate","client":"Boston Scientific","category":"Inflow-ToDo's","priority":2,"stage":"Active","deadline":null,"lastActivity":"2026-09-01","status":"MCT and EE reports done (EE V1.2 has 2 edits left). Custom rebate workbook populated: $34.4k/yr, $27.8k rebate.","next":"Peter owes OID, premise, rate code. Refresh JHF quote. Submit.","notes":"","keys":["Boston Sci","BSci","WL2"],"createdDate":"2026-09-10","doneDate":null},{"id":"p19-aw-garland-tx-leak-study","name":"AW Garland TX leak study","client":"AW / Garland","category":"Inflow-ToDo's","priority":3,"stage":"Active","deadline":null,"lastActivity":"2026-09-01","status":"3 leak workbooks (assembly 58 leaks 92.5 SCFM, extrusion 12 leaks 18.5 SCFM), 86 photos tagged, Leak History tabs added.","next":"Burst hose safety flag to client. Final report.","notes":"","keys":["Garland","AW "],"createdDate":"2026-09-10","doneDate":null},{"id":"p20-uofmn-east-bank-hsl-camp","name":"UofMN East Bank + HSL campus study","client":"U of MN","category":"Inflow-ToDo's","priority":3,"stage":"Review","deadline":null,"lastActivity":"2026-08-31","status":"EB finalized 8/31: ECO 6 excluded from headline ($12,600/yr, 17%). Section 9 rewritten.","next":"Confirm 0.228 vs 0.26 kW/ACFM basis. Section 4.1 print fit. HSL loop.","notes":"","keys":["East Bank","HSL","UofMN"],"createdDate":"2026-09-10","doneDate":null},{"id":"p21-edina-daycare-partner-me","name":"Edina Daycare partner meetings","client":"Family","category":"Home","priority":5,"stage":"Waiting","deadline":null,"lastActivity":"2026-08-31","status":"7/27 and 8/31 meeting packets built.","next":"Next packet when meeting is set.","notes":"","keys":["Edina","Daycare"],"createdDate":"2026-09-10","doneDate":null},{"id":"p22-bp-expo-talk-oct-15-2026","name":"BP Expo talk, Oct 15, 2026 (Hidden kWh Cost of Compressed Air)","client":"BP Expo / Inflow","category":"Inflow-ToDo's","priority":2,"stage":"Active","deadline":"2026-10-15","lastActivity":"2026-08-30","status":"Outline 8/29. Deck v0.1 (25 slides) and calculator v0.2 with a Deck Numbers sheet built 8/30 in Dropbox Oct2026-Plant Eff Pres. Case A Liberty BP dryer water event ($50k), Case B Boston Sci WL2-EE.","next":"Sponsor, Case B $/hr, Case A hours down. Rehearse. Talk is Thu Oct 15, 8 am.","notes":"","keys":["BP Expo","Expo","Plant Eff","CABP"],"createdDate":"2026-09-10","doneDate":null},{"id":"p23-mx3-vidadash-ios-app","name":"MX3 / VidaDash iOS app","client":"Self (Blake)","category":"Mx3","priority":7,"stage":"Parked","deadline":null,"lastActivity":"2026-08-29","status":"Shelved self-funded app, 2022 to 2025. Code at home directory projects/mx3. $21.8k dev spend. Blake owes $3,846. Close-out recommended 8/29.","next":"Decide on close-out. Collect from Blake.","notes":"","keys":["MX3","Mx3","VidaDash","Blake"],"createdDate":"2026-09-10","doneDate":null},{"id":"p24-3m-cottage-grove-cass","name":"3M Cottage Grove CASS","client":"3M (JHF quoting)","category":"Inflow-ToDo's","priority":3,"stage":"Waiting","deadline":null,"lastActivity":"2026-08-28","status":"8/28 vendor meeting folded into v1.1 docs and both xlsx. HOC out, both rooms stay, 4x 450 HP class (centrifugal or screw with B134 VSD), JHF quoting both. AC-01 = 2020. PCV unchanged.","next":"Leak list still pending. JHF quotes.","notes":"","keys":["3M-CG","3M - CG","3M CG","Cottage Grove"],"createdDate":"2026-09-10","doneDate":null},{"id":"p25-andersen-bayport-cass-b2","name":"Andersen Bayport CASS (B2)","client":"Andersen Windows","category":"Inflow-ToDo's","priority":3,"stage":"Review","deadline":null,"lastActivity":"2026-08-27","status":"B2 summary sheet v1.0 built 8/27. ECO 3B Path A: 400 HP VFD, $400k, 2.3 yr payback. QSI 1500 swing 0 to 2,570 CFM measured.","next":"Client review. M&V now tracked as its own row above.","notes":"","keys":["Andersen","Bayport"],"createdDate":"2026-09-10","doneDate":null},{"id":"p26-inflow-report-template-l","name":"Inflow report template library (2026)","client":"Inflow internal","category":"Inflow-ToDo's","priority":6,"stage":"Active","deadline":null,"lastActivity":"2026-08-27","status":"Client summary, vendor summary and leak log docx templates with README in TEMPLATES / Inflow Report Templates - 2026. Build and style spec documented.","next":"Use for all new studies. Keep in sync with the CASS workbook templates.","notes":"","keys":["template","Templates"],"createdDate":"2026-09-10","doneDate":null},{"id":"p27-mpls-water-cass-currie-r","name":"Mpls Water CASS (Currie + Royalston)","client":"Minneapolis Water","category":"Inflow-ToDo's","priority":4,"stage":"Active","deadline":null,"lastActivity":"2026-08-20","status":"ECO 3 at both plants switched to a 3 to 5 HP rotary screw baseload. Workbooks edited 8/20.","next":"Peter owes savings numbers, then refresh paybacks.","notes":"","keys":["Mpls-Water","Mpls Water","City of Mpls","Currie","Royalston"],"createdDate":"2026-09-10","doneDate":null},{"id":"p28-compressedair-ai-platfor","name":"compressedair.ai platform","client":"Inflow internal","category":"CAAI","priority":8,"stage":"Parked","deadline":null,"lastActivity":"2026-08-15","status":"React/Vite web platform and real-time monitoring dashboard at compressedair.ai. Code at home directory projects/compressedair-ai. No activity since August.","next":"Resume when time allows.","notes":"","keys":["compressedair","CAAI"],"createdDate":"2026-09-10","doneDate":null},{"id":"p29-cast-toolkit-compressed","name":"CAST toolkit (Compressed Air Services Toolkit)","client":"Inflow internal","category":"Claude","priority":6,"stage":"Active","deadline":null,"lastActivity":"2026-08-15","status":"Unified template and report platform meant to replace the legacy CASS Excel templates. Current 2026 draft workbook: CASSv1.0-Generic-2026-DRAFT.xlsx in TEMPLATES.","next":"Fold lessons from the 9/9 and 9/10 workbook reports back into the generic template.","notes":"","keys":["CAST","CASS template","Generic-2026"],"createdDate":"2026-09-10","doneDate":null},{"id":"p30-todo-app","name":"ToDo app","client":"Inflow internal","category":"Claude","priority":8,"stage":"Active","deadline":null,"lastActivity":"2026-08-15","status":"Single-file HTML at CLAUDE PROJECTS/todo.html with Active, Sales, Invoiced, Subs and Archived tabs.","next":"Keep using. Add features on request.","notes":"","keys":["todo","ToDo"],"createdDate":"2026-09-10","doneDate":null}];
+    const PROJECT_STAGES = ["Active", "Waiting", "Review", "Proposal", "Parked", "Done"];
+    let projects = JSON.parse(localStorage.getItem("projects") || "null");
+    if (!Array.isArray(projects)) projects = JSON.parse(JSON.stringify(SEED_PROJECTS));
+    let projSort = { key: null, asc: true };
+    let showDoneProjects = false;
+    let projEditing = null;
     let cancelledExpanded = false;
     let subSort = { key: "nextBillDate", asc: true };
     const SUB_CYCLES = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
@@ -1394,7 +1520,26 @@
       if (todo.invoiceDate === undefined) todo.invoiceDate = null;
       if (todo.invoiceAmount === undefined) todo.invoiceAmount = null;
       if (todo.paymentDueDate === undefined) todo.paymentDueDate = null;
+      if (todo.projectId === undefined) todo.projectId = null;
+      if (todo.updatedTimestamp === undefined) todo.updatedTimestamp = null;
     }
+    function ensureProjectFields(p) {
+      if (!p.id) p.id = "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      if (p.name === undefined) p.name = "";
+      if (p.client === undefined) p.client = "";
+      if (!p.category) p.category = "Inflow-ToDo's";
+      if (p.priority === undefined) p.priority = null;
+      if (!PROJECT_STAGES.includes(p.stage)) p.stage = "Active";
+      if (p.deadline === undefined) p.deadline = null;
+      if (p.lastActivity === undefined) p.lastActivity = null;
+      if (p.status === undefined) p.status = "";
+      if (p.next === undefined) p.next = "";
+      if (p.notes === undefined) p.notes = "";
+      if (!Array.isArray(p.keys)) p.keys = [];
+      if (p.createdDate === undefined) p.createdDate = null;
+      if (p.doneDate === undefined) p.doneDate = null;
+    }
+    projects.forEach(ensureProjectFields);
     todos.forEach(ensureFields);
     archived.forEach(ensureFields);
 
@@ -1418,6 +1563,7 @@
       localStorage.setItem("todos", JSON.stringify(todos));
       localStorage.setItem("todos_archived", JSON.stringify(archived));
       localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
+      localStorage.setItem("projects", JSON.stringify(projects));
       scheduleSync();
     }
 
@@ -1475,7 +1621,7 @@
     }
 
     function downloadDataFile() {
-      const data = { todos, archived, subscriptions, syncedAt: new Date().toISOString() };
+      const data = { todos, archived, subscriptions, projects, syncedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1509,7 +1655,7 @@
       if (!syncHandle) return;
       try {
         if ((await syncHandle.queryPermission({ mode: "readwrite" })) !== "granted") { setSyncBtn("resume"); return; }
-        const data = { todos, archived, subscriptions, syncedAt: new Date().toISOString() };
+        const data = { todos, archived, subscriptions, projects, syncedAt: new Date().toISOString() };
         const w = await syncHandle.createWritable();
         await w.write(JSON.stringify(data, null, 2));
         await w.close();
@@ -1634,7 +1780,7 @@
     async function dbxUpload() {
       const token = await dbxAccessToken();
       if (!token) return false;
-      const payload = JSON.stringify({ todos, archived, subscriptions, syncedAt: new Date().toISOString() }, null, 2);
+      const payload = JSON.stringify({ todos, archived, subscriptions, projects, syncedAt: new Date().toISOString() }, null, 2);
       const mode = dbxRev ? { ".tag": "update", update: dbxRev } : "add";
       const r = await fetch("https://content.dropboxapi.com/2/files/upload", {
         method: "POST",
@@ -1655,12 +1801,15 @@
       todos = Array.isArray(data.todos) ? data.todos : [];
       archived = Array.isArray(data.archived) ? data.archived : [];
       subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
+      if (Array.isArray(data.projects)) projects = data.projects;   // keep local (seed) if remote has none yet
       todos.forEach(ensureFields);
       archived.forEach(ensureFields);
       subscriptions.forEach(ensureSubFields);
+      projects.forEach(ensureProjectFields);
       localStorage.setItem("todos", JSON.stringify(todos));
       localStorage.setItem("todos_archived", JSON.stringify(archived));
       localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
+      localStorage.setItem("projects", JSON.stringify(projects));
       updateCategoryBar();
       updateDataLists();
       render();
@@ -1814,7 +1963,7 @@
 
     function updateDataLists() {
       const allItems = [...todos, ...archived];
-      const types = [...new Set(allItems.map(t => t.projectType).filter(Boolean))];
+      const types = [...new Set([...projects.filter(p => p.stage !== "Done").map(p => p.name.split(" (")[0].slice(0, 40)), ...allItems.map(t => t.projectType).filter(Boolean)])];
       document.getElementById("projectTypes").innerHTML =
         types.map(t => `<option value="${escapeHtml(t)}">`).join("");
 
@@ -1864,7 +2013,7 @@
 
     // --- Export / Import ---
     function exportData() {
-      const data = { todos, archived, subscriptions };
+      const data = { todos, archived, subscriptions, projects };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1891,9 +2040,11 @@
           todos = data.todos;
           archived = data.archived;
           subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
+          if (Array.isArray(data.projects)) projects = data.projects;
           todos.forEach(ensureFields);
           archived.forEach(ensureFields);
           subscriptions.forEach(ensureSubFields);
+          projects.forEach(ensureProjectFields);
           save();
           updateDataLists();
           expandedSet.clear();
@@ -1909,11 +2060,12 @@
     // --- Tabs ---
     function switchTab(tab) {
       currentTab = tab;
-      ["active","sales","invoiced","subs","archived"].forEach(t => {
+      ["projects","active","sales","invoiced","subs","archived"].forEach(t => {
         document.getElementById("tab-" + t).classList.toggle("active", tab === t);
         document.getElementById("section-" + t).classList.toggle("section-hidden", tab !== t);
       });
       document.getElementById("add-form").style.display = tab === "active" ? "block" : "none";
+      document.getElementById("add-form-projects").style.display = tab === "projects" ? "block" : "none";
       document.getElementById("add-form-sales").style.display = tab === "sales" ? "block" : "none";
       document.getElementById("filter-bar").style.display = (tab === "active" || tab === "sales" || tab === "invoiced") ? "block" : "none";
       // Category bar applies only to todo-based tabs (not subs/archived)
@@ -1986,6 +2138,12 @@
         } else if (sort.key === "priority") {
           va = va || 0;
           vb = vb || 0;
+        } else if (sort.key === "_projRank") {
+          va = projectRankOf(a) * 100 + (a.priority || 11);
+          vb = projectRankOf(b) * 100 + (b.priority || 11);
+        } else if (sort.key === "deadline" || sort.key === "lastActivity") {
+          va = va || (sort.asc ? "9999-99-99" : "");
+          vb = vb || (sort.asc ? "9999-99-99" : "");
         } else if (sort.key === "tags") {
           va = (va || []).join(",").toLowerCase();
           vb = (vb || []).join(",").toLowerCase();
@@ -2150,7 +2308,293 @@
       render();
     }
 
+    // ===================== Projects =====================
+    function projectOf(todo) {
+      if (todo.projectId) { const p = projects.find(p => p.id === todo.projectId); if (p) return p; }
+      const hay = [(todo.customerName || ""), (todo.projectType || ""), (todo.text || "")].join(" | ").toLowerCase();
+      for (const p of projects) {
+        for (const k of (p.keys || [])) {
+          const kk = String(k).trim().toLowerCase();
+          if (kk.length >= 3 && hay.includes(kk)) return p;
+        }
+      }
+      return null;
+    }
+    function projectRankOf(todo) {
+      const p = projectOf(todo);
+      if (!p) return 999;
+      const r = projects.indexOf(p);
+      return r < 0 ? 999 : r;
+    }
+    function linkedTasks(p) {
+      return todos.map((t, i) => ({ t, i })).filter(x => !x.t.isInvoiced && projectOf(x.t) === p);
+    }
+    function nextDueOf(list) {
+      const open = list.filter(x => !x.t.done && x.t.dueDate).map(x => x.t.dueDate).sort();
+      return open.length ? open[0] : null;
+    }
+    function addProject() {
+      const name = document.getElementById("p-name").value.trim();
+      if (!name) return;
+      const pv = parseInt(document.getElementById("p-priority").value);
+      const keysRaw = document.getElementById("p-keys").value;
+      const keys = keysRaw.split(",").map(s => s.trim()).filter(Boolean);
+      if (!keys.length) keys.push(name);
+      const p = {
+        id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        name,
+        client: document.getElementById("p-client").value.trim(),
+        category: currentCategory === "Master" ? "Inflow-ToDo's" : currentCategory,
+        priority: (pv >= 1 && pv <= 10) ? pv : null,
+        stage: document.getElementById("p-stage").value || "Active",
+        deadline: document.getElementById("p-deadline").value || null,
+        lastActivity: todayStr(),
+        status: document.getElementById("p-status").value.trim(),
+        next: document.getElementById("p-next").value.trim(),
+        notes: "", keys, createdDate: todayStr(), doneDate: null
+      };
+      projects.unshift(p);
+      ["p-name","p-client","p-priority","p-deadline","p-keys","p-status","p-next"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("p-stage").value = "Active";
+      save(); render();
+    }
+    function removeProject(i) {
+      if (!confirm("Delete project \"" + projects[i].name + "\"? Linked tasks are kept.")) return;
+      projects.splice(i, 1); expandedSet.clear(); save(); render();
+    }
+    function markProjectDone(i) {
+      const p = projects[i];
+      if (p.stage === "Done") { p.stage = "Active"; p.doneDate = null; }
+      else { p.stage = "Done"; p.doneDate = todayStr(); }
+      p.lastActivity = todayStr();
+      save(); render();
+    }
+    function toggleShowDoneProjects() {
+      showDoneProjects = !showDoneProjects;
+      document.getElementById("proj-showdone-btn").textContent = showDoneProjects ? "Hide done" : "Show done";
+      render();
+    }
+    function sortProj(key) {
+      if (projSort.key === key) { if (projSort.asc) projSort.asc = false; else projSort = { key: null, asc: true }; }
+      else projSort = { key, asc: true };
+      render();
+    }
+    function autoRankProjects() {
+      if (!confirm("Re-order all projects by priority (1 first), then deadline, then last activity? This replaces your manual ranking.")) return;
+      const stageW = { Active: 0, Review: 0, Waiting: 1, Proposal: 1, Parked: 2, Done: 3 };
+      projects.sort((a, b) =>
+        (stageW[a.stage] ?? 1) - (stageW[b.stage] ?? 1) ||
+        (a.priority || 11) - (b.priority || 11) ||
+        ((a.deadline || "9999") < (b.deadline || "9999") ? -1 : (a.deadline || "9999") > (b.deadline || "9999") ? 1 : 0) ||
+        ((b.lastActivity || "") < (a.lastActivity || "") ? -1 : (b.lastActivity || "") > (a.lastActivity || "") ? 1 : 0));
+      projSort = { key: null, asc: true };
+      save(); render();
+    }
+    function touchAllLinked() {
+      let n = 0;
+      projects.forEach(p => {
+        const stamps = linkedTasks(p).map(x => (x.t.updatedTimestamp || x.t.completedTimestamp || "").slice(0, 10)).filter(Boolean).sort();
+        const latest = stamps.length ? stamps[stamps.length - 1] : null;
+        if (latest && (!p.lastActivity || latest > p.lastActivity)) { p.lastActivity = latest; n++; }
+      });
+      save(); render();
+      alert(n + " project date" + (n === 1 ? "" : "s") + " moved forward.");
+    }
+    function printProjects() {
+      if (currentTab !== "projects") switchTab("projects");
+      const d = new Date();
+      document.getElementById("print-title").textContent = "Project Status Log, ranked, " + d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) + (currentCategory === "Master" ? " (Master: priority 1 and 2)" : " (" + currentCategory + ")");
+      setTimeout(() => window.print(), 50);
+    }
+    function addTaskForProject(pi) {
+      const p = projects[pi];
+      const inp = document.getElementById("pt-input-" + pi);
+      const text = inp ? inp.value.trim() : "";
+      if (!text) return;
+      const pv = document.getElementById("pt-pri-" + pi);
+      const dv = document.getElementById("pt-due-" + pi);
+      const pri = pv && parseInt(pv.value) >= 1 && parseInt(pv.value) <= 10 ? parseInt(pv.value) : (p.priority || null);
+      todos.push({ text, done: false, dueDate: (dv && dv.value) || null, priority: pri, projectType: p.name.split(" (")[0].slice(0, 40), followUpPerson: null, reminderDate: null, tags: [], subtasks: [], notes: "", contactPhone: "", contactEmail: "", customerName: p.client.split(" (")[0].slice(0, 40), locationDetails: "", attachments: [], category: p.category, completedTimestamp: null, isSales: false, salesStage: "", dealValue: null, closeDate: null, isInvoiced: false, invoiceNumber: "", invoiceDate: null, invoiceAmount: null, paymentDueDate: null, projectId: p.id, updatedTimestamp: new Date().toISOString() });
+      p.lastActivity = todayStr();
+      inp.value = ""; if (pv) pv.value = ""; if (dv) dv.value = "";
+      save(); updateDataLists(); render();
+    }
+    function toggleLinkedTask(ti, pi) {
+      const t = todos[ti];
+      t.done = !t.done;
+      t.completedTimestamp = t.done ? new Date().toISOString() : null;
+      t.updatedTimestamp = new Date().toISOString();
+      projects[pi].lastActivity = todayStr();
+      save(); render();
+    }
+    function unlinkTask(ti) {
+      todos[ti].projectId = "none-" + Date.now();   // explicit non-match survives keyword matching
+      save(); render();
+    }
+    function linkTaskTo(ti, pid) { todos[ti].projectId = pid || null; save(); render(); }
+    function startProjEdit(pi, field, cellEl) {
+      if (projEditing && projEditing.pi === pi && projEditing.field === field) return;
+      projEditing = { pi, field };
+      const p = projects[pi]; const val = p[field]; let html = "";
+      const common = `onkeydown="projEditKey(event,${pi},'${field}',this)"`;
+      if (field === "status" || field === "next" || field === "notes") {
+        html = `<textarea class="inline-edit wide" onblur="saveProjEdit(${pi},'${field}',this.value)" ${common}>${escapeHtml(val || "")}</textarea>`;
+      } else if (field === "priority") {
+        html = `<input class="inline-edit" type="number" min="1" max="10" value="${val || ""}" style="width:60px;" onblur="saveProjEdit(${pi},'${field}',this.value)" ${common} />`;
+      } else if (field === "deadline" || field === "lastActivity") {
+        html = `<input class="inline-edit" type="date" value="${val || ""}" onblur="saveProjEdit(${pi},'${field}',this.value)" ${common} />`;
+      } else if (field === "stage") {
+        const opts = PROJECT_STAGES.map(s => `<option value="${s}"${s === val ? " selected" : ""}>${s}</option>`).join("");
+        html = `<select class="inline-edit" onchange="saveProjEdit(${pi},'stage',this.value)" onblur="saveProjEdit(${pi},'stage',this.value)" ${common}>${opts}</select>`;
+      } else if (field === "keys") {
+        html = `<input class="inline-edit" type="text" value="${escapeHtml((val || []).join(", "))}" placeholder="comma-separated match words" onblur="saveProjEdit(${pi},'keys',this.value)" ${common} />`;
+      } else if (field === "category") {
+        const opts = CATEGORIES.filter(c => c !== "Master").map(s => `<option value="${s}"${s === val ? " selected" : ""}>${s}</option>`).join("");
+        html = `<select class="inline-edit" onchange="saveProjEdit(${pi},'category',this.value)" onblur="saveProjEdit(${pi},'category',this.value)" ${common}>${opts}</select>`;
+      } else {
+        const listAttr = field === "client" ? ' list="customerNames"' : '';
+        html = `<input class="inline-edit" type="text" value="${escapeHtml(val || "")}"${listAttr} onblur="saveProjEdit(${pi},'${field}',this.value)" ${common} />`;
+      }
+      cellEl.innerHTML = html;
+      const el = cellEl.querySelector("input, textarea, select"); if (el) el.focus();
+    }
+    function saveProjEdit(pi, field, value) {
+      if (!projEditing) return;
+      const p = projects[pi];
+      const before = JSON.stringify(p[field]);
+      if (field === "priority") { const v = parseInt(value); p.priority = (v >= 1 && v <= 10) ? v : null; }
+      else if (field === "stage") { p.stage = PROJECT_STAGES.includes(value) ? value : "Active"; if (p.stage === "Done" && !p.doneDate) p.doneDate = todayStr(); }
+      else if (field === "deadline" || field === "lastActivity") p[field] = value || null;
+      else if (field === "keys") p.keys = value.split(",").map(s => s.trim()).filter(Boolean);
+      else p[field] = (value || "").trim();
+      if (JSON.stringify(p[field]) !== before && field !== "lastActivity" && field !== "keys" && field !== "category") p.lastActivity = todayStr();
+      projEditing = null;
+      save(); updateDataLists(); render();
+    }
+    function projEditKey(e, pi, field, el) {
+      if (e.key === "Escape") { projEditing = null; render(); }
+      else if (e.key === "Enter" && el.tagName !== "TEXTAREA") { e.preventDefault(); saveProjEdit(pi, field, el.value); }
+    }
+    function renderProjects() {
+      const list = document.getElementById("list-projects");
+      const table = document.getElementById("table-projects");
+      const empty = document.getElementById("empty-projects");
+      const bar = document.getElementById("projects-bar");
+      list.innerHTML = "";
+      const inCat = p => currentCategory === "Master" ? (p.priority && p.priority <= 2) : p.category === currentCategory;
+      const all = projects.map((p, i) => ({ ...p, _origIdx: i }));
+      const visible = all.filter(p => inCat(p) && (showDoneProjects || p.stage !== "Done"));
+
+      // stats
+      const open = projects.filter(p => p.stage !== "Done");
+      const today = todayStr();
+      const overdue = open.filter(p => p.deadline && p.deadline < today).length;
+      const dueWeek = open.filter(p => p.deadline && p.deadline >= today && daysBetween(today, p.deadline) <= 7).length;
+      const liveTodos = todos.filter(t => !t.isInvoiced && !t.done);
+      const linkedCount = liveTodos.filter(t => projectOf(t)).length;
+      const byStage = s => open.filter(p => p.stage === s).length;
+      bar.innerHTML = `
+        <div class="pipeline-stat"><span class="label">Open projects</span><span class="value pipeline">${open.length}</span></div>
+        <div class="pipeline-stat"><span class="label">Active</span><span class="value">${byStage("Active")}</span></div>
+        <div class="pipeline-stat"><span class="label">Review</span><span class="value">${byStage("Review")}</span></div>
+        <div class="pipeline-stat"><span class="label">Waiting</span><span class="value">${byStage("Waiting")}</span></div>
+        <div class="pipeline-stat"><span class="label">Parked</span><span class="value">${byStage("Parked")}</span></div>
+        <div class="pipeline-stat"><span class="label">Deadline passed</span><span class="value ${overdue ? "lost" : ""}">${overdue}</span></div>
+        <div class="pipeline-stat"><span class="label">Due in 7 days</span><span class="value">${dueWeek}</span></div>
+        <div class="pipeline-stat"><span class="label">Open tasks linked</span><span class="value">${linkedCount} / ${liveTodos.length}</span></div>`;
+
+      if (!visible.length) { table.style.display = "none"; empty.style.display = "block"; return; }
+      table.style.display = "table"; empty.style.display = "none";
+      const dragOk = canReorder("projects") && currentCategory !== "Master";
+      table.classList.toggle("drag-disabled", !dragOk);
+      const sorted = getSorted(visible, projSort);
+      const totalCols = 13;
+      sorted.forEach(p => {
+        const i = p._origIdx;
+        const rank = projects.indexOf(projects[i]) + 1;
+        const tr = document.createElement("tr");
+        if (p.stage === "Done") tr.classList.add("proj-done");
+        tr.draggable = true;
+        tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "projects"));
+        tr.addEventListener("dragend", handleDragEnd);
+        if (dragOk) {
+          tr.addEventListener("dragover", (e) => handleDragOver(e, i, "projects"));
+          tr.addEventListener("dragleave", handleDragLeave);
+          tr.addEventListener("drop", (e) => handleDrop(e, i, "projects"));
+        }
+        const lt = linkedTasks(projects[i]);
+        const openT = lt.filter(x => !x.t.done);
+        const nd = nextDueOf(lt);
+        const ndCls = nd ? dateCssClass(nd) : "";
+        const dlCls = p.stage === "Done" ? "" : dateCssClass(p.deadline);
+        const expandIcon = expandedSet.has("p" + i) ? "&#x25BC;" : "&#x25B6;";
+        tr.innerHTML = `
+          <td class="center" data-label="Rank"><span class="rank-num">${rank}</span></td>
+          <td class="drag-cell center">${dragOk ? '<span class="drag-handle">&#x2630;</span>' : ''}</td>
+          <td class="expand-cell center"><button class="action-btn expand-btn" onclick="toggleProjExpand(${i})" title="Linked tasks">${expandIcon}</button></td>
+          <td data-label="Project" data-editable ondblclick="startProjEdit(${i},'name',this)"><span class="proj-name">${escapeHtml(p.name)}</span></td>
+          <td data-label="Client" data-editable ondblclick="startProjEdit(${i},'client',this)"><span class="proj-client">${escapeHtml(p.client) || "\u2014"}</span></td>
+          <td class="center" data-label="Priority" data-editable ondblclick="startProjEdit(${i},'priority',this)">${p.priority ? `<span class="priority-badge" style="background:${priorityColor(p.priority)}">${p.priority}</span>` : "\u2014"}</td>
+          <td data-label="Stage" data-editable ondblclick="startProjEdit(${i},'stage',this)"><span class="stage-tag stage-${p.stage}">${p.stage}</span></td>
+          <td data-label="Deadline" data-editable ondblclick="startProjEdit(${i},'deadline',this)"><span class="date-cell ${dlCls}">${formatDate(p.deadline)}</span></td>
+          <td data-label="Last" data-editable ondblclick="startProjEdit(${i},'lastActivity',this)"><span class="date-cell">${formatDate(p.lastActivity)}</span></td>
+          <td data-label="Tasks" class="proj-tasks" onclick="toggleProjExpand(${i})" style="cursor:pointer;" title="Open linked tasks">${openT.length} open${lt.length - openT.length ? " / " + (lt.length - openT.length) + " done" : ""}${nd ? `<br><span class="${ndCls}">next ${formatDate(nd)}</span>` : ""}</td>
+          <td data-label="Where it stands" data-editable ondblclick="startProjEdit(${i},'status',this)"><div class="proj-text">${escapeHtml(p.status) || "\u2014"}</div></td>
+          <td data-label="Next" data-editable ondblclick="startProjEdit(${i},'next',this)"><div class="proj-text">${escapeHtml(p.next) || "\u2014"}</div></td>
+          <td class="center actions-cell" style="white-space:nowrap;">
+            <button class="action-btn convert-btn" onclick="toggleProjExpand(${i}, true)" title="Add a task to this project">+</button>
+            <button class="action-btn archive-btn" onclick="markProjectDone(${i})" title="${p.stage === "Done" ? "Reopen" : "Mark done"}">&#x2713;</button>
+            <button class="action-btn delete-btn" onclick="removeProject(${i})" title="Delete project">&times;</button>
+          </td>`;
+        list.appendChild(tr);
+        if (expandedSet.has("p" + i)) {
+          const dtr = document.createElement("tr"); dtr.className = "detail-row";
+          const dtd = document.createElement("td"); dtd.colSpan = totalCols;
+          const rowsHtml = lt.length ? lt.map(x => `
+            <div class="pt-row">
+              <input type="checkbox" ${x.t.done ? "checked" : ""} onchange="toggleLinkedTask(${x.i},${i})" />
+              <span class="${x.t.done ? "pt-done" : ""}">${escapeHtml(x.t.text)}</span>
+              ${x.t.isSales ? '<span class="project-tag">Sales</span>' : ''}
+              ${x.t.priority ? `<span class="priority-badge" style="background:${priorityColor(x.t.priority)};width:20px;height:20px;line-height:20px;font-size:10px;">${x.t.priority}</span>` : ""}
+              <span class="pt-meta">${x.t.dueDate ? "due " + formatDate(x.t.dueDate) : ""}${x.t.followUpPerson ? " · " + escapeHtml(x.t.followUpPerson) : ""}</span>
+              <button class="subtask-del" onclick="unlinkTask(${x.i})" title="Unlink from this project">&times;</button>
+            </div>`).join("") : '<div style="font-size:12px;color:var(--text-lighter);">No tasks match yet. Add one below, or edit the match words.</div>';
+          dtd.innerHTML = `
+            <div class="detail-content">
+              <div class="subtasks-section" style="flex:2;">
+                <h4>Linked tasks (${openT.length} open)</h4>
+                <div class="proj-tasklist">${rowsHtml}</div>
+                <div class="add-subtask-row" style="margin-top:8px;gap:6px;flex-wrap:wrap;">
+                  <input type="text" id="pt-input-${i}" placeholder="Add task for this project..." style="flex:2;min-width:180px;" onkeydown="if(event.key==='Enter')addTaskForProject(${i})" />
+                  <input type="date" id="pt-due-${i}" title="Due date" />
+                  <input type="number" id="pt-pri-${i}" min="1" max="10" placeholder="Pri" style="width:60px;" title="Priority (defaults to the project's)" />
+                  <button onclick="addTaskForProject(${i})">Add task</button>
+                </div>
+              </div>
+              <div class="notes-section" style="flex:1;">
+                <h4>Match words <span style="font-weight:400;color:var(--text-lighter);">(tasks whose customer, project or text contain one of these)</span></h4>
+                <div data-editable ondblclick="startProjEdit(${i},'keys',this)" style="font-size:12px;padding:4px 0;cursor:text;">${(p.keys || []).map(k => `<span class="project-tag">${escapeHtml(k)}</span>`).join(" ") || "<i>double-click to add</i>"}</div>
+                <h4 style="margin-top:8px;">Category</h4>
+                <div data-editable ondblclick="startProjEdit(${i},'category',this)" style="font-size:12px;cursor:pointer;"><span class="person-tag">${escapeHtml(p.category)}</span></div>
+                <h4 style="margin-top:8px;">Notes</h4>
+                <textarea placeholder="Notes..." onblur="saveProjNotes(${i},this.value)">${escapeHtml(p.notes || "")}</textarea>
+              </div>
+            </div>`;
+          dtr.appendChild(dtd); list.appendChild(dtr);
+        }
+      });
+      updateSortArrows("psort-", projSort);
+    }
+    function saveProjNotes(pi, v) { projects[pi].notes = v; save(); }
+    function toggleProjExpand(i, focusAdd) {
+      const k = "p" + i;
+      if (expandedSet.has(k) && !focusAdd) expandedSet.delete(k); else expandedSet.add(k);
+      render();
+      if (focusAdd) { const el = document.getElementById("pt-input-" + i); if (el) el.focus(); }
+    }
+
     function toggle(i) {
+      todos[i].updatedTimestamp = new Date().toISOString();
       todos[i].done = !todos[i].done;
       save();
       render();
@@ -2332,6 +2776,7 @@
 
     function saveEdit(origIdx, field, value) {
       const todo = todos[origIdx];
+      todo.updatedTimestamp = new Date().toISOString();
       if (field === "priority") {
         const v = parseInt(value);
         todo[field] = (v >= 1 && v <= 10) ? v : null;
@@ -2420,6 +2865,7 @@
         case "invoiced": return !invoiceSort.key && !isFiltered();
         case "archived": return !archiveSort.key;
         case "subs":     return !subSort.key;
+        case "projects": return !projSort.key;
         default:         return false;
       }
     }
@@ -2452,6 +2898,7 @@
       if (!dragItem || dragItem.tab !== tab || dragItem.idx === origIdx || !canReorder(tab)) return;
       const arr = tab === "archived" ? archived
                 : tab === "subs"     ? subscriptions
+                : tab === "projects" ? projects
                 : todos;
       const item = arr.splice(dragItem.idx, 1)[0];
       arr.splice(origIdx, 0, item);
@@ -2474,7 +2921,7 @@
     function handleTabDragOver(e, targetTab) {
       if (!dragItem || dragItem.tab === targetTab) return;
       // Subs is a different data shape — no cross-tab drag in/out
-      if (dragItem.tab === "subs" || targetTab === "subs") return;
+      if (dragItem.tab === "subs" || targetTab === "subs" || dragItem.tab === "projects" || targetTab === "projects") return;
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
       document.getElementById("tab-" + targetTab).classList.add("drop-target");
@@ -2600,9 +3047,15 @@
       else if (currentTab === "invoiced") saleMatch = t => t.isInvoiced;
       else saleMatch = t => !t.isSales && !t.isInvoiced;
       bar.innerHTML = CATEGORIES.map(cat => {
-        const count = cat === "Master"
-          ? source.filter(t => saleMatch(t) && t.priority && t.priority <= 2).length
-          : source.filter(t => saleMatch(t) && t.category === cat).length;
+        let count;
+        if (currentTab === "projects") {
+          const open = projects.filter(p => p.stage !== "Done" || showDoneProjects);
+          count = cat === "Master" ? open.filter(p => p.priority && p.priority <= 2).length : open.filter(p => p.category === cat).length;
+        } else {
+          count = cat === "Master"
+            ? source.filter(t => saleMatch(t) && t.priority && t.priority <= 2).length
+            : source.filter(t => saleMatch(t) && t.category === cat).length;
+        }
         const cls = cat === currentCategory ? "cat-btn active" : "cat-btn";
         return `<button class="${cls}" onclick="switchCategory('${cat.replace(/'/g, "\\'")}')">${escapeHtml(cat)} <span class="cat-badge">${count}</span></button>`;
       }).join("");
@@ -2624,8 +3077,10 @@
       document.getElementById("badge-invoiced").textContent = catInvoiced.length;
       document.getElementById("badge-subs").textContent = activeSubs.length;
       document.getElementById("badge-archived").textContent = catArchived.length;
+      document.getElementById("badge-projects").textContent = projects.filter(p => p.stage !== "Done" && inCat(p)).length;
 
       updateCategoryBar();
+      renderProjects();
       renderActive();
       renderSales();
       renderInvoiced();
@@ -3641,6 +4096,9 @@
     });
     document.getElementById("sub-name").addEventListener("keydown", (e) => {
       if (e.key === "Enter") addSubscription();
+    });
+    document.getElementById("p-name").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addProject();
     });
 
     // Cross-tab drag drop targets — Subs is intentionally excluded (separate data model)
