@@ -867,6 +867,21 @@
     .attn .flag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:10px; font-weight:700; color:#fff; }
     .flag-overdue { background:#e53935; } .flag-soon { background:#f57c00; } .flag-notask { background:#6b3fa0; } .flag-stale { background:#8d6e00; } .flag-taskdue { background:#c62828; }
     .proj-link-chip { display:inline-block; margin-left:4px; padding:1px 6px; border-radius:10px; font-size:10px; font-weight:700; background: var(--contact-bg); color: var(--contact-text); cursor:pointer; white-space:nowrap; }
+    .inbox-card { background: var(--card-bg); border-radius:8px; padding:12px 14px; margin-bottom:10px; box-shadow: 0 1px 4px var(--card-shadow); border-left:4px solid var(--accent); }
+    .inbox-card.cal { border-left-color:#2e7d32; }
+    .inbox-card .ic-top { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:6px; }
+    .inbox-card .ic-src { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color: var(--text-lighter); }
+    .inbox-card .ic-title { flex:1; min-width:220px; font-size:14px; font-weight:600; padding:5px 8px; border:1px solid var(--border); border-radius:4px; background: var(--input-bg); color: var(--text); }
+    .inbox-card .ic-reason { font-size:12px; color: var(--text-light); margin-bottom:8px; white-space:pre-wrap; }
+    .inbox-card .ic-fields { display:flex; gap:8px; flex-wrap:wrap; align-items:end; }
+    .inbox-card .ic-fields label { display:flex; flex-direction:column; gap:3px; font-size:10px; font-weight:700; text-transform:uppercase; color: var(--text-lighter); }
+    .inbox-card .ic-fields input, .inbox-card .ic-fields select { padding:5px 8px; border:1px solid var(--border); border-radius:4px; background: var(--input-bg); color: var(--text); font-size:12px; }
+    .inbox-card .ic-actions { display:flex; gap:6px; margin-left:auto; }
+    .inbox-card .ic-actions button { padding:6px 12px; border:none; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; }
+    .inbox-card .ic-accept { background: var(--success); color:#fff; }
+    .inbox-card .ic-dismiss { background: var(--tab-bg); color: var(--text); }
+    .inbox-card a.ic-link { font-size:12px; color: var(--accent); }
+    .inbox-head { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; font-size:12px; color: var(--text-light); }
     .print-title { display:none; }
     tr.proj-done td { color: var(--done-text); }
     tr.proj-done .proj-name { text-decoration:line-through; }
@@ -1060,6 +1075,9 @@
       <div class="tabs">
         <div class="tab" id="tab-projects" onclick="switchTab('projects')">
           Projects <span class="badge" id="badge-projects">0</span>
+        </div>
+        <div class="tab" id="tab-inbox" onclick="switchTab('inbox')" title="Suggestions found in email and calendar, waiting for your review">
+          Inbox <span class="badge" id="badge-inbox">0</span>
         </div>
         <div class="tab active" id="tab-active" onclick="switchTab('active')">
           Active <span class="badge" id="badge-active">0</span>
@@ -1280,6 +1298,18 @@
         </div>
         <button class="add-btn" onclick="addProject()">Add</button>
       </div>
+    </div>
+
+    <!-- Inbox Section (suggestions from the email/calendar routine) -->
+    <div id="section-inbox" class="section-hidden">
+      <div class="inbox-head">
+        <span id="inbox-status">Not loaded yet.</span>
+        <button class="io-btn" onclick="loadInbox(true)">Refresh</button>
+        <button class="io-btn" onclick="dismissAllInbox()">Dismiss all</button>
+        <span style="margin-left:auto;">A cloud routine reads Gmail and Google Calendar every hour on weekdays and proposes tasks and projects here. Nothing is created until you accept it.</span>
+      </div>
+      <div id="inbox-list"></div>
+      <p class="empty" id="empty-inbox">Nothing waiting for review.</p>
     </div>
 
     <!-- Projects Section -->
@@ -1518,6 +1548,10 @@
     let projects = JSON.parse(localStorage.getItem("projects") || "null");
     if (!Array.isArray(projects)) projects = JSON.parse(JSON.stringify(SEED_PROJECTS));
     let projSort = { key: null, asc: true };
+    const INBOX_URL = "https://inflowco.github.io/todo/inbox.json";
+    let inboxItems = [];            // from inbox.json (not persisted; refetched)
+    let inboxLoadedAt = 0;
+    let inboxDecisions = JSON.parse(localStorage.getItem("inbox_decisions") || "{}");   // sourceId -> {d, at, text}
     let showDoneProjects = false;
     let projCompact = localStorage.getItem("proj_compact") !== "0";
     let projEditing = null;
@@ -1606,6 +1640,7 @@
       localStorage.setItem("todos_archived", JSON.stringify(archived));
       localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
       localStorage.setItem("projects", JSON.stringify(projects));
+      localStorage.setItem("inbox_decisions", JSON.stringify(inboxDecisions));
       scheduleSync();
     }
 
@@ -1663,7 +1698,7 @@
     }
 
     function downloadDataFile() {
-      const data = { todos, archived, subscriptions, projects, syncedAt: new Date().toISOString() };
+      const data = { todos, archived, subscriptions, projects, inboxDecisions, syncedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1697,7 +1732,7 @@
       if (!syncHandle) return;
       try {
         if ((await syncHandle.queryPermission({ mode: "readwrite" })) !== "granted") { setSyncBtn("resume"); return; }
-        const data = { todos, archived, subscriptions, projects, syncedAt: new Date().toISOString() };
+        const data = { todos, archived, subscriptions, projects, inboxDecisions, syncedAt: new Date().toISOString() };
         const w = await syncHandle.createWritable();
         await w.write(JSON.stringify(data, null, 2));
         await w.close();
@@ -1844,7 +1879,7 @@
     async function dbxUpload() {
       const token = await dbxAccessToken();
       if (!token) return false;
-      const payload = JSON.stringify({ todos, archived, subscriptions, projects, syncedAt: new Date().toISOString() }, null, 2);
+      const payload = JSON.stringify({ todos, archived, subscriptions, projects, inboxDecisions, syncedAt: new Date().toISOString() }, null, 2);
       const mode = dbxRev ? { ".tag": "update", update: dbxRev } : "add";
       const r = await fetch("https://content.dropboxapi.com/2/files/upload", {
         method: "POST",
@@ -1866,6 +1901,8 @@
       archived = Array.isArray(data.archived) ? data.archived : [];
       subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
       if (Array.isArray(data.projects)) projects = data.projects;   // keep local (seed) if remote has none yet
+      if (data.inboxDecisions && typeof data.inboxDecisions === "object") inboxDecisions = Object.assign({}, inboxDecisions, data.inboxDecisions);
+      localStorage.setItem("inbox_decisions", JSON.stringify(inboxDecisions));
       todos.forEach(ensureFields);
       archived.forEach(ensureFields);
       subscriptions.forEach(ensureSubFields);
@@ -2077,7 +2114,7 @@
 
     // --- Export / Import ---
     function exportData() {
-      const data = { todos, archived, subscriptions, projects };
+      const data = { todos, archived, subscriptions, projects, inboxDecisions };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -2105,6 +2142,7 @@
           archived = data.archived;
           subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
           if (Array.isArray(data.projects)) projects = data.projects;
+          if (data.inboxDecisions && typeof data.inboxDecisions === "object") inboxDecisions = data.inboxDecisions;
           todos.forEach(ensureFields);
           archived.forEach(ensureFields);
           subscriptions.forEach(ensureSubFields);
@@ -2124,7 +2162,7 @@
     // --- Tabs ---
     function switchTab(tab) {
       currentTab = tab;
-      ["projects","active","sales","invoiced","subs","archived"].forEach(t => {
+      ["inbox","projects","active","sales","invoiced","subs","archived"].forEach(t => {
         document.getElementById("tab-" + t).classList.toggle("active", tab === t);
         document.getElementById("section-" + t).classList.toggle("section-hidden", tab !== t);
       });
@@ -2133,7 +2171,8 @@
       document.getElementById("add-form-sales").style.display = tab === "sales" ? "block" : "none";
       document.getElementById("filter-bar").style.display = (tab === "active" || tab === "sales" || tab === "invoiced") ? "block" : "none";
       // Category bar applies only to todo-based tabs (not subs/archived)
-      document.getElementById("category-bar").style.display = (tab === "subs") ? "none" : "flex";
+      document.getElementById("category-bar").style.display = (tab === "subs" || tab === "inbox") ? "none" : "flex";
+      if (tab === "inbox") loadInbox(false);
       render();
     }
 
@@ -2373,6 +2412,114 @@
       updateDataLists();
       render();
     }
+
+    // ===================== Inbox (email + calendar suggestions) =====================
+    function pendingInbox() { return inboxItems.filter(it => it.sourceId && !inboxDecisions[it.sourceId]); }
+    async function loadInbox(force) {
+      if (!force && Date.now() - inboxLoadedAt < 5 * 60 * 1000) return;
+      const st = document.getElementById("inbox-status");
+      try {
+        const r = await fetch(INBOX_URL + "?t=" + Date.now(), { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const data = await r.json();
+        inboxItems = Array.isArray(data.items) ? data.items : [];
+        inboxLoadedAt = Date.now();
+        st.textContent = "Last scan: " + (data.generatedAt ? formatTimestamp(data.generatedAt) : "none yet") + ". " + pendingInbox().length + " waiting.";
+      } catch (e) {
+        st.textContent = "Could not load suggestions (" + e.message + "). Offline?";
+      }
+      render();
+    }
+    function inboxProjectOptions(sel) {
+      const open = projects.filter(p => p.stage !== "Done");
+      return `<option value="">No project</option>` + open.map(p => `<option value="${p.id}"${p.id === sel ? " selected" : ""}>${escapeHtml(p.name.split(" (")[0].slice(0, 40))}</option>`).join("");
+    }
+    function guessProjectId(it) {
+      if (it.projectId && projects.some(p => p.id === it.projectId)) return it.projectId;
+      const open = projects.filter(p => p.stage !== "Done");
+      const keyHit = (p, hay) => (p.keys || []).some(k => { const kk = String(k).trim().toLowerCase(); return kk.length >= 3 && hay.includes(kk); });
+      // 1) the routine named the project; 2) customer field; 3) title; 4) everything else (reason text last, it is the noisiest)
+      if (it.project) { const pn = String(it.project).toLowerCase(); const hit = open.find(p => p.name.toLowerCase().startsWith(pn.slice(0, 12)) || pn.startsWith(p.name.split(" (")[0].toLowerCase().slice(0, 12))); if (hit) return hit.id; }
+      for (const field of [it.customer, it.title, [it.detail, it.reason].filter(Boolean).join(" | ")]) {
+        if (!field) continue; const hay = String(field).toLowerCase();
+        const hit = open.find(p => keyHit(p, hay)); if (hit) return hit.id;
+      }
+      return "";
+    }
+    function renderInbox() {
+      const list = document.getElementById("inbox-list");
+      const empty = document.getElementById("empty-inbox");
+      const pend = pendingInbox();
+      document.getElementById("badge-inbox").textContent = pend.length;
+      if (currentTab !== "inbox") return;
+      list.innerHTML = "";
+      empty.style.display = pend.length ? "none" : "block";
+      pend.forEach(it => {
+        const id = String(it.sourceId).replace(/[^A-Za-z0-9_-]/g, "_");
+        const card = document.createElement("div");
+        card.className = "inbox-card" + (it.source === "calendar" ? " cal" : "");
+        card.id = "ib-" + id;
+        const kind = it.kind === "project" ? "project" : "task";
+        card.innerHTML = `
+          <div class="ic-top">
+            <span class="ic-src">${it.source === "calendar" ? "&#x1F4C5; Calendar" : "&#x2709; Email"}${it.from ? " &middot; " + escapeHtml(it.from) : ""}${it.when ? " &middot; " + escapeHtml(it.when) : ""}</span>
+            ${it.link ? `<a class="ic-link" href="${escapeHtml(it.link)}" target="_blank" rel="noopener">Open ${it.source === "calendar" ? "event" : "email"}</a>` : ""}
+          </div>
+          <input class="ic-title" id="ib-title-${id}" value="${escapeHtml(it.title || "")}" />
+          <div class="ic-reason">${escapeHtml(it.reason || it.detail || "")}</div>
+          <div class="ic-fields">
+            <label>Create as<select id="ib-kind-${id}" onchange="document.getElementById('ib-client-${id}').parentElement.style.display=this.value==='project'?'flex':'none'"><option value="task"${kind === "task" ? " selected" : ""}>Task</option><option value="project"${kind === "project" ? " selected" : ""}>Project</option></select></label>
+            <label>Project<select id="ib-proj-${id}">${inboxProjectOptions(guessProjectId(it))}</select></label>
+            <label style="display:${kind === "project" ? "flex" : "none"};">Client<input type="text" id="ib-client-${id}" value="${escapeHtml(it.customer || "")}" list="customerNames" /></label>
+            <label>Due<input type="date" id="ib-due-${id}" value="${it.dueDate || ""}" /></label>
+            <label>Pri<input type="number" min="1" max="10" id="ib-pri-${id}" value="${it.priority || ""}" style="width:56px;" /></label>
+            <label>Person<input type="text" id="ib-person-${id}" value="${escapeHtml(it.person || "")}" list="followUpPersons" style="width:110px;" /></label>
+            <div class="ic-actions">
+              <button class="ic-accept" onclick="acceptInbox('${escapeHtml(String(it.sourceId))}')">Accept</button>
+              <button class="ic-dismiss" onclick="dismissInbox('${escapeHtml(String(it.sourceId))}')">Dismiss</button>
+            </div>
+          </div>`;
+        list.appendChild(card);
+      });
+    }
+    function acceptInbox(sourceId) {
+      const it = inboxItems.find(x => String(x.sourceId) === sourceId); if (!it) return;
+      const id = sourceId.replace(/[^A-Za-z0-9_-]/g, "_");
+      const g = s => document.getElementById("ib-" + s + "-" + id);
+      const title = g("title").value.trim() || it.title || "Untitled";
+      const kind = g("kind").value; const pid = g("proj").value; const due = g("due").value || null;
+      const pv = parseInt(g("pri").value); const pri = (pv >= 1 && pv <= 10) ? pv : null; const person = g("person").value.trim() || null;
+      const note = [it.reason || it.detail || "", it.link ? "Source: " + it.link : ""].filter(Boolean).join("\n");
+      const today = todayStr();
+      if (kind === "project") {
+        const client = g("client").value.trim() || it.customer || "";
+        const p = { id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: title, client, category: "Inflow-ToDo's", priority: pri || 5, stage: "Active",
+          deadline: due, lastActivity: today, status: it.detail || it.reason || "", next: "", notes: note, keys: [client, title].filter(s => s && s.length >= 3).slice(0, 2),
+          links: it.link ? [{ label: it.source === "calendar" ? "Source event" : "Source email", path: it.link }] : [], progress: null, createdDate: today, doneDate: null };
+        projects.unshift(p);
+      } else {
+        const p = projects.find(x => x.id === pid) || null;
+        todos.push({ text: title, done: false, dueDate: due, priority: pri || (p ? p.priority : null), projectType: p ? p.name.split(" (")[0].slice(0, 40) : (it.project || null), followUpPerson: person, reminderDate: null,
+          tags: [it.source === "calendar" ? "calendar" : "email"], subtasks: [], notes: note, contactPhone: "", contactEmail: it.fromEmail || "", customerName: p ? p.client.split(" (")[0].slice(0, 40) : (it.customer || ""), locationDetails: "",
+          attachments: [], category: p ? p.category : "Inflow-ToDo's", completedTimestamp: null, isSales: !!it.isSales, salesStage: it.isSales ? "Lead" : "", dealValue: null, closeDate: null, isInvoiced: false,
+          invoiceNumber: "", invoiceDate: null, invoiceAmount: null, paymentDueDate: null, projectId: p ? p.id : null, updatedTimestamp: new Date().toISOString() });
+        if (p) p.lastActivity = today;
+      }
+      inboxDecisions[sourceId] = { d: "accepted", at: new Date().toISOString(), text: title, kind };
+      save(); updateDataLists(); render();
+    }
+    function dismissInbox(sourceId) {
+      inboxDecisions[sourceId] = { d: "dismissed", at: new Date().toISOString() };
+      save(); render();
+    }
+    function dismissAllInbox() {
+      const pend = pendingInbox(); if (!pend.length) return;
+      if (!confirm("Dismiss all " + pend.length + " suggestions?")) return;
+      pend.forEach(it => inboxDecisions[it.sourceId] = { d: "dismissed", at: new Date().toISOString() });
+      save(); render();
+    }
+    // prune decisions older than 90 days so the map does not grow forever
+    (function pruneDecisions() { const cut = Date.now() - 90 * 86400000; for (const k in inboxDecisions) { if (new Date(inboxDecisions[k].at || 0).getTime() < cut) delete inboxDecisions[k]; } })();
 
     // ===================== Projects =====================
     function projectOf(todo) {
@@ -3314,6 +3461,7 @@
       document.getElementById("badge-projects").textContent = projects.filter(p => p.stage !== "Done" && inCat(p)).length;
 
       updateCategoryBar();
+      renderInbox();
       renderProjects();
       renderActive();
       renderSales();
@@ -4348,6 +4496,8 @@
     updateDataLists();
     render();
     checkReminders();
+    loadInbox(true);
+    window.addEventListener("focus", () => loadInbox(false));
     if (HOSTED) { initDropbox(); } else { initSync(); }
   </script>
 </body>
