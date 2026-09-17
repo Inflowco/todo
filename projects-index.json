@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-14T17:00:31Z",
+ "generatedAt": "2026-09-17T14:01:22Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -53,7 +53,7 @@
     "Metro Transit",
     "OHB"
    ],
-   "next": "Peter to review: rate code/premise, receiver plates, FF dryer on which GA55+, FSX flow test air need and min pressure, P-1 regulator setting, CDI flow readings "
+   "next": "Peter: review d0.2 (checklist section 5), attach the d0.2 PDF to the Gmail draft and send before Monday; at the 9/21 meeting ask for rate code/premise, Jeff's t"
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -131,7 +131,7 @@
    "keys": [
     "Pioneer"
    ],
-   "next": "Confirm rate on bill, receiver gallons, blue canister filters in service, dryer drain. Review ECO $ mapping."
+   "next": "Review d0.3 PDF against the checklist; confirm rate on bill, receiver gallons, blue canister filters, dryer drain, ECO 4 rebate basis; then Version 1.0 and send"
   },
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -172,7 +172,7 @@
     "argon",
     "Argon"
    ],
-   "next": "Peter reviews d0.1, sends to Kelly; then: instrument nameplate/units, Sept fill invoice (CF per inch), Anova export, relief setting, cylinder invoices, post rep"
+   "next": "Send Draft 0.2 PDF to Kelly (Gmail draft not yet created); text Kelly for 9/18 and 9/21 tank photos + production log, instrument nameplate, Anova export, cylind"
   },
   {
    "id": "p14-fluid-power-systems-text",
@@ -374,13 +374,13 @@
    "name": "compressedair.ai platform",
    "short": "compressedair.ai platform",
    "client": "Inflow internal",
-   "stage": "Parked",
-   "priority": 8,
+   "stage": "Active",
+   "priority": 6,
    "keys": [
     "compressedair",
     "CAAI"
    ],
-   "next": "Resume when time allows."
+   "next": "Decide hosting (Node + PostgreSQL vs static public pages); merge the two builds; point compressedair.ai at the platform page when the new site deploys (target O"
   },
   {
    "id": "p29-cast-toolkit-compressed",
@@ -407,7 +407,41 @@
     "todo",
     "ToDo"
    ],
-   "next": "Keep using. Add features on request."
+   "next": "Authorize Claude GitHub App on Inflowco/todo, then run the Inbox triage routine. Enter Dropbox app key in Edge. Confirm Sync: on in local todo.html."
+  },
+  {
+   "id": "p31-inert-gas-program",
+   "name": "Inert gas program: argon and nitrogen system reviews (Twin Cities sales)",
+   "short": "Inert gas program: argon and nitrogen system reviews",
+   "client": "Program (A list: Abbott x3, Boston Sci, Andersen, RBA, GLCC, 3M CG, SkyWater, UofMN)",
+   "stage": "Active",
+   "priority": 3,
+   "keys": [
+    "Inert gas",
+    "argon program",
+    "nitrogen program",
+    "N2 review",
+    "Ar review"
+   ],
+   "next": "Peter: review fees and the A list; get Abbott reference permission when NB argon goes to V1.0; raise argon/N2 in every scheduled CASS meeting; first emails to B"
+  },
+  {
+   "id": "p32-brand-website-2027",
+   "name": "Inflow brand, website and marketing 2027 (award record, Ar/N2 practice, compressedair.ai)",
+   "short": "Inflow brand, website and marketing 2027",
+   "client": "Inflow internal",
+   "stage": "Active",
+   "priority": 4,
+   "keys": [
+    "website",
+    "brand",
+    "marketing",
+    "sell sheet",
+    "award badge",
+    "linecard",
+    "inflowco.com"
+   ],
+   "next": "Peter: scan handwritten notes (air and other gas ideas) into a Notes folder for OCR and an ideas list; decide sensor/data collection resale or own kit under the"
   }
  ]
 }
