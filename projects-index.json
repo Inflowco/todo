@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-17T14:01:22Z",
+ "generatedAt": "2026-09-18T13:27:25Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -172,7 +172,7 @@
     "argon",
     "Argon"
    ],
-   "next": "Send Draft 0.2 PDF to Kelly (Gmail draft not yet created); text Kelly for 9/18 and 9/21 tank photos + production log, instrument nameplate, Anova export, cylind"
+   "next": "Take tank photos Fri 9/18 pm and Sun night 9/20; enter in Tank level log; compare with 15.7 CF/h upper bound. Watch for Kelly's reply; push quick wins (cap whip"
   },
   {
    "id": "p14-fluid-power-systems-text",
@@ -442,6 +442,23 @@
     "inflowco.com"
    ],
    "next": "Peter: scan handwritten notes (air and other gas ideas) into a Notes folder for OCR and an ideas list; decide sensor/data collection resale or own kit under the"
+  },
+  {
+   "id": "p33-andersen-rba-cg2-load-check",
+   "name": "Andersen RBA CG2 Load Check (3 x 100 HP, Cottage Grove)",
+   "short": "Andersen RBA CG2 Load Check",
+   "client": "Andersen Windows",
+   "stage": "Quote sent",
+   "priority": 2,
+   "keys": [
+    "CG2",
+    "Cottage Grove CG2",
+    "RBA",
+    "Renewal by Andersen",
+    "load check",
+    "LC46283"
+   ],
+   "next": "Peter: review PDF, send draft to Steve. Then schedule install visit with CG2 facilities contact, 14 day window, pickup, summary within 5 business days."
   }
  ]
 }
