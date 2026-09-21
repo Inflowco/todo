@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-21T15:52:41Z",
+ "generatedAt": "2026-09-21T16:08:11Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -53,7 +53,7 @@
     "Metro Transit",
     "OHB"
    ],
-   "next": "Send the leak list Gmail draft to Ken (cc Matt, Jeff). Peter: review d0.6; decide whether to send it now or wait for the final. Build the side scope costing Opt"
+   "next": "Send the leak list Gmail draft to Ken (cc Matt, Jeff). Peter: overwrite the Option A / B budgets and Xcel figures in rows 2070 / 2071 (or say OK), confirm the r"
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -172,7 +172,7 @@
     "argon",
     "Argon"
    ],
-   "next": "Mon 10 am: walk Kelly through Draft 0.3 (One Page Summary first); ask for instrument nameplate/units, relief setting + Anova export via Linde, Sept fill invoice"
+   "next": "Mon 9/28 10 am: walk Kelly through Draft 0.3 (One Page Summary first); ask for instrument nameplate/units, relief setting + Anova export via Linde, Sept fill in"
   },
   {
    "id": "p14-fluid-power-systems-text",
