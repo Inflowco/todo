@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-21T01:42:30Z",
+ "generatedAt": "2026-09-21T15:52:41Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -53,7 +53,7 @@
     "Metro Transit",
     "OHB"
    ],
-   "next": "Peter: review d0.5 (checklist section 5), attach the d0.5 PDF to the Gmail draft and send before Monday; at the 9/21 meeting ask for rate code/premise, Jeff's t"
+   "next": "Send the leak list Gmail draft to Ken (cc Matt, Jeff). Peter: review d0.6; decide whether to send it now or wait for the final. Build the side scope costing Opt"
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -99,13 +99,13 @@
    "name": "Xcel OID tracker",
    "short": "Xcel OID tracker",
    "client": "Inflow internal",
-   "stage": "Active",
+   "stage": "Waiting",
    "priority": 3,
    "keys": [
     "Xcel",
     "OID"
    ],
-   "next": "Correct the 8/31 list sent to Shari. Tell the CPA how to tag Xcel deposits. Reconcile the tracker to the bank."
+   "next": "Watch US Bank for $479.10, $3,630.15, $533.40, $2,900.00 deposits. Follow up with Shari if no reply by 10/2. Escalate rows 6, 8, 10 mid October. Brief the CPA o"
   },
   {
    "id": "p09-uofmn-st-paul-cass",
@@ -172,7 +172,7 @@
     "argon",
     "Argon"
    ],
-   "next": "Take tank photos Fri 9/18 pm and Sun night 9/20; enter in Tank level log; compare with 15.7 CF/h upper bound. Watch for Kelly's reply; push quick wins (cap whip"
+   "next": "Mon 10 am: walk Kelly through Draft 0.3 (One Page Summary first); ask for instrument nameplate/units, relief setting + Anova export via Linde, Sept fill invoice"
   },
   {
    "id": "p14-fluid-power-systems-text",
@@ -325,7 +325,7 @@
     "3M CG",
     "Cottage Grove"
    ],
-   "next": "Leak list still pending. JHF quotes."
+   "next": "Finish the leak walk (CHEM group, 16/17/19, 65/116, 70, 92, 143 w/ fall restraint, WWT, 888; finish 101/110 outside, 102 DMZ/CAPS, 112); confirm skip reasons an"
   },
   {
    "id": "p25-andersen-bayport-cass-b2",
@@ -459,6 +459,21 @@
     "LC46283"
    ],
    "next": "Peter: review PDF, send draft to Steve. Then schedule install visit with CG2 facilities contact, 14 day window, pickup, summary within 5 business days."
+  },
+  {
+   "id": "p34-aw-des-moines-cass-ds",
+   "name": "AW Des Moines CASS-DS (Walnut + Dixon, 2 x 2 Sullair)",
+   "short": "AW Des Moines CASS-DS",
+   "client": "Andersen Windows (Steve Plachinski; site Ryan Lenz)",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "Des Moines",
+    "DesMoines",
+    "Dixon",
+    "Walnut"
+   ],
+   "next": "Send removal email to Ryan; watch for tracking number; download loggers on arrival; leak lists from MidAmerican (Walnut) still pending; then CASS-DS workbook re"
   }
  ]
 }
