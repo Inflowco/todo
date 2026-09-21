@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-21T16:08:11Z",
+ "generatedAt": "2026-09-21T16:40:06Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -53,7 +53,7 @@
     "Metro Transit",
     "OHB"
    ],
-   "next": "Send the leak list Gmail draft to Ken (cc Matt, Jeff). Peter: overwrite the Option A / B budgets and Xcel figures in rows 2070 / 2071 (or say OK), confirm the r"
+   "next": "Send the leak list Gmail draft to Ken (cc Matt, Jeff). Peter: overwrite the budgetary unit costs and option budgets in rows 2070 / 2071 (N, O, AH) or say OK; as"
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -172,7 +172,7 @@
     "argon",
     "Argon"
    ],
-   "next": "Mon 9/28 10 am: walk Kelly through Draft 0.3 (One Page Summary first); ask for instrument nameplate/units, relief setting + Anova export via Linde, Sept fill in"
+   "next": "ATTACH d0.3 PDF to the Gmail draft in the 'Argon project' thread and send. Save Kelly's JH Foster outside piping quote PDF (9-18-26 283849614-01) to the ARGON F"
   },
   {
    "id": "p14-fluid-power-systems-text",
