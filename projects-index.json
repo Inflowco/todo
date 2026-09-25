@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-21T16:40:06Z",
+ "generatedAt": "2026-09-25T17:46:12Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -12,7 +12,7 @@
     "Abbott - Mtka",
     "Mtka"
    ],
-   "next": "Peter review pass: rate codes (A15 vs A14 Secondary from the bill), B7 208 V basis, drain timer settings, ECO $ budgets, B4 recip auto start and CDI meters, B8 "
+   "next": "Send the meeting request (Gmail draft); build the per system decks right before the meeting (9/22 campus deck = number source); get leak repair status in the ro"
   },
   {
    "id": "p02-gf-lakeville-dc-cass-60",
@@ -78,7 +78,7 @@
     "MCES",
     "Met Council"
    ],
-   "next": "Confirm rate code and premise #, ZR 315 serials, tie valve between systems, P5 calibration, tank gallons. Review budgetary ECO $. 8/17 draft docs still carry th"
+   "next": "Peter review: summary guide d0.1 (MCES-Metro-Summary-Guide-Next-Session-d0.1.docx) then send to Kevin, John T, John G; resend the final leak worksheet (page bre"
   },
   {
    "id": "p07-abbott-plymouth-water-ha",
@@ -99,13 +99,13 @@
    "name": "Xcel OID tracker",
    "short": "Xcel OID tracker",
    "client": "Inflow internal",
-   "stage": "Waiting",
+   "stage": "Active",
    "priority": 3,
    "keys": [
     "Xcel",
     "OID"
    ],
-   "next": "Watch US Bank for $479.10, $3,630.15, $533.40, $2,900.00 deposits. Follow up with Shari if no reply by 10/2. Escalate rows 6, 8, 10 mid October. Brief the CPA o"
+   "next": "Send the two Gmail drafts: thank-you reply to Shari (confirm 6 and 8 still stuck, ask for OID/check numbers when cleared) and note to Kevin Bengtson (OID6035916"
   },
   {
    "id": "p09-uofmn-st-paul-cass",
@@ -172,7 +172,7 @@
     "argon",
     "Argon"
    ],
-   "next": "ATTACH d0.3 PDF to the Gmail draft in the 'Argon project' thread and send. Save Kelly's JH Foster outside piping quote PDF (9-18-26 283849614-01) to the ARGON F"
+   "next": "Send Kelly the d0.4 PDF before Monday (attach by hand) or present live. Mon 9/28 10 am Teams: walk through from the One Page Summary; ask for instrument namepla"
   },
   {
    "id": "p14-fluid-power-systems-text",
@@ -244,8 +244,8 @@
   },
   {
    "id": "p19-aw-garland-tx-leak-study",
-   "name": "AW Garland TX leak study",
-   "short": "AW Garland TX leak study",
+   "name": "AW Garland TX CA study + leaks",
+   "short": "AW Garland TX CA study + leaks",
    "client": "AW / Garland",
    "stage": "Active",
    "priority": 3,
@@ -253,7 +253,7 @@
     "Garland",
     "AW "
    ],
-   "next": "Burst hose safety flag to client. Final report."
+   "next": "Send removal email w/ PDFs. Get VSD off/on times from Dejan. Loggers back ~10/8, crunch data, draft report review target wk of 10/26. Leak repair status by tag."
   },
   {
    "id": "p20-uofmn-east-bank-hsl-camp",
@@ -317,7 +317,7 @@
    "name": "3M Cottage Grove CASS",
    "short": "3M Cottage Grove CASS",
    "client": "3M (JHF quoting)",
-   "stage": "Waiting",
+   "stage": "Active",
    "priority": 3,
    "keys": [
     "3M-CG",
@@ -325,7 +325,7 @@
     "3M CG",
     "Cottage Grove"
    ],
-   "next": "Finish the leak walk (CHEM group, 16/17/19, 65/116, 70, 92, 143 w/ fall restraint, WWT, 888; finish 101/110 outside, 102 DMZ/CAPS, 112); confirm skip reasons an"
+   "next": "Send the reply to Mike Rogers (draft in Gmail). Week of 9/28: finish every central campus grid building (16, 70 return, 101 south outside + 110 east outside, 10"
   },
   {
    "id": "p25-andersen-bayport-cass-b2",
@@ -448,7 +448,7 @@
    "name": "Andersen RBA CG2 Load Check (3 x 100 HP, Cottage Grove)",
    "short": "Andersen RBA CG2 Load Check",
    "client": "Andersen Windows",
-   "stage": "Quote sent",
+   "stage": "Active",
    "priority": 2,
    "keys": [
     "CG2",
@@ -474,6 +474,22 @@
     "Walnut"
    ],
    "next": "Send removal email to Ryan; watch for tracking number; download loggers on arrival; leak lists from MidAmerican (Walnut) still pending; then CASS-DS workbook re"
+  },
+  {
+   "id": "p35-wm-tcmrf-cass-700hp",
+   "name": "WM Twin Cities MRF CASS (2 x 350 HP + 2 small)",
+   "short": "WM Twin Cities MRF CASS",
+   "client": "Waste Management (Andy Gregor; Xcel rep Mike Swanson)",
+   "stage": "Sales",
+   "priority": 2,
+   "keys": [
+    "WM",
+    "Waste Management",
+    "TCMRF",
+    "Gregor",
+    "1800 Broadway"
+   ],
+   "next": "Send proposal + application to Andy Gregor cc Mike Swanson; Andy signs, Mike fills premise and rate code; on preapproval schedule the logger install (4 amp chan"
   }
  ]
 }
