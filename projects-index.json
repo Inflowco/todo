@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T17:43:10Z",
+ "generatedAt": "2026-09-30T12:42:23Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -16,7 +16,7 @@
   },
   {
    "id": "p02-gf-lakeville-dc-cass-60",
-   "name": "GF+ Lakeville DC CASS (60 HP: 2x HV-22, IR, IR 15 HP new)",
+   "name": "GF+ Lakeville DC CASS (HV22 x2, IR RS22i 30 HP, IR R11n 15 HP VSD)",
    "short": "GF+ Lakeville DC CASS",
    "client": "GF Building Flow Solutions / Uponor (Betsy Schultz, Bill Bethke)",
    "stage": "Active",
@@ -26,7 +26,7 @@
     "Uponor",
     "Lakeville"
    ],
-   "next": "Send the draft to Betsy. Get Bill's cell, floor plan, Dakota bill/premise. Install 4 kW + 2 pressure loggers 9/15; pickup about 9/29; leak walk on pickup day if"
+   "next": "9/29 pickup: read loggers (check AC-04 CT scaling, 57.87 A at install), find HV22 #2, R11n 71,114 h question, RS22i location and header tie, tank gallons, drain"
   },
   {
    "id": "p03-geotek-g1-cass-100-to-15",
@@ -295,7 +295,7 @@
     "Plant Eff",
     "CABP"
    ],
-   "next": "Sponsor, Case B $/hr, Case A hours down. Rehearse. Talk is Thu Oct 15, 8 am."
+   "next": "Peter: open Hidden-kWh-Deck-v0.2.pptx, review, attach to the Gmail draft to Brooke and send by Fri 10/2. Then sponsor name, Case A hours down, building kW from "
   },
   {
    "id": "p23-mx3-vidadash-ios-app",
@@ -490,6 +490,38 @@
     "1800 Broadway"
    ],
    "next": "Send proposal + application to Andy Gregor cc Mike Swanson; Andy signs, Mike fills premise and rate code; on preapproval schedule the logger install (4 amp chan"
+  },
+  {
+   "id": "p36-certainteed-shakopee-cass",
+   "name": "CertainTeed Shakopee CASS (400 HP)",
+   "short": "CertainTeed Shakopee CASS",
+   "client": "CertainTeed (Travis Richins; Xcel rep Collin Trankel)",
+   "stage": "Sales",
+   "priority": 2,
+   "keys": [
+    "CertainTeed",
+    "Certainteed",
+    "Richins",
+    "Trankel",
+    "Shakopee"
+   ],
+   "next": "Peter reviews, attaches the two PDFs and sends; Travis signs the application; Collin submits for preapproval; then schedule the logger install (14 days) and lea"
+  },
+  {
+   "id": "p37-boston-sci-wl3-wl4-cass",
+   "name": "Boston Sci Weaver Lake CASS, Building 3 (50 HP) and Building 4 (700 HP)",
+   "short": "Boston Sci Weaver Lake CASS, Building 3",
+   "client": "Boston Scientific (Lucas Berry; Xcel rep Kevin Bengtson)",
+   "stage": "Sales",
+   "priority": 2,
+   "keys": [
+    "WL3",
+    "WL4",
+    "Building 3",
+    "Building 4",
+    "B3 & B4"
+   ],
+   "next": "Peter reviews, attaches the four PDFs and sends; Lucas signs both applications; Kevin adds premise and rate code and submits for preapproval; then logger instal"
   }
  ]
 }
