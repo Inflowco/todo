@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T12:42:23Z",
+ "generatedAt": "2026-09-30T20:32:16Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -26,7 +26,7 @@
     "Uponor",
     "Lakeville"
    ],
-   "next": "9/29 pickup: read loggers (check AC-04 CT scaling, 57.87 A at install), find HV22 #2, R11n 71,114 h question, RS22i location and header tie, tank gallons, drain"
+   "next": "Peter: gauge readings from the 9/29 field sheet to settle P2; leak log and demand counts to type; pickup photos to GF+photos; HV22 CAGI sheet. Then CASS workboo"
   },
   {
    "id": "p03-geotek-g1-cass-100-to-15",
@@ -493,7 +493,7 @@
   },
   {
    "id": "p36-certainteed-shakopee-cass",
-   "name": "CertainTeed Shakopee CASS (400 HP)",
+   "name": "CertainTeed Shakopee CASS (500 HP)",
    "short": "CertainTeed Shakopee CASS",
    "client": "CertainTeed (Travis Richins; Xcel rep Collin Trankel)",
    "stage": "Sales",
