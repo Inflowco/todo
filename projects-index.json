@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T20:32:16Z",
+ "generatedAt": "2026-10-02T15:48:29Z",
  "projects": [
   {
    "id": "p01-abbott-minnetonka-cass-b",
@@ -26,7 +26,7 @@
     "Uponor",
     "Lakeville"
    ],
-   "next": "Peter: gauge readings from the 9/29 field sheet to settle P2; leak log and demand counts to type; pickup photos to GF+photos; HV22 CAGI sheet. Then CASS workboo"
+   "next": "Peter: confirm the P2 logger was serial 95233 and check the 9/29 gauges against the corrected P2; leak log and demand counts to type; pickup photos to GF+photos"
   },
   {
    "id": "p03-geotek-g1-cass-100-to-15",
@@ -53,7 +53,7 @@
     "Metro Transit",
     "OHB"
    ],
-   "next": "Waiting on the rate code / premise from Metro Transit (requested 9/28). Peter: overwrite the budgetary unit costs and option budgets in rows 2070 / 2071 or say "
+   "next": "Fri 10/9 9:00 to 12:00 working block (calendar): Waiting on the rate code / premise from Metro Transit (requested 9/28). Peter: overwrite the budgetary unit cos"
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -217,16 +217,18 @@
   },
   {
    "id": "p17-abbott-woodbury-road-com",
-   "name": "Abbott Woodbury Road compressor design proposal",
-   "short": "Abbott Woodbury Road compressor design proposal",
+   "name": "Abbott Woodridge compressor design (CD46260.1)",
+   "short": "Abbott Woodridge compressor design",
    "client": "Abbott",
-   "stage": "Waiting",
+   "stage": "Active",
    "priority": 4,
    "keys": [
     "Woodbury",
-    "CD46260"
+    "CD46260",
+    "Woodridge",
+    "WDRG"
    ],
-   "next": "Awaiting Abbott response. Edit xlsx via Excel only."
+   "next": "Peter reviews and sends the Gmail draft (check the offered dates). Then: confirm PO received, book the kickoff call, start desktop sizing for two matched oil-fr"
   },
   {
    "id": "p18-boston-sci-wl2-cass-drye",
@@ -253,7 +255,7 @@
     "Garland",
     "AW "
    ],
-   "next": "Send removal email w/ PDFs. Get VSD off/on times from Dejan. Loggers back ~10/8, crunch data, draft report review target wk of 10/26. Leak repair status by tag."
+   "next": "Send removal email. Loggers due ~10/7-9 (calendar block Thu 10/8). Read out, analysis wk of 10/12, Draft 0.1 wk of 10/19, review wk of 10/26. Ask Steve utility/"
   },
   {
    "id": "p20-uofmn-east-bank-hsl-camp",
@@ -473,7 +475,7 @@
     "Dixon",
     "Walnut"
    ],
-   "next": "Send removal email to Ryan; watch for tracking number; download loggers on arrival; leak lists from MidAmerican (Walnut) still pending; then CASS-DS workbook re"
+   "next": "Download Walnut compressor A and Dixon COMP 2 loggers (Dixon COMP 2 may share the load); get MidAmerican rate codes and bills (not Alliant); ask Air Mach for LS"
   },
   {
    "id": "p35-wm-tcmrf-cass-700hp",
@@ -522,6 +524,25 @@
     "B3 & B4"
    ],
    "next": "Peter reviews, attaches the four PDFs and sends; Lucas signs both applications; Kevin adds premise and rate code and submits for preapproval; then logger instal"
+  },
+  {
+   "id": "p38-inflow-books-taxes",
+   "name": "Inflow Books and Taxes (DIY, replaces DHA CPAs)",
+   "short": "Inflow Books and Taxes",
+   "client": "Inflow Corp (Peter)",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "Inflow Books",
+    "1120-S",
+    "DHA",
+    "QuickBooks",
+    "QBO",
+    "taxes",
+    "books",
+    "TAX:"
+   ],
+   "next": "Send the DHA termination email (Gmail draft to AnneMarie and Ryan); then within 10 days of the end date move QBO billing and the ADP account to Inflow; import q"
   }
  ]
 }
