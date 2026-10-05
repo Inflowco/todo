@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-05T17:00:57Z",
+ "generatedAt": "2026-10-05T17:07:07Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -82,7 +82,7 @@
     "Abbott - Mtka",
     "Mtka"
    ],
-   "next": "Send the meeting request (Gmail draft); build the per system decks right before the meeting (9/22 campus deck = number source); get leak repair status in the ro"
+   "next": "Mon night: read the three d0.1 summaries and the campus deck, change lists + calls (rates, B7 voltage, headline ECO sets, budgets). Tue: build B4/B8/B7 decks fr"
   },
   {
    "id": "p16-pio-partners-peer-listen",
@@ -311,7 +311,7 @@
     "Dixon",
     "Walnut"
    ],
-   "next": "Peter sends the bill request to Steve; enter EMCO leak zones in the Walnut leak list (row 14 placeholder = 219 cfm); MidAmerican rate into Phase 1 B9/B10/B13/B1"
+   "next": "Calendar work session Thu 10/22/26 8:00 to 10:45: both reports to Draft 0.2 (rate from the bill, EMCO zones in the Walnut leak list, Dixon pressure rating, ECO "
   },
   {
    "id": "p37-boston-sci-wl3-wl4-cass",
@@ -434,7 +434,7 @@
     "Woodridge",
     "WDRG"
    ],
-   "next": "Peter reviews and sends the Gmail draft (check the offered dates). Then: confirm PO received, book the kickoff call, start desktop sizing for two matched oil-fr"
+   "next": "Justin on vacation until about 10/13; calendar follow up Tue 10/13 9 am (confirm PO, book kickoff call, set site visit wk of 10/19, ask for air quality target +"
   },
   {
    "id": "p14-fluid-power-systems-text",
@@ -543,6 +543,23 @@
     "Blake"
    ],
    "next": "Decide on close-out. Collect from Blake."
+  },
+  {
+   "id": "p39-customer-database",
+   "name": "Customer database and Xcel market map (sales, marketing, forecasting)",
+   "short": "Customer database and Xcel market map",
+   "client": "Inflow internal",
+   "stage": "Active",
+   "priority": 3,
+   "keys": [
+    "customer database",
+    "CRM",
+    "prospect",
+    "eligib",
+    "market map",
+    "Xcel top 800"
+   ],
+   "next": "Review the Accounts tab (relationship and eligibility flags), fix any wrong merges in aliases.py, then run the Q4 eligibility campaign: 29 active or recent clie"
   }
  ]
 }
