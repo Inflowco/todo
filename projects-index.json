@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-05T21:59:00Z",
+ "generatedAt": "2026-10-05T22:02:39Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -651,6 +651,22 @@
     "Desmond phone"
    ],
    "next": "Log in to myAT&T, check upgrade eligibility and trade in offers for both lines, decide models, order."
+  },
+  {
+   "id": "p40-smmpa-rochester-presentation",
+   "name": "SMMPA Rochester presentation to the ESR team (industrial recommissioning provider)",
+   "short": "SMMPA Rochester presentation to the ESR team",
+   "client": "SMMPA (Brian Hammarsten, ESR; 3 ESRs + 1 manager)",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "SMMPA",
+    "Hammarsten",
+    "Rochester",
+    "recommissioning",
+    "retrocommissioning"
+   ],
+   "next": "Reply to Brian with a day in the week of Nov 9 or Nov 17; save his 5 PDFs to the project folder; build the deck in the Oct work block (recommissioning angle, SM"
   }
  ]
 }
