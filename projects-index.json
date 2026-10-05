@@ -1,84 +1,19 @@
 {
- "generatedAt": "2026-10-02T15:48:29Z",
+ "generatedAt": "2026-10-05T17:00:57Z",
  "projects": [
   {
-   "id": "p01-abbott-minnetonka-cass-b",
-   "name": "Abbott Minnetonka CASS (B4 30 HP, B7 10 HP, B8 50 HP)",
-   "short": "Abbott Minnetonka CASS",
-   "client": "Abbott (Mr. Ellingson; Xcel rep Bella Halstead)",
-   "stage": "Review",
-   "priority": 2,
-   "keys": [
-    "Abbott - Mtka",
-    "Mtka"
-   ],
-   "next": "Send the meeting request (Gmail draft); build the per system decks right before the meeting (9/22 campus deck = number source); get leak repair status in the ro"
-  },
-  {
-   "id": "p02-gf-lakeville-dc-cass-60",
-   "name": "GF+ Lakeville DC CASS (HV22 x2, IR RS22i 30 HP, IR R11n 15 HP VSD)",
-   "short": "GF+ Lakeville DC CASS",
-   "client": "GF Building Flow Solutions / Uponor (Betsy Schultz, Bill Bethke)",
+   "id": "p11-andersen-bayport-b2-m-v",
+   "name": "Andersen Bayport B2 M&V (pre-Xcel monitoring)",
+   "short": "Andersen Bayport B2 M&V",
+   "client": "Andersen Windows",
    "stage": "Active",
    "priority": 1,
    "keys": [
-    "GF+",
-    "Uponor",
-    "Lakeville"
+    "M&V",
+    "MV46259",
+    "PMV46273"
    ],
-   "next": "Peter: confirm the P2 logger was serial 95233 and check the 9/29 gauges against the corrected P2; leak log and demand counts to type; pickup photos to GF+photos"
-  },
-  {
-   "id": "p03-geotek-g1-cass-100-to-15",
-   "name": "Geotek G1 CASS (100 to 150 HP, 3 screws)",
-   "short": "Geotek G1 CASS",
-   "client": "Geotek (Isaac Bowe)",
-   "stage": "Active",
-   "priority": 1,
-   "keys": [
-    "Geotek",
-    "GeoTek"
-   ],
-   "next": "Ask Isaac for G1 layout and air map, compressor plates. Ask Marty Walsh for the G1 rate. Install 3 kW + 2 to 3 pressure loggers 9/15, leave by 12:15 for Lakevil"
-  },
-  {
-   "id": "p04-metro-transit-ohb-cass-m",
-   "name": "Metro Transit OHB CASS (main 2x 75 HP + soot 30 HP)",
-   "short": "Metro Transit OHB CASS",
-   "client": "Metro Transit (Jeff Freeman)",
-   "stage": "Review",
-   "priority": 2,
-   "keys": [
-    "MetroTransit",
-    "Metro Transit",
-    "OHB"
-   ],
-   "next": "Fri 10/9 9:00 to 12:00 working block (calendar): Waiting on the rate code / premise from Metro Transit (requested 9/28). Peter: overwrite the budgetary unit cos"
-  },
-  {
-   "id": "p05-iwco-ch1-cass-3x-300-hp",
-   "name": "IWCO CH1 CASS (3x 300 HP)",
-   "short": "IWCO CH1 CASS",
-   "client": "IWCO (Nathan Caauwe)",
-   "stage": "Review",
-   "priority": 2,
-   "keys": [
-    "IWCO"
-   ],
-   "next": "Confirm rate code/account, QSI1500 motor HP (300 vs 350), PCV setpoint and highest point of use pressure, T3 size, tank inspection dates, drains. Review ECO $ p"
-  },
-  {
-   "id": "p06-mces-metro-plant-cass-40",
-   "name": "MCES Metro Plant CASS (408 + SMB systems)",
-   "short": "MCES Metro Plant CASS",
-   "client": "Met Council (MCES)",
-   "stage": "Review",
-   "priority": 2,
-   "keys": [
-    "MCES",
-    "Met Council"
-   ],
-   "next": "Peter review: summary guide d0.1 (MCES-Metro-Summary-Guide-Next-Session-d0.1.docx) then send to Kevin, John T, John G; resend the final leak worksheet (page bre"
+   "next": "Attach PDF and send to Steve. Revise MV46259.1 dates with Madison Currie (Xcel window now 11/9-11/20). Delete the three earlier drafts ($8,950, $10,850, $3,500)"
   },
   {
    "id": "p07-abbott-plymouth-water-ha",
@@ -95,17 +30,103 @@
    "next": "Peter: attach PLY_Abbott_Arrestor_Selection.xlsx to the short draft and send before Justin's OoO 9/14; delete the long draft, the corrupt-attachment draft and t"
   },
   {
-   "id": "p08-xcel-oid-tracker",
-   "name": "Xcel OID tracker",
-   "short": "Xcel OID tracker",
-   "client": "Inflow internal",
+   "id": "p02-gf-lakeville-dc-cass-60",
+   "name": "GF+ Lakeville DC CASS (HV22 x2, IR RS22i 30 HP, IR R11n 15 HP VSD)",
+   "short": "GF+ Lakeville DC CASS",
+   "client": "GF Building Flow Solutions / Uponor (Betsy Schultz, Bill Bethke)",
    "stage": "Active",
-   "priority": 3,
+   "priority": 1,
    "keys": [
-    "Xcel",
-    "OID"
+    "GF+",
+    "Uponor",
+    "Lakeville"
    ],
-   "next": "Send the two Gmail drafts: thank-you reply to Shari (confirm 6 and 8 still stuck, ask for OID/check numbers when cleared) and note to Kevin Bengtson (OID6035916"
+   "next": "SEND the Gmail draft update to Betsy/Bill/Steve/Dave/Shawn/Dean (10/2). Peter: confirm the P2 logger was serial 95233 and check the 9/29 gauges against the corr"
+  },
+  {
+   "id": "p03-geotek-g1-cass-100-to-15",
+   "name": "Geotek G1 CASS (100 to 150 HP, 3 screws)",
+   "short": "Geotek G1 CASS",
+   "client": "Geotek (Isaac Bowe)",
+   "stage": "Active",
+   "priority": 1,
+   "keys": [
+    "Geotek",
+    "GeoTek"
+   ],
+   "next": "Ask Isaac for G1 layout and air map, compressor plates. Ask Marty Walsh for the G1 rate. Install 3 kW + 2 to 3 pressure loggers 9/15, leave by 12:15 for Lakevil"
+  },
+  {
+   "id": "p22-bp-expo-talk-oct-15-2026",
+   "name": "BP Expo talk, Oct 15, 2026 (Hidden kWh Cost of Compressed Air)",
+   "short": "BP Expo talk, Oct 15, 2026",
+   "client": "BP Expo / Inflow",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "BP Expo",
+    "Expo",
+    "Plant Eff",
+    "CABP"
+   ],
+   "next": "Peter: open Hidden-kWh-Deck-v0.2.pptx, review, attach to the Gmail draft to Brooke and send by Fri 10/2. Then sponsor name, Case A hours down, building kW from "
+  },
+  {
+   "id": "p01-abbott-minnetonka-cass-b",
+   "name": "Abbott Minnetonka CASS (B4 30 HP, B7 10 HP, B8 50 HP)",
+   "short": "Abbott Minnetonka CASS",
+   "client": "Abbott (Mr. Ellingson; Xcel rep Bella Halstead)",
+   "stage": "Review",
+   "priority": 2,
+   "keys": [
+    "Abbott - Mtka",
+    "Mtka"
+   ],
+   "next": "Send the meeting request (Gmail draft); build the per system decks right before the meeting (9/22 campus deck = number source); get leak repair status in the ro"
+  },
+  {
+   "id": "p16-pio-partners-peer-listen",
+   "name": "Pio Partners peer listening class",
+   "short": "Pio Partners peer listening class",
+   "client": "Hill-Murray (Jenny)",
+   "stage": "Active",
+   "priority": 4,
+   "keys": [
+    "Pio Partners",
+    "Hill-Murray",
+    "peer"
+   ],
+   "next": "Build remaining session decks as sessions approach."
+  },
+  {
+   "id": "p12-abbott-new-brighton-cass",
+   "name": "Abbott New Brighton CASS (compressed air)",
+   "short": "Abbott New Brighton CASS",
+   "client": "Abbott",
+   "stage": "Active",
+   "priority": 1,
+   "keys": [
+    "New Breighton",
+    "New Brighton",
+    "Powerex"
+   ],
+   "next": "Attach V1.1 PDF and send draft. Ask JHF to add dry receiver alternate and confirm Class 1 final filtration. Leah expansion load data."
+  },
+  {
+   "id": "p35-wm-tcmrf-cass-700hp",
+   "name": "WM Twin Cities MRF CASS (2 x 350 HP + 2 small)",
+   "short": "WM Twin Cities MRF CASS",
+   "client": "Waste Management (Andy Gregor; Xcel rep Mike Swanson)",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "WM",
+    "Waste Management",
+    "TCMRF",
+    "Gregor",
+    "1800 Broadway"
+   ],
+   "next": "Send proposal + application to Andy Gregor cc Mike Swanson; Andy signs, Mike fills premise and rate code; on preapproval schedule the logger install (4 amp chan"
   },
   {
    "id": "p09-uofmn-st-paul-cass",
@@ -134,32 +155,78 @@
    "next": "Review d0.3 PDF against the checklist; confirm rate on bill, receiver gallons, blue canister filters, dryer drain, ECO 4 rebate basis; then Version 1.0 and send"
   },
   {
-   "id": "p11-andersen-bayport-b2-m-v",
-   "name": "Andersen Bayport B2 M&V (pre-Xcel monitoring)",
-   "short": "Andersen Bayport B2 M&V",
-   "client": "Andersen Windows",
-   "stage": "Active",
-   "priority": 1,
+   "id": "p05-iwco-ch1-cass-3x-300-hp",
+   "name": "IWCO CH1 CASS (3x 300 HP)",
+   "short": "IWCO CH1 CASS",
+   "client": "IWCO (Nathan Caauwe)",
+   "stage": "Review",
+   "priority": 2,
    "keys": [
-    "M&V",
-    "MV46259",
-    "PMV46273"
+    "IWCO"
    ],
-   "next": "Attach PDF and send to Steve. Revise MV46259.1 dates with Madison Currie (Xcel window now 11/9-11/20). Delete the three earlier drafts ($8,950, $10,850, $3,500)"
+   "next": "Confirm rate code/account, QSI1500 motor HP (300 vs 350), PCV setpoint and highest point of use pressure, T3 size, tank inspection dates, drains. Review ECO $ p"
   },
   {
-   "id": "p12-abbott-new-brighton-cass",
-   "name": "Abbott New Brighton CASS (compressed air)",
-   "short": "Abbott New Brighton CASS",
-   "client": "Abbott",
+   "id": "p32-brand-website-2027",
+   "name": "Inflow brand, website and marketing 2027 (award record, Ar/N2 practice, compressedair.ai)",
+   "short": "Inflow brand, website and marketing 2027",
+   "client": "Inflow internal",
    "stage": "Active",
-   "priority": 1,
+   "priority": 4,
    "keys": [
-    "New Breighton",
-    "New Brighton",
-    "Powerex"
+    "website",
+    "brand",
+    "marketing",
+    "sell sheet",
+    "award badge",
+    "linecard",
+    "inflowco.com"
    ],
-   "next": "Attach V1.1 PDF and send draft. Ask JHF to add dry receiver alternate and confirm Class 1 final filtration. Leah expansion load data."
+   "next": "Clock starts MON 9/21: Peter fills the printed decision sheet (Marketing folder) and hands it back; decisions + testimonial asks + registrar hunt Mon; content p"
+  },
+  {
+   "id": "p04-metro-transit-ohb-cass-m",
+   "name": "Metro Transit OHB CASS (main 2x 75 HP + soot 30 HP)",
+   "short": "Metro Transit OHB CASS",
+   "client": "Metro Transit (Jeff Freeman)",
+   "stage": "Review",
+   "priority": 2,
+   "keys": [
+    "MetroTransit",
+    "Metro Transit",
+    "OHB"
+   ],
+   "next": "Fri 10/9 9:00 to 12:00 working block (calendar): Waiting on the rate code / premise from Metro Transit (requested 9/28). Peter: overwrite the budgetary unit cos"
+  },
+  {
+   "id": "p33-andersen-rba-cg2-load-check",
+   "name": "Andersen RBA CG2 Load Check (3 x 100 HP, Cottage Grove)",
+   "short": "Andersen RBA CG2 Load Check",
+   "client": "Andersen Windows",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "CG2",
+    "Cottage Grove CG2",
+    "RBA",
+    "Renewal by Andersen",
+    "load check",
+    "LC46283"
+   ],
+   "next": "Peter: review PDF, send draft to Steve. Then schedule install visit with CG2 facilities contact, 14 day window, pickup, summary within 5 business days."
+  },
+  {
+   "id": "p25-andersen-bayport-cass-b2",
+   "name": "Andersen Bayport CASS (B2)",
+   "short": "Andersen Bayport CASS",
+   "client": "Andersen Windows",
+   "stage": "Review",
+   "priority": 3,
+   "keys": [
+    "Andersen",
+    "Bayport"
+   ],
+   "next": "Client review. M&V now tracked as its own row above."
   },
   {
    "id": "p13-abbott-new-brighton-argo",
@@ -173,62 +240,6 @@
     "Argon"
    ],
    "next": "Send Kelly the V1.0 PDF (attach by hand). Invoice ARG46216.1 $4,700. Follow up 1: moisture test visit after the outdoor copper + rebuilt test port are in servic"
-  },
-  {
-   "id": "p14-fluid-power-systems-text",
-   "name": "Fluid Power Systems textbook",
-   "short": "Fluid Power Systems textbook",
-   "client": "Inflow / Mkdocs",
-   "stage": "Active",
-   "priority": 5,
-   "keys": [
-    "Fluid Power",
-    "textbook",
-    "Mkdocs"
-   ],
-   "next": "Commit and deploy. Review new chapters."
-  },
-  {
-   "id": "p15-rust-oleum-bp-cass",
-   "name": "Rust-Oleum BP CASS",
-   "short": "Rust-Oleum BP CASS",
-   "client": "Rust-Oleum (Xcel reviewer Jerry Borchardt)",
-   "stage": "Waiting",
-   "priority": 3,
-   "keys": [
-    "Rust-Oleum",
-    "Rustoleum"
-   ],
-   "next": "Attach the diagram PNG to the Gmail draft and send. Wait for Xcel reply."
-  },
-  {
-   "id": "p16-pio-partners-peer-listen",
-   "name": "Pio Partners peer listening class",
-   "short": "Pio Partners peer listening class",
-   "client": "Hill-Murray (Jenny)",
-   "stage": "Active",
-   "priority": 4,
-   "keys": [
-    "Pio Partners",
-    "Hill-Murray",
-    "peer"
-   ],
-   "next": "Build remaining session decks as sessions approach."
-  },
-  {
-   "id": "p17-abbott-woodbury-road-com",
-   "name": "Abbott Woodridge compressor design (CD46260.1)",
-   "short": "Abbott Woodridge compressor design",
-   "client": "Abbott",
-   "stage": "Active",
-   "priority": 4,
-   "keys": [
-    "Woodbury",
-    "CD46260",
-    "Woodridge",
-    "WDRG"
-   ],
-   "next": "Peter reviews and sends the Gmail draft (check the offered dates). Then: confirm PO received, book the kickoff call, start desktop sizing for two matched oil-fr"
   },
   {
    "id": "p18-boston-sci-wl2-cass-drye",
@@ -245,17 +256,20 @@
    "next": "Peter owes OID, premise, rate code. Refresh JHF quote. Submit."
   },
   {
-   "id": "p19-aw-garland-tx-leak-study",
-   "name": "AW Garland TX CA study + leaks",
-   "short": "AW Garland TX CA study + leaks",
-   "client": "AW / Garland",
+   "id": "p31-inert-gas-program",
+   "name": "Inert gas program: argon and nitrogen system reviews (Twin Cities sales)",
+   "short": "Inert gas program: argon and nitrogen system reviews",
+   "client": "Program (A list: Abbott x3, Boston Sci, Andersen, RBA, GLCC, 3M CG, SkyWater, UofMN)",
    "stage": "Active",
    "priority": 3,
    "keys": [
-    "Garland",
-    "AW "
+    "Inert gas",
+    "argon program",
+    "nitrogen program",
+    "N2 review",
+    "Ar review"
    ],
-   "next": "Send removal email. Loggers due ~10/7-9 (calendar block Thu 10/8). Read out, analysis wk of 10/12, Draft 0.1 wk of 10/19, review wk of 10/26. Ask Steve utility/"
+   "next": "Peter: review fees and the A list; get Abbott reference permission when NB argon goes to V1.0; raise argon/N2 in every scheduled CASS meeting; first emails to B"
   },
   {
    "id": "p20-uofmn-east-bank-hsl-camp",
@@ -272,47 +286,48 @@
    "next": "Confirm 0.228 vs 0.26 kW/ACFM basis. Section 4.1 print fit. HSL loop."
   },
   {
-   "id": "p21-edina-daycare-partner-me",
-   "name": "Edina Daycare partner meetings",
-   "short": "Edina Daycare partner meetings",
-   "client": "Family",
-   "stage": "Waiting",
-   "priority": 5,
+   "id": "p06-mces-metro-plant-cass-40",
+   "name": "MCES Metro Plant CASS (408 + SMB systems)",
+   "short": "MCES Metro Plant CASS",
+   "client": "Met Council (MCES)",
+   "stage": "Review",
+   "priority": 2,
    "keys": [
-    "Edina",
-    "Daycare"
+    "MCES",
+    "Met Council"
    ],
-   "next": "Next packet when meeting is set."
+   "next": "Kevin's follow up report out is Fri 10/30 11:00 to 12:30 IN PERSON at the Metro Plant Warehouse 2nd floor (Teams available): 1 leak sealing process update, 2 fi"
   },
   {
-   "id": "p22-bp-expo-talk-oct-15-2026",
-   "name": "BP Expo talk, Oct 15, 2026 (Hidden kWh Cost of Compressed Air)",
-   "short": "BP Expo talk, Oct 15, 2026",
-   "client": "BP Expo / Inflow",
+   "id": "p34-aw-des-moines-cass-ds",
+   "name": "AW Des Moines CASS-DS (Walnut + Dixon, 2 x 2 Sullair)",
+   "short": "AW Des Moines CASS-DS",
+   "client": "Andersen Windows (Steve Plachinski; site Ryan Lenz)",
    "stage": "Active",
    "priority": 2,
    "keys": [
-    "BP Expo",
-    "Expo",
-    "Plant Eff",
-    "CABP"
+    "Des Moines",
+    "DesMoines",
+    "Dixon",
+    "Walnut"
    ],
-   "next": "Peter: open Hidden-kWh-Deck-v0.2.pptx, review, attach to the Gmail draft to Brooke and send by Fri 10/2. Then sponsor name, Case A hours down, building kW from "
+   "next": "Peter sends the bill request to Steve; enter EMCO leak zones in the Walnut leak list (row 14 placeholder = 219 cfm); MidAmerican rate into Phase 1 B9/B10/B13/B1"
   },
   {
-   "id": "p23-mx3-vidadash-ios-app",
-   "name": "MX3 / VidaDash iOS app",
-   "short": "MX3 / VidaDash iOS app",
-   "client": "Self (Blake)",
-   "stage": "Parked",
-   "priority": 7,
+   "id": "p37-boston-sci-wl3-wl4-cass",
+   "name": "Boston Sci Weaver Lake CASS, Building 3 (50 HP) and Building 4 (700 HP)",
+   "short": "Boston Sci Weaver Lake CASS, Building 3",
+   "client": "Boston Scientific (Lucas Berry; Xcel rep Kevin Bengtson)",
+   "stage": "Active",
+   "priority": 2,
    "keys": [
-    "MX3",
-    "Mx3",
-    "VidaDash",
-    "Blake"
+    "WL3",
+    "WL4",
+    "Building 3",
+    "Building 4",
+    "B3 & B4"
    ],
-   "next": "Decide on close-out. Collect from Blake."
+   "next": "Peter sends the Kevin draft; confirm Lucas signed WL3/WL4 applications on 10/1 and Kevin added premise/rate codes; preapproval; then logger installs. Reconcile "
   },
   {
    "id": "p24-3m-cottage-grove-cass",
@@ -330,30 +345,39 @@
    "next": "Send the reply to Mike Rogers (draft in Gmail). Week of 9/28: finish every central campus grid building (16, 70 return, 101 south outside + 110 east outside, 10"
   },
   {
-   "id": "p25-andersen-bayport-cass-b2",
-   "name": "Andersen Bayport CASS (B2)",
-   "short": "Andersen Bayport CASS",
-   "client": "Andersen Windows",
-   "stage": "Review",
-   "priority": 3,
+   "id": "p38-inflow-books-taxes",
+   "name": "Inflow Books and Taxes (DIY, replaces DHA CPAs)",
+   "short": "Inflow Books and Taxes",
+   "client": "Inflow Corp (Peter)",
+   "stage": "Active",
+   "priority": 2,
    "keys": [
-    "Andersen",
-    "Bayport"
+    "Inflow Books",
+    "1120-S",
+    "DHA",
+    "QuickBooks",
+    "QBO",
+    "taxes",
+    "books",
+    "TAX:"
    ],
-   "next": "Client review. M&V now tracked as its own row above."
+   "next": "Send the DHA termination email on 10/15 (Gmail draft to Ryan cc AnneMarie; end date about 10/30); then within 10 days of the end date move QBO billing and the A"
   },
   {
-   "id": "p26-inflow-report-template-l",
-   "name": "Inflow report template library (2026)",
-   "short": "Inflow report template library",
-   "client": "Inflow internal",
+   "id": "p36-certainteed-shakopee-cass",
+   "name": "CertainTeed Shakopee CASS (500 HP)",
+   "short": "CertainTeed Shakopee CASS",
+   "client": "CertainTeed (Travis Richins; Xcel rep Collin Trankel)",
    "stage": "Active",
-   "priority": 6,
+   "priority": 2,
    "keys": [
-    "template",
-    "Templates"
+    "CertainTeed",
+    "Certainteed",
+    "Richins",
+    "Trankel",
+    "Shakopee"
    ],
-   "next": "Use for all new studies. Keep in sync with the CASS workbook templates."
+   "next": "Follow up with Travis Wed 10/7 (calendar reminder 9 am); get the signed application back to Collin for preapproval; then schedule the logger install and leak wa"
   },
   {
    "id": "p27-mpls-water-cass-currie-r",
@@ -370,6 +394,74 @@
     "Royalston"
    ],
    "next": "Peter owes savings numbers, then refresh paybacks."
+  },
+  {
+   "id": "p19-aw-garland-tx-leak-study",
+   "name": "AW Garland TX CA study + leaks",
+   "short": "AW Garland TX CA study + leaks",
+   "client": "AW / Garland",
+   "stage": "Active",
+   "priority": 3,
+   "keys": [
+    "Garland",
+    "AW "
+   ],
+   "next": "Send removal email. Loggers due ~10/7-9 (calendar block Thu 10/8). Read out, analysis wk of 10/12, Draft 0.1 wk of 10/19, review wk of 10/26. Ask Steve utility/"
+  },
+  {
+   "id": "p08-xcel-oid-tracker",
+   "name": "Xcel OID tracker",
+   "short": "Xcel OID tracker",
+   "client": "Inflow internal",
+   "stage": "Active",
+   "priority": 3,
+   "keys": [
+    "Xcel",
+    "OID"
+   ],
+   "next": "Calendar follow-up with Shari Fri 10/16/26 9 am (event has links + question list). Before then: watch US Bank for $479.10, $3,630.15, $533.40, $2,900.00; check "
+  },
+  {
+   "id": "p17-abbott-woodbury-road-com",
+   "name": "Abbott Woodridge compressor design (CD46260.1)",
+   "short": "Abbott Woodridge compressor design",
+   "client": "Abbott",
+   "stage": "Active",
+   "priority": 4,
+   "keys": [
+    "Woodbury",
+    "CD46260",
+    "Woodridge",
+    "WDRG"
+   ],
+   "next": "Peter reviews and sends the Gmail draft (check the offered dates). Then: confirm PO received, book the kickoff call, start desktop sizing for two matched oil-fr"
+  },
+  {
+   "id": "p14-fluid-power-systems-text",
+   "name": "Fluid Power Systems textbook",
+   "short": "Fluid Power Systems textbook",
+   "client": "Inflow / Mkdocs",
+   "stage": "Active",
+   "priority": 5,
+   "keys": [
+    "Fluid Power",
+    "textbook",
+    "Mkdocs"
+   ],
+   "next": "Commit and deploy. Review new chapters."
+  },
+  {
+   "id": "p26-inflow-report-template-l",
+   "name": "Inflow report template library (2026)",
+   "short": "Inflow report template library",
+   "client": "Inflow internal",
+   "stage": "Active",
+   "priority": 6,
+   "keys": [
+    "template",
+    "Templates"
+   ],
+   "next": "Use for all new studies. Keep in sync with the CASS workbook templates."
   },
   {
    "id": "p28-compressedair-ai-platfor",
@@ -409,140 +501,48 @@
     "todo",
     "ToDo"
    ],
-   "next": "Authorize Claude GitHub App on Inflowco/todo, then run the Inbox triage routine. Enter Dropbox app key in Edge. Confirm Sync: on in local todo.html."
+   "next": "Peter: decide how the Focus calendar job should run each weekday (see the 10/2 session), or run it by hand. Peter: open the local todo.html, try the Focus tab, "
   },
   {
-   "id": "p31-inert-gas-program",
-   "name": "Inert gas program: argon and nitrogen system reviews (Twin Cities sales)",
-   "short": "Inert gas program: argon and nitrogen system reviews",
-   "client": "Program (A list: Abbott x3, Boston Sci, Andersen, RBA, GLCC, 3M CG, SkyWater, UofMN)",
-   "stage": "Active",
+   "id": "p15-rust-oleum-bp-cass",
+   "name": "Rust-Oleum BP CASS",
+   "short": "Rust-Oleum BP CASS",
+   "client": "Rust-Oleum (Xcel reviewer Jerry Borchardt)",
+   "stage": "Waiting",
    "priority": 3,
    "keys": [
-    "Inert gas",
-    "argon program",
-    "nitrogen program",
-    "N2 review",
-    "Ar review"
+    "Rust-Oleum",
+    "Rustoleum"
    ],
-   "next": "Peter: review fees and the A list; get Abbott reference permission when NB argon goes to V1.0; raise argon/N2 in every scheduled CASS meeting; first emails to B"
+   "next": "Attach the diagram PNG to the Gmail draft and send. Wait for Xcel reply."
   },
   {
-   "id": "p32-brand-website-2027",
-   "name": "Inflow brand, website and marketing 2027 (award record, Ar/N2 practice, compressedair.ai)",
-   "short": "Inflow brand, website and marketing 2027",
-   "client": "Inflow internal",
-   "stage": "Active",
-   "priority": 4,
+   "id": "p21-edina-daycare-partner-me",
+   "name": "Edina Daycare partner meetings",
+   "short": "Edina Daycare partner meetings",
+   "client": "Family",
+   "stage": "Waiting",
+   "priority": 5,
    "keys": [
-    "website",
-    "brand",
-    "marketing",
-    "sell sheet",
-    "award badge",
-    "linecard",
-    "inflowco.com"
+    "Edina",
+    "Daycare"
    ],
-   "next": "Clock starts MON 9/21: Peter fills the printed decision sheet (Marketing folder) and hands it back; decisions + testimonial asks + registrar hunt Mon; content p"
+   "next": "Next packet when meeting is set."
   },
   {
-   "id": "p33-andersen-rba-cg2-load-check",
-   "name": "Andersen RBA CG2 Load Check (3 x 100 HP, Cottage Grove)",
-   "short": "Andersen RBA CG2 Load Check",
-   "client": "Andersen Windows",
-   "stage": "Active",
-   "priority": 2,
+   "id": "p23-mx3-vidadash-ios-app",
+   "name": "MX3 / VidaDash iOS app",
+   "short": "MX3 / VidaDash iOS app",
+   "client": "Self (Blake)",
+   "stage": "Parked",
+   "priority": 7,
    "keys": [
-    "CG2",
-    "Cottage Grove CG2",
-    "RBA",
-    "Renewal by Andersen",
-    "load check",
-    "LC46283"
+    "MX3",
+    "Mx3",
+    "VidaDash",
+    "Blake"
    ],
-   "next": "Peter: review PDF, send draft to Steve. Then schedule install visit with CG2 facilities contact, 14 day window, pickup, summary within 5 business days."
-  },
-  {
-   "id": "p34-aw-des-moines-cass-ds",
-   "name": "AW Des Moines CASS-DS (Walnut + Dixon, 2 x 2 Sullair)",
-   "short": "AW Des Moines CASS-DS",
-   "client": "Andersen Windows (Steve Plachinski; site Ryan Lenz)",
-   "stage": "Active",
-   "priority": 2,
-   "keys": [
-    "Des Moines",
-    "DesMoines",
-    "Dixon",
-    "Walnut"
-   ],
-   "next": "Download Walnut compressor A and Dixon COMP 2 loggers (Dixon COMP 2 may share the load); get MidAmerican rate codes and bills (not Alliant); ask Air Mach for LS"
-  },
-  {
-   "id": "p35-wm-tcmrf-cass-700hp",
-   "name": "WM Twin Cities MRF CASS (2 x 350 HP + 2 small)",
-   "short": "WM Twin Cities MRF CASS",
-   "client": "Waste Management (Andy Gregor; Xcel rep Mike Swanson)",
-   "stage": "Sales",
-   "priority": 2,
-   "keys": [
-    "WM",
-    "Waste Management",
-    "TCMRF",
-    "Gregor",
-    "1800 Broadway"
-   ],
-   "next": "Send proposal + application to Andy Gregor cc Mike Swanson; Andy signs, Mike fills premise and rate code; on preapproval schedule the logger install (4 amp chan"
-  },
-  {
-   "id": "p36-certainteed-shakopee-cass",
-   "name": "CertainTeed Shakopee CASS (500 HP)",
-   "short": "CertainTeed Shakopee CASS",
-   "client": "CertainTeed (Travis Richins; Xcel rep Collin Trankel)",
-   "stage": "Sales",
-   "priority": 2,
-   "keys": [
-    "CertainTeed",
-    "Certainteed",
-    "Richins",
-    "Trankel",
-    "Shakopee"
-   ],
-   "next": "Peter reviews, attaches the two PDFs and sends; Travis signs the application; Collin submits for preapproval; then schedule the logger install (14 days) and lea"
-  },
-  {
-   "id": "p37-boston-sci-wl3-wl4-cass",
-   "name": "Boston Sci Weaver Lake CASS, Building 3 (50 HP) and Building 4 (700 HP)",
-   "short": "Boston Sci Weaver Lake CASS, Building 3",
-   "client": "Boston Scientific (Lucas Berry; Xcel rep Kevin Bengtson)",
-   "stage": "Sales",
-   "priority": 2,
-   "keys": [
-    "WL3",
-    "WL4",
-    "Building 3",
-    "Building 4",
-    "B3 & B4"
-   ],
-   "next": "Peter reviews, attaches the four PDFs and sends; Lucas signs both applications; Kevin adds premise and rate code and submits for preapproval; then logger instal"
-  },
-  {
-   "id": "p38-inflow-books-taxes",
-   "name": "Inflow Books and Taxes (DIY, replaces DHA CPAs)",
-   "short": "Inflow Books and Taxes",
-   "client": "Inflow Corp (Peter)",
-   "stage": "Active",
-   "priority": 2,
-   "keys": [
-    "Inflow Books",
-    "1120-S",
-    "DHA",
-    "QuickBooks",
-    "QBO",
-    "taxes",
-    "books",
-    "TAX:"
-   ],
-   "next": "Send the DHA termination email (Gmail draft to AnneMarie and Ryan); then within 10 days of the end date move QBO billing and the ADP account to Inflow; import q"
+   "next": "Decide on close-out. Collect from Blake."
   }
  ]
 }
