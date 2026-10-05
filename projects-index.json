@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-05T17:07:07Z",
+ "generatedAt": "2026-10-05T17:29:46Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -560,6 +560,23 @@
     "Xcel top 800"
    ],
    "next": "Review the Accounts tab (relationship and eligibility flags), fix any wrong merges in aliases.py, then run the Q4 eligibility campaign: 29 active or recent clie"
+  },
+  {
+   "id": "p40-orlando-spring-break-2027",
+   "name": "Orlando spring break trip (Disney World + beach day), March 2027",
+   "short": "Orlando spring break trip",
+   "client": "Family",
+   "stage": "Active",
+   "priority": 4,
+   "keys": [
+    "Orlando",
+    "Disney",
+    "spring break",
+    "MCO",
+    "Sun Country",
+    "SkyMiles"
+   ],
+   "next": "Sat 10/10: price MSP to MCO for 6 on Delta and Sun Country (cash and miles), Sat to Sat and a shorter Sat to Thu. Then Disney days (10/11), lodging and beach (1"
   }
  ]
 }
