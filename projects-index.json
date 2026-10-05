@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-05T17:29:46Z",
+ "generatedAt": "2026-10-05T21:59:00Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -152,7 +152,7 @@
    "keys": [
     "Pioneer"
    ],
-   "next": "Review d0.3 PDF against the checklist; confirm rate on bill, receiver gallons, blue canister filters, dryer drain, ECO 4 rebate basis; then Version 1.0 and send"
+   "next": "Confirm Wed 10/7 time with Patrick; run the 10 slide review deck; collect rate code, receiver, filters, drain, 20 psi drop, leak status, WS controller OK; then "
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -577,6 +577,80 @@
     "SkyMiles"
    ],
    "next": "Sat 10/10: price MSP to MCO for 6 on Delta and Sun Country (cash and miles), Sat to Sat and a shorter Sat to Thu. Then Disney days (10/11), lodging and beach (1"
+  },
+  {
+   "id": "p41-coke-line9-cads",
+   "name": "Coke Line 9 CADS + 2 customs (added piping savings)",
+   "short": "Coke Line 9 CADS + 2 customs",
+   "client": "Coca-Cola (Xcel: Jim Backstrom)",
+   "stage": "Waiting",
+   "priority": 3,
+   "keys": [
+    "Coke",
+    "Coca-Cola",
+    "Line9",
+    "Line 9",
+    "Backstrom"
+   ],
+   "next": "Ask Jim Backstrom for a Line 9 status on its own thread (not buried in the Wilbert thread); confirm what the two customs cover and who at Coke is the contact."
+  },
+  {
+   "id": "p42-xcel-prospect-pipeline-2026",
+   "name": "Xcel prospect pipeline (Electric Machinery, Wilbert Plastics, DFA Zumbrota, Tennant)",
+   "short": "Xcel prospect pipeline",
+   "client": "Xcel AMs (Jim Backstrom, Ally Maney)",
+   "stage": "Sales",
+   "priority": 3,
+   "keys": [
+    "Electric Machinery",
+    "Electric Machine",
+    "WEG",
+    "Mallory",
+    "Wilbert",
+    "Craig",
+    "DFA",
+    "Zumbrota",
+    "Lynch",
+    "Tennant",
+    "Maney"
+   ],
+   "next": "Electric Machinery: call Dan Mallory instead of a fourth email, or ask Ally to push. Wilbert: wait on Jim. DFA: one more touch in November, then park. Tennant: "
+  },
+  {
+   "id": "p43-porch-permit-4860-johnson",
+   "name": "4860 Johnson Ave porch permit + rain garden (City of White Bear Lake)",
+   "short": "4860 Johnson Ave porch permit + rain garden",
+   "client": "Family (Shea Lawrence, City of WBL)",
+   "stage": "Active",
+   "priority": 4,
+   "keys": [
+    "porch",
+    "Shea",
+    "Lawrence",
+    "White Bear Lake",
+    "whitebearlakemn",
+    "Johnson Ave",
+    "rain garden",
+    "building permit"
+   ],
+   "next": "Peter fills valuation, contractor/owner waiver, 1978 box, zone, signs, attaches the 6 PDFs and sends the reply to building@whitebearlakemn.gov."
+  },
+  {
+   "id": "p44-att-phones-jenny-desmond",
+   "name": "AT&T: new phones for Jenny and Desmond",
+   "short": "AT&T: new phones for Jenny and Desmond",
+   "client": "Family",
+   "stage": "Active",
+   "priority": 5,
+   "keys": [
+    "AT&T",
+    "ATT",
+    "phones",
+    "iPhone",
+    "Jenny phone",
+    "Desmond phone"
+   ],
+   "next": "Log in to myAT&T, check upgrade eligibility and trade in offers for both lines, decide models, order."
   }
  ]
 }
