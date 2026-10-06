@@ -363,6 +363,10 @@
     }
 
     .task-text { word-break: break-word; font-weight: 500; }
+    .todo-table th.th-task { min-width: 420px; width: 44%; }   /* task column gets the room; the rest shrink to content */
+    /* Table tabs (Active / Sales / Invoiced / Archived) get a wider page so the task column is not squeezed by the nowrap columns */
+    body.wide-tab .container { max-width: 1700px; }
+    body.wide-tab .tags-cell { max-width: 120px; }
 
     /* Priority badge */
     .priority-badge {
@@ -885,10 +889,73 @@
     .print-title { display:none; }
     tr.proj-done td { color: var(--done-text); }
     tr.proj-done .proj-name { text-decoration:line-through; }
+    /* Focus tab (today's top three, what is left, dashboard widgets) */
+    .focus-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+    .focus-head .fh-date { font-size:20px; font-weight:700; color: var(--heading); }
+    .focus-head .fh-sub { font-size:12px; color: var(--text-light); }
+    .focus-scope { display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; }
+    .focus-scope button { padding:4px 10px; border:1px solid var(--border); border-radius:14px; background: var(--card-bg); color: var(--text-light); font-size:12px; font-weight:600; cursor:pointer; }
+    .focus-scope button.on { background: var(--accent); border-color: var(--accent); color:#fff; }
+    .focus-kpis { display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-bottom:12px; }
+    .fk { background: var(--card-bg); border-radius:8px; padding:10px 12px; box-shadow: 0 1px 4px var(--card-shadow); border-left:4px solid var(--border); }
+    .fk.click { cursor:pointer; }
+    .fk.click:hover { background: var(--row-hover); }
+    .fk.hot { border-left-color:#e53935; }
+    .fk.warm { border-left-color:#f57c00; }
+    .fk.good { border-left-color: var(--success); }
+    .fk .fk-l { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color: var(--text-lighter); }
+    .fk .fk-v { font-size:24px; font-weight:700; color: var(--heading); line-height:1.25; }
+    .fk .fk-s { font-size:11px; color: var(--text-light); }
+    .focus-grid { display:grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap:14px; align-items:start; }
+    .fcard { background: var(--card-bg); border-radius:8px; padding:10px 14px; margin-bottom:12px; box-shadow: 0 1px 4px var(--card-shadow); }
+    .fcard h4, .fsec { font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color: var(--text-lighter); margin-bottom:6px; font-weight:700; }
+    .fcard h4.tog { cursor:pointer; margin-bottom:0; }
+    .fcard h4.tog.open { margin-bottom:6px; }
+    .fcard h4 .more { float:right; text-transform:none; letter-spacing:0; font-weight:600; color: var(--accent); cursor:pointer; }
+    .ftop { display:flex; gap:12px; align-items:flex-start; background: var(--card-bg); border-radius:8px; padding:12px 14px; margin-bottom:8px; box-shadow: 0 1px 4px var(--card-shadow); border-left:4px solid var(--accent); }
+    .ftop .fnum { font-size:26px; font-weight:700; color: var(--accent); line-height:1; min-width:20px; text-align:center; }
+    .ftop .ftitle { font-size:15px; }
+    .frow { display:flex; gap:10px; align-items:flex-start; padding:7px 0; border-top:1px solid var(--border-light); }
+    .frow:first-of-type { border-top:none; }
+    .fmain { flex:1; min-width:0; }
+    .fcheck { padding-top:2px; }
+    .fcheck input { width:16px; height:16px; cursor:pointer; }
+    .fproj-dot { display:inline-block; width:16px; height:16px; line-height:16px; border-radius:4px; background: var(--contact-bg); color: var(--contact-text); font-size:10px; font-weight:700; text-align:center; }
+    .ftitle { font-size:13px; font-weight:600; color: var(--heading); cursor:pointer; overflow-wrap:anywhere; }
+    .ftitle:hover { color: var(--accent); }
+    .fmeta { font-size:12px; color: var(--text-light); margin-top:3px; display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+    .fnext { font-size:12px; color: var(--text-light); margin-top:3px; }
+    .fchip { display:inline-block; padding:1px 7px; border-radius:10px; font-size:10px; font-weight:700; color:#fff; background:#777; white-space:nowrap; }
+    .fchip-today { background:#e89200; } .fchip-overdue { background:#e53935; } .fchip-soon { background:#4a90d9; } .fchip-remind { background:#6b3fa0; } .fchip-stale { background:#8d6e00; } .fchip-pin { background:#2e7d32; }
+    .fact { display:flex; gap:4px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .fbtn { padding:3px 8px; border:1px solid var(--border); border-radius:4px; background: var(--card-bg); color: var(--text-light); font-size:11px; font-weight:600; cursor:pointer; white-space:nowrap; }
+    .fbtn:hover { border-color: var(--accent); color: var(--accent); }
+    .fbtn.on { background:#2e7d32; border-color:#2e7d32; color:#fff; }
+    .fdate { padding:2px 4px; border:1px solid var(--border); border-radius:4px; background: var(--input-bg); color: var(--text); font-size:11px; width:118px; }
+    .focus-add { display:flex; gap:8px; margin:4px 0 12px 0; }
+    .focus-add input { flex:1; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background: var(--input-bg); color: var(--text); font-size:13px; }
+    .focus-note { width:100%; min-height:74px; padding:8px; border:1px solid var(--border); border-radius:6px; background: var(--notes-bg); color: var(--text); font-size:13px; font-family:inherit; resize:vertical; }
+    .fw-row { display:flex; gap:8px; align-items:center; font-size:12px; padding:4px 0; border-top:1px solid var(--border-light); }
+    .fw-row:first-of-type { border-top:none; }
+    .fw-row.click { cursor:pointer; }
+    .fw-row.click:hover .fw-nm { color: var(--accent); }
+    .fw-nm { flex:1; min-width:0; font-weight:600; color: var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .fw-val { color: var(--text); font-weight:700; white-space:nowrap; }
+    .fw-sub { color: var(--text-lighter); white-space:nowrap; font-size:11px; }
+    .fw-bar { flex:0 0 80px; height:7px; border-radius:4px; background: var(--border-light); overflow:hidden; }
+    .fw-bar > span { display:block; height:100%; border-radius:4px; background: var(--accent); }
+    .fw-empty { font-size:12px; color: var(--text-lighter); }
+    @media (max-width: 900px) {
+      .focus-grid { grid-template-columns: 1fr; }
+      .focus-scope { margin-left:0; }
+      .ftop, .frow { flex-wrap:wrap; }
+      .fact { width:100%; justify-content:flex-start; }
+    }
+
     @media print {
       body { padding:0; background:#fff; color:#000; }
       .header, .category-bar, .toolbar, .add-form, .filter-bar, .proj-tools, .drag-hint, .pipeline-bar, .actions-cell, .drag-cell, .expand-cell, .theme-toggle { display:none !important; }
-      #section-active, #section-sales, #section-invoiced, #section-subs, #section-archived { display:none !important; }
+      #section-focus, #section-active, #section-sales, #section-invoiced, #section-subs, #section-archived { display:none !important; }
       #section-projects { display:block !important; }
       .print-title { display:block; font-size:16px; font-weight:700; margin:0 0 8px 0; }
       .todo-table { font-size:10px; width:100%; box-shadow:none; }
@@ -1073,13 +1140,16 @@
     <!-- Toolbar: Tabs + Import/Export -->
     <div class="toolbar">
       <div class="tabs">
+        <div class="tab active" id="tab-focus" onclick="switchTab('focus')" title="Today: the top three, what is left, and the dashboard">
+          Focus <span class="badge" id="badge-focus">0</span>
+        </div>
         <div class="tab" id="tab-projects" onclick="switchTab('projects')">
           Projects <span class="badge" id="badge-projects">0</span>
         </div>
         <div class="tab" id="tab-inbox" onclick="switchTab('inbox')" title="Suggestions found in email and calendar, waiting for your review">
           Inbox <span class="badge" id="badge-inbox">0</span>
         </div>
-        <div class="tab active" id="tab-active" onclick="switchTab('active')">
+        <div class="tab" id="tab-active" onclick="switchTab('active')">
           Active <span class="badge" id="badge-active">0</span>
         </div>
         <div class="tab" id="tab-sales" onclick="switchTab('sales')">
@@ -1300,6 +1370,34 @@
       </div>
     </div>
 
+    <!-- Focus Section (landing tab: today's top three, what is left, dashboard widgets) -->
+    <div id="section-focus">
+      <div class="focus-head">
+        <span class="fh-date" id="focus-date"></span>
+        <span class="fh-sub" id="focus-sub"></span>
+        <div class="focus-scope" id="focus-scope"></div>
+      </div>
+      <div class="focus-kpis" id="focus-kpis"></div>
+      <div class="focus-grid">
+        <div>
+          <div class="fsec">Top three today</div>
+          <div id="focus-top"></div>
+          <div class="focus-add">
+            <input type="text" id="focus-add-input" placeholder="Add something for today and press Enter" />
+            <button class="add-btn" onclick="focusQuickAdd()">Add</button>
+          </div>
+          <div id="focus-rest"></div>
+        </div>
+        <div>
+          <div class="fcard">
+            <h4>Heading for the week</h4>
+            <textarea class="focus-note" id="focus-note" placeholder="What matters most this week, at work and at home. Saved when you click away." onblur="saveFocusNote(this.value)"></textarea>
+          </div>
+          <div id="focus-widgets"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Inbox Section (suggestions from the email/calendar routine) -->
     <div id="section-inbox" class="section-hidden">
       <div class="inbox-head">
@@ -1347,7 +1445,7 @@
     </div>
 
     <!-- Active Table -->
-    <div id="section-active">
+    <div id="section-active" class="section-hidden">
       <table class="todo-table" id="table-active" style="display:none;">
         <thead>
           <tr>
@@ -1356,7 +1454,7 @@
               <span class="sort-arrow" id="sort-done"></span>
             </th>
             <th style="width:30px;cursor:default;"></th>
-            <th onclick="sortBy('text')">Task <span class="sort-arrow" id="sort-text"></span></th>
+            <th class="th-task" onclick="sortBy('text')">Task <span class="sort-arrow" id="sort-text"></span></th>
             <th onclick="sortBy('customerName')">Customer <span class="sort-arrow" id="sort-customerName"></span></th>
             <th onclick="sortBy('locationDetails')">Location <span class="sort-arrow" id="sort-locationDetails"></span></th>
             <th onclick="sortBy('dueDate')">Due <span class="sort-arrow" id="sort-dueDate"></span></th>
@@ -1385,7 +1483,7 @@
               <span class="sort-arrow" id="ssort-done"></span>
             </th>
             <th style="width:30px;cursor:default;"></th>
-            <th onclick="sortSales('text')">Deal <span class="sort-arrow" id="ssort-text"></span></th>
+            <th class="th-task" onclick="sortSales('text')">Deal <span class="sort-arrow" id="ssort-text"></span></th>
             <th onclick="sortSales('customerName')">Customer <span class="sort-arrow" id="ssort-customerName"></span></th>
             <th onclick="sortSales('salesStage')">Stage <span class="sort-arrow" id="ssort-salesStage"></span></th>
             <th onclick="sortSales('dealValue')">Deal $ <span class="sort-arrow" id="ssort-dealValue"></span></th>
@@ -1413,7 +1511,7 @@
               <span class="sort-arrow" id="isort-done"></span>
             </th>
             <th style="width:30px;cursor:default;"></th>
-            <th onclick="sortInvoice('text')">Task <span class="sort-arrow" id="isort-text"></span></th>
+            <th class="th-task" onclick="sortInvoice('text')">Task <span class="sort-arrow" id="isort-text"></span></th>
             <th onclick="sortInvoice('customerName')">Customer <span class="sort-arrow" id="isort-customerName"></span></th>
             <th onclick="sortInvoice('invoiceNumber')">Invoice # <span class="sort-arrow" id="isort-invoiceNumber"></span></th>
             <th onclick="sortInvoice('invoiceAmount')">Amount <span class="sort-arrow" id="isort-invoiceAmount"></span></th>
@@ -1519,7 +1617,7 @@
         <thead>
           <tr>
             <th style="width:30px;cursor:default;"></th>
-            <th onclick="sortArchive('text')">Task <span class="sort-arrow" id="asort-text"></span></th>
+            <th class="th-task" onclick="sortArchive('text')">Task <span class="sort-arrow" id="asort-text"></span></th>
             <th onclick="sortArchive('customerName')">Customer <span class="sort-arrow" id="asort-customerName"></span></th>
             <th onclick="sortArchive('locationDetails')">Location <span class="sort-arrow" id="asort-locationDetails"></span></th>
             <th onclick="sortArchive('completedTimestamp')">Completed <span class="sort-arrow" id="asort-completedTimestamp"></span></th>
@@ -1560,7 +1658,10 @@
     const SUB_CYCLES = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
     const SUB_CATEGORIES = ["Inflow", "Personal"];
     const SUB_STATUSES = ["Active", "Paused", "Cancelled"];
-    let currentTab = "active";
+    let currentTab = "focus";   // the app opens on the Focus tab
+    let focusScope = localStorage.getItem("focus_scope") || "All";
+    let focusState = JSON.parse(localStorage.getItem("focus_state") || "{}");   // { note, noteAt }
+    let focusOpen = {};   // which Focus lists are expanded
     let currentCategory = localStorage.getItem("todo_category") || "Inflow-ToDo's";
     if (!CATEGORIES.includes(currentCategory)) currentCategory = "Inflow-ToDo's";
     let activeSort = { key: null, asc: true };
@@ -1641,6 +1742,7 @@
       localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
       localStorage.setItem("projects", JSON.stringify(projects));
       localStorage.setItem("inbox_decisions", JSON.stringify(inboxDecisions));
+      localStorage.setItem("focus_state", JSON.stringify(focusState));
       scheduleSync();
     }
 
@@ -1698,7 +1800,7 @@
     }
 
     function downloadDataFile() {
-      const data = { todos, archived, subscriptions, projects, inboxDecisions, syncedAt: new Date().toISOString() };
+      const data = { todos, archived, subscriptions, projects, inboxDecisions, focus: focusState, syncedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1732,7 +1834,7 @@
       if (!syncHandle) return;
       try {
         if ((await syncHandle.queryPermission({ mode: "readwrite" })) !== "granted") { setSyncBtn("resume"); return; }
-        const data = { todos, archived, subscriptions, projects, inboxDecisions, syncedAt: new Date().toISOString() };
+        const data = { todos, archived, subscriptions, projects, inboxDecisions, focus: focusState, syncedAt: new Date().toISOString() };
         const w = await syncHandle.createWritable();
         await w.write(JSON.stringify(data, null, 2));
         await w.close();
@@ -1879,7 +1981,7 @@
     async function dbxUpload() {
       const token = await dbxAccessToken();
       if (!token) return false;
-      const payload = JSON.stringify({ todos, archived, subscriptions, projects, inboxDecisions, syncedAt: new Date().toISOString() }, null, 2);
+      const payload = JSON.stringify({ todos, archived, subscriptions, projects, inboxDecisions, focus: focusState, syncedAt: new Date().toISOString() }, null, 2);
       const mode = dbxRev ? { ".tag": "update", update: dbxRev } : "add";
       const r = await fetch("https://content.dropboxapi.com/2/files/upload", {
         method: "POST",
@@ -1903,6 +2005,7 @@
       if (Array.isArray(data.projects)) projects = data.projects;   // keep local (seed) if remote has none yet
       if (data.inboxDecisions && typeof data.inboxDecisions === "object") inboxDecisions = Object.assign({}, inboxDecisions, data.inboxDecisions);
       localStorage.setItem("inbox_decisions", JSON.stringify(inboxDecisions));
+      applyRemoteFocus(data.focus);
       todos.forEach(ensureFields);
       archived.forEach(ensureFields);
       subscriptions.forEach(ensureSubFields);
@@ -2042,8 +2145,11 @@
       return "upcoming";
     }
 
+    function localDayStr(d) {
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
     function todayStr() {
-      return new Date().toISOString().split("T")[0];
+      return localDayStr(new Date());   // local calendar day (toISOString is UTC and rolls over at 7 pm Central)
     }
 
     function formatFileSize(bytes) {
@@ -2114,7 +2220,7 @@
 
     // --- Export / Import ---
     function exportData() {
-      const data = { todos, archived, subscriptions, projects, inboxDecisions };
+      const data = { todos, archived, subscriptions, projects, inboxDecisions, focus: focusState };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -2143,6 +2249,7 @@
           subscriptions = Array.isArray(data.subscriptions) ? data.subscriptions : [];
           if (Array.isArray(data.projects)) projects = data.projects;
           if (data.inboxDecisions && typeof data.inboxDecisions === "object") inboxDecisions = data.inboxDecisions;
+          if (data.focus && typeof data.focus === "object") { focusState = data.focus; syncFocusNote(); }
           todos.forEach(ensureFields);
           archived.forEach(ensureFields);
           subscriptions.forEach(ensureSubFields);
@@ -2162,7 +2269,7 @@
     // --- Tabs ---
     function switchTab(tab) {
       currentTab = tab;
-      ["inbox","projects","active","sales","invoiced","subs","archived"].forEach(t => {
+      ["focus","inbox","projects","active","sales","invoiced","subs","archived"].forEach(t => {
         document.getElementById("tab-" + t).classList.toggle("active", tab === t);
         document.getElementById("section-" + t).classList.toggle("section-hidden", tab !== t);
       });
@@ -2171,7 +2278,8 @@
       document.getElementById("add-form-sales").style.display = tab === "sales" ? "block" : "none";
       document.getElementById("filter-bar").style.display = (tab === "active" || tab === "sales" || tab === "invoiced") ? "block" : "none";
       // Category bar applies only to todo-based tabs (not subs/archived)
-      document.getElementById("category-bar").style.display = (tab === "subs" || tab === "inbox") ? "none" : "flex";
+      document.getElementById("category-bar").style.display = (tab === "subs" || tab === "inbox" || tab === "focus") ? "none" : "flex";
+      document.body.classList.toggle("wide-tab", ["active","sales","invoiced","archived"].includes(tab));
       if (tab === "inbox") loadInbox(false);
       render();
     }
@@ -3399,6 +3507,340 @@
       render();
     }
 
+    // --- Focus tab: today's top three, what is left, and the dashboard widgets ---
+    // An item is an open task, or the next step of a project whose deadline is within a week.
+    // Order: pinned first (in the order pinned), then score = priority + date urgency + project rank.
+    const FOCUS_STALE_DAYS = 14;   // a date older than this counts as a stale date to clean up, not as urgent
+    const FOCUS_BUCKETS = { now: 0, week: 1, stale: 2, later: 3 };
+    function focusInScope(cat) { return focusScope === "All" || cat === focusScope; }
+    function focusShortDate(ds) { return new Date(ds + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" }); }
+    function focusBucket(it, b) { if (FOCUS_BUCKETS[b] < FOCUS_BUCKETS[it.bucket]) it.bucket = b; }
+    function focusDateBonus(ds, today, label, it) {
+      if (!ds) return 0;
+      const dd = daysBetween(today, ds);   // negative = in the past
+      if (dd === 0) { focusBucket(it, "now"); it.dueToday = true; it.reasons.push({ k: "today", t: label + " today" }); return 50; }
+      if (dd < 0 && dd >= -FOCUS_STALE_DAYS) { focusBucket(it, "now"); it.reasons.push({ k: "overdue", t: label + " " + (-dd) + (dd === -1 ? " day ago" : " days ago") }); return dd >= -3 ? 45 : dd >= -7 ? 35 : 25; }
+      if (dd < 0) { focusBucket(it, "stale"); it.reasons.push({ k: "stale", t: label + " " + focusShortDate(ds) }); return 0; }
+      if (dd <= 7) { focusBucket(it, "week"); it.reasons.push({ k: "soon", t: label + (dd === 1 ? " tomorrow" : " in " + dd + " days") }); return dd === 1 ? 30 : dd <= 3 ? 20 : 10; }
+      it.sched = true;   // dated further out: parked until the date (or its reminder) comes up
+      return 0;
+    }
+    function focusItems(today) {
+      const items = [];
+      const live = projects.filter(p => p.stage !== "Done" && p.stage !== "Parked");
+      const rankBonus = r => r < 0 ? 0 : r < 5 ? 10 : r < 10 ? 5 : 0;
+      todos.forEach((t, i) => {
+        if (t.done || t.isInvoiced || !focusInScope(t.category)) return;
+        if (t.isSales && (t.salesStage === "Won" || t.salesStage === "Lost" || !(t.dueDate || t.reminderDate))) return;
+        const it = { kind: "task", ref: "t:" + i, idx: i, obj: t, title: t.text, bucket: "later", reasons: [], when: t.dueDate || "9999" };
+        let s = (11 - (t.priority || 6)) * 4;   // pri 1 = 40, none = 20, pri 10 = 4
+        s += focusDateBonus(t.dueDate, today, "Due", it);
+        if (t.reminderDate && t.reminderDate <= today && !(t.dueDate && t.dueDate <= today)) {
+          const rd = daysBetween(t.reminderDate, today);
+          if (rd <= FOCUS_STALE_DAYS) { s += 15; focusBucket(it, "now"); it.reasons.push({ k: "remind", t: rd === 0 ? "Reminder today" : "Reminder " + rd + (rd === 1 ? " day ago" : " days ago") }); }
+          else if (!t.dueDate) { focusBucket(it, "stale"); it.reasons.push({ k: "stale", t: "Reminder " + focusShortDate(t.reminderDate) }); }
+        } else if (t.reminderDate && t.reminderDate > today) it.sched = true;
+        const p = projectOf(t);
+        it.proj = p;
+        it.rank = p ? live.indexOf(p) : -1;
+        s += rankBonus(it.rank);
+        if (p && p.deadline && Math.abs(daysBetween(today, p.deadline)) <= 7) s += 10;
+        if (it.bucket === "later" && it.sched) return;
+        it.group = p ? p.id : it.ref;
+        it.score = s;
+        items.push(it);
+      });
+      live.forEach((p, r) => {
+        if (p.stage === "Waiting" || !p.deadline || !focusInScope(p.category)) return;
+        if (daysBetween(today, p.deadline) > 7) return;
+        const it = { kind: "project", ref: "p:" + p.id, idx: 1000 + r, obj: p, title: p.name.split(" (")[0], bucket: "later", reasons: [], when: p.deadline, proj: p, rank: r, group: p.id };
+        it.score = (11 - (p.priority || 6)) * 4 + focusDateBonus(p.deadline, today, "Deadline", it) + rankBonus(r);
+        items.push(it);
+      });
+      return items;
+    }
+    function focusPlan(today) {
+      const all = focusItems(today);
+      const cmp = (a, b) => b.score - a.score || (a.rank < 0 ? 999 : a.rank) - (b.rank < 0 ? 999 : b.rank) || a.idx - b.idx;
+      const skipped = all.filter(it => it.obj.focusSkip === today);
+      const items = all.filter(it => it.obj.focusSkip !== today);
+      const pinned = items.filter(it => it.obj.focusPin).sort((a, b) => a.obj.focusPin - b.obj.focusPin);
+      const auto = items.filter(it => !it.obj.focusPin && it.bucket !== "stale").sort(cmp);
+      const top = pinned.slice(0, 3);
+      const used = new Set(top.map(it => it.group));
+      for (const it of auto) {   // at most one item per project, so the three are three different threads
+        if (top.length >= 3) break;
+        if (used.has(it.group)) continue;
+        top.push(it); used.add(it.group);
+      }
+      const rest = items.filter(it => !top.includes(it));
+      const extraPins = rest.filter(it => it.obj.focusPin).sort((a, b) => a.obj.focusPin - b.obj.focusPin);
+      const unp = rest.filter(it => !it.obj.focusPin);
+      return {
+        all: items, top, skipped,
+        now: extraPins.concat(unp.filter(it => it.bucket === "now").sort(cmp)),
+        week: unp.filter(it => it.bucket === "week").sort((a, b) => a.when < b.when ? -1 : a.when > b.when ? 1 : cmp(a, b)),
+        later: unp.filter(it => it.bucket === "later").sort(cmp),
+        stale: unp.filter(it => it.bucket === "stale").sort((a, b) => a.when < b.when ? -1 : a.when > b.when ? 1 : cmp(a, b))
+      };
+    }
+
+    function focusObj(ref) { return ref[0] === "t" ? todos[+ref.slice(2)] : projects.find(p => p.id === ref.slice(2)); }
+    function focusPin(ref) {
+      const o = focusObj(ref); if (!o) return;
+      o.focusPin = o.focusPin ? null : Date.now();
+      o.focusSkip = null;
+      save(); render();
+    }
+    function focusPinUp(ref, prevRef) {   // swap places with the pinned item above
+      const a = focusObj(ref), b = focusObj(prevRef); if (!a || !b) return;
+      const x = a.focusPin; a.focusPin = b.focusPin; b.focusPin = x;
+      save(); render();
+    }
+    function focusSkip(ref) {
+      const o = focusObj(ref); if (!o) return;
+      o.focusSkip = todayStr(); o.focusPin = null;
+      save(); render();
+    }
+    function focusUnskipAll() {
+      const today = todayStr();
+      todos.concat(projects).forEach(o => { if (o.focusSkip === today) o.focusSkip = null; });
+      save(); render();
+    }
+    function focusSetDue(i, v) {
+      const t = todos[i]; if (!t) return;
+      const today = todayStr();
+      t.dueDate = v || null;
+      // moving the due date ahead means "not now": drop a reminder that has already fired so it does not keep the task on today
+      if ((!v || v > today) && t.reminderDate && t.reminderDate <= today) t.reminderDate = null;
+      t.updatedTimestamp = new Date().toISOString();
+      save(); render();
+    }
+    function focusBump(i, days) {
+      const d = new Date(); d.setDate(d.getDate() + days);
+      focusSetDue(i, d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"));
+    }
+    function focusQuickAdd() {
+      const el = document.getElementById("focus-add-input");
+      const text = el.value.trim();
+      if (!text) return;
+      const t = { text, done: false, dueDate: todayStr(), priority: null, projectType: null, followUpPerson: null, reminderDate: null, category: focusScope === "All" ? "Inflow-ToDo's" : focusScope };
+      ensureFields(t);
+      todos.push(t);
+      el.value = "";
+      save(); updateDataLists(); render();
+    }
+    function setFocusScope(s) {
+      focusScope = s;
+      localStorage.setItem("focus_scope", s);
+      render();
+    }
+    function focusToggleOpen(k) { focusOpen[k] = !focusOpen[k]; render(); }
+    function saveFocusNote(v) {
+      if ((focusState.note || "") === v) return;
+      focusState.note = v;
+      focusState.noteAt = new Date().toISOString();
+      save();
+    }
+    function syncFocusNote() {
+      const el = document.getElementById("focus-note");
+      if (el && document.activeElement !== el) el.value = focusState.note || "";
+    }
+    function applyRemoteFocus(f) {   // keep whichever note was written last
+      if (!f || typeof f !== "object") return;
+      if ((f.noteAt || "") >= (focusState.noteAt || "")) focusState = f;
+      localStorage.setItem("focus_state", JSON.stringify(focusState));
+      syncFocusNote();
+    }
+    function openTask(i) {
+      const t = todos[i]; if (!t) return;
+      const tab = t.isInvoiced ? "invoiced" : t.isSales ? "sales" : "active";
+      if (!(currentCategory === "Master" ? (t.priority && t.priority <= 2) : t.category === currentCategory)) {
+        currentCategory = t.category;
+        localStorage.setItem("todo_category", currentCategory);
+      }
+      ["filterText", "filterProject", "filterPerson", "filterTag", "filterPriMin", "filterPriMax"].forEach(id => { document.getElementById(id).value = ""; });
+      expandedSet.add(i);
+      switchTab(tab);
+      const row = document.querySelector("#list-" + tab + " tr[data-idx='" + i + "']");
+      if (row) row.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    function focusOpenPerson(idx) {   // idx = any open task of that person
+      const t = todos[idx]; if (!t) return;
+      currentCategory = t.category;
+      localStorage.setItem("todo_category", currentCategory);
+      ["filterText", "filterProject", "filterTag", "filterPriMin", "filterPriMax"].forEach(id => { document.getElementById(id).value = ""; });
+      document.getElementById("filterPerson").value = t.followUpPerson;
+      switchTab("active");
+    }
+
+    function focusRow(it, opts) {
+      const o = it.obj, isT = it.kind === "task", n = opts.n;
+      const chips = (o.focusPin ? '<span class="fchip fchip-pin">Pinned</span>' : "") + it.reasons.map(r => `<span class="fchip fchip-${r.k}">${escapeHtml(r.t)}</span>`).join("");
+      let meta = "";
+      if (isT) {
+        if (o.priority) meta += `<span class="priority-badge" title="Priority ${o.priority}" style="background:${priorityColor(o.priority)}">${o.priority}</span>`;
+        if (o.customerName) meta += `<span>${escapeHtml(o.customerName)}</span>`;
+        if (it.proj) meta += `<span class="proj-link-chip" style="margin-left:0;" onclick="openProject('${it.proj.id}')" title="Open project: ${escapeHtml(it.proj.name)}">&#x2197; #${it.rank + 1} ${escapeHtml(it.proj.name.split(" (")[0].slice(0, 28))}</span>`;
+        else if (o.projectType) meta += `<span class="project-tag">${escapeHtml(o.projectType)}</span>`;
+        if (o.followUpPerson) meta += `<span class="person-tag">${escapeHtml(o.followUpPerson)}</span>`;
+        const st = o.subtasks || [];
+        if (st.length) meta += `<span>${st.filter(x => x.done).length} of ${st.length} subtasks</span>`;
+        if (focusScope === "All" && o.category !== "Inflow-ToDo's") meta += `<span class="project-tag">${escapeHtml(o.category)}</span>`;
+        if (o.isSales) meta += `<span class="project-tag">Sales</span>`;
+      } else {
+        if (o.priority) meta += `<span class="priority-badge" title="Priority ${o.priority}" style="background:${priorityColor(o.priority)}">${o.priority}</span>`;
+        meta += `<span>Project #${it.rank + 1}, ${escapeHtml(o.stage)}</span>`;
+      }
+      const next = !isT && o.next ? `<div class="fnext"><b>Next:</b> ${escapeHtml(o.next.slice(0, 200))}${o.next.length > 200 ? "..." : ""}</div>` : "";
+      const act = [];
+      if (opts.prevRef) act.push(`<button class="fbtn" onclick="focusPinUp('${it.ref}','${opts.prevRef}')" title="Move up">&#x25B2;</button>`);
+      if (opts.stale && isT) {
+        act.push(`<button class="fbtn" onclick="focusBump(${it.idx},0)" title="Make it due today">Today</button>`);
+        act.push(`<button class="fbtn" onclick="focusBump(${it.idx},7)" title="Due one week from today">+1 wk</button>`);
+        act.push(`<button class="fbtn" onclick="focusSetDue(${it.idx},'')" title="Remove the date, keep the task">No date</button>`);
+      }
+      if (isT) act.push(`<input type="date" class="fdate" value="${o.dueDate || ""}" onchange="focusSetDue(${it.idx}, this.value)" title="Due date" />`);
+      act.push(`<button class="fbtn ${o.focusPin ? "on" : ""}" onclick="focusPin('${it.ref}')" title="${o.focusPin ? "Unpin" : "Pin into the top three"}">&#x2605;</button>`);
+      if (!opts.stale && !opts.noSkip) act.push(`<button class="fbtn" onclick="focusSkip('${it.ref}')" title="Set aside until tomorrow">Not today</button>`);
+      const lead = isT
+        ? `<span class="fcheck"><input type="checkbox" onchange="toggle(${it.idx})" title="Mark done" /></span>`
+        : `<span class="fcheck"><span class="fproj-dot" title="Project next step">P</span></span>`;
+      const title = isT
+        ? `<a class="ftitle" onclick="openTask(${it.idx})" title="Open in the task list">${escapeHtml(it.title)}</a>`
+        : `<a class="ftitle" onclick="openProject('${o.id}')" title="Open the project">${escapeHtml(it.title)}</a>`;
+      return `<div class="${n ? "ftop" : "frow"}">${n ? `<span class="fnum">${n}</span>` : ""}${lead}
+        <div class="fmain">${title}<div class="fmeta">${chips}${meta}</div>${next}</div>
+        <div class="fact">${act.join("")}</div></div>`;
+    }
+    function focusList(key, label, list, opts) {
+      if (!list.length) return "";
+      opts = opts || {};
+      const limit = opts.limit || 0;
+      const collapsed = opts.collapsible && !focusOpen[key];
+      const shown = collapsed ? [] : (limit && !focusOpen[key + "All"] ? list.slice(0, limit) : list);
+      const more = !collapsed && limit && list.length > limit
+        ? `<span class="more" onclick="event.stopPropagation();focusToggleOpen('${key}All')">${focusOpen[key + "All"] ? "Show fewer" : "Show all " + list.length}</span>` : "";
+      const head = opts.collapsible
+        ? `<h4 class="tog ${collapsed ? "" : "open"}" onclick="focusToggleOpen('${key}')">${label} (${list.length}) ${collapsed ? "&#x25B6;" : "&#x25BC;"}${more}</h4>`
+        : `<h4>${label} (${list.length})${more}</h4>`;
+      return `<div class="fcard" id="focus-list-${key}">${head}${opts.note && !collapsed ? `<div class="fw-empty" style="margin-bottom:4px;">${opts.note}</div>` : ""}${shown.map(it => focusRow(it, { stale: opts.stale, noSkip: opts.noSkip })).join("")}</div>`;
+    }
+    function focusDoneLists(today) {
+      const isToday = iso => iso && localDayStr(new Date(iso)) === today;
+      const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 6); weekAgo.setHours(0, 0, 0, 0);
+      const inWeek = iso => iso && new Date(iso) >= weekAgo;
+      const doneT = todos.map((t, i) => ({ t, i })).filter(x => x.t.done && !x.t.isInvoiced && focusInScope(x.t.category));
+      const arch = archived.filter(t => focusInScope(t.category));
+      return {
+        todayOpen: doneT.filter(x => isToday(x.t.updatedTimestamp)),
+        todayArch: arch.filter(t => isToday(t.completedTimestamp)),
+        week: doneT.filter(x => inWeek(x.t.updatedTimestamp)).length + arch.filter(t => inWeek(t.completedTimestamp)).length
+      };
+    }
+    function focusWidgets(today) {
+      const out = [];
+      const short = p => escapeHtml(p.name.split(" (")[0]);
+      const live = projects.filter(p => p.stage !== "Done" && p.stage !== "Parked" && focusInScope(p.category));
+
+      // Deadlines: project deadlines from two weeks back to three weeks out
+      const dl = live.filter(p => p.deadline).map(p => ({ p, dd: daysBetween(today, p.deadline) }))
+        .filter(x => x.dd >= -FOCUS_STALE_DAYS && x.dd <= 21).sort((a, b) => a.dd - b.dd);
+      out.push(`<div class="fcard"><h4>Deadlines, next three weeks</h4>${dl.length ? dl.map(({ p, dd }) => `
+        <div class="fw-row click" onclick="openProject('${p.id}')" title="${escapeHtml(p.next || "")}">
+          <span class="fchip fchip-${dd < 0 ? "overdue" : dd === 0 ? "today" : dd <= 7 ? "soon" : "x"}">${dd < 0 ? (-dd) + " d late" : dd === 0 ? "Today" : "In " + dd + " d"}</span>
+          <span class="fw-nm">${short(p)}</span><span class="fw-sub">${focusShortDate(p.deadline)}</span></div>`).join("") : '<div class="fw-empty">No project deadlines in this window.</div>'}</div>`);
+
+      // Projects that need attention (same flags as the Projects tab)
+      const names = { overdue: "Deadline passed", soon: "Due in 7 days", taskdue: "Task overdue", notask: "No open task", stale: "Quiet " + STALE_DAYS + "+ days" };
+      const attn = live.map(p => ({ p, sc: projectScore(p) })).filter(x => x.sc.flags.length).sort((a, b) => b.sc.score - a.sc.score);
+      out.push(`<div class="fcard"><h4>Projects needing attention (${attn.length})<span class="more" onclick="switchTab('projects')">All projects</span></h4>${attn.length ? attn.slice(0, 6).map(({ p, sc }) => `
+        <div class="fw-row click" onclick="openProject('${p.id}')" title="${escapeHtml(p.next || "no next step written")}">
+          <span class="fw-nm">${short(p)}</span>${sc.flags.slice(0, 2).map(f => `<span class="flag flag-${f}" style="display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:700;color:#fff;">${names[f]}</span>`).join("")}
+          <span class="fw-val" title="Priority meter, 0 to 100">${sc.score}</span></div>`).join("") : '<div class="fw-empty">Nothing flagged.</div>'}</div>`);
+
+      // Money (not scoped: the business as a whole)
+      const ps = computePipelineStats(todos.filter(t => t.isSales && !t.isInvoiced));
+      const inv = computeInvoiceStats(todos.filter(t => t.isInvoiced));
+      const paid = computePaidInvoiceStats();
+      const subsMo = subscriptions.filter(s => s.status === "Active").reduce((a, s) => a + subMonthlyEquiv(s), 0);
+      out.push(`<div class="fcard"><h4>Money</h4>
+        <div class="fw-row click" onclick="switchTab('sales')"><span class="fw-nm">Open pipeline</span><span class="fw-sub">${ps.openCount} deals</span><span class="fw-val">${formatMoney(ps.open)}</span></div>
+        <div class="fw-row click" onclick="switchTab('invoiced')"><span class="fw-nm">Unpaid invoices</span><span class="fw-sub">${inv.count} open${inv.overdueCount ? ", " + inv.overdueCount + " past due" : ""}${inv.oldestDays ? ", oldest " + inv.oldestDays + " d" : ""}</span><span class="fw-val">${formatMoney(inv.outstanding)}</span></div>
+        <div class="fw-row click" onclick="switchTab('invoiced')"><span class="fw-nm">Paid this year</span><span class="fw-sub">${paid.paidCount} invoices</span><span class="fw-val">${formatMoney(paid.paidYTD)}</span></div>
+        <div class="fw-row click" onclick="switchTab('subs')"><span class="fw-nm">Subscriptions</span><span class="fw-sub">per month</span><span class="fw-val">${formatMoney(subsMo)}</span></div></div>`);
+
+      // Follow ups: open tasks by person
+      const ppl = {};
+      todos.forEach((t, i) => {
+        if (t.done || t.isInvoiced || t.isSales || !t.followUpPerson || !focusInScope(t.category)) return;
+        const k = t.followUpPerson.trim();
+        const e = ppl[k] || (ppl[k] = { name: k, n: 0, due: 0, idx: i });
+        e.n++;
+        if (t.dueDate && t.dueDate <= today) e.due++;
+      });
+      const pl = Object.values(ppl).sort((a, b) => b.due - a.due || b.n - a.n).slice(0, 6);
+      if (pl.length) out.push(`<div class="fcard"><h4>Follow ups by person</h4>${pl.map(e => `
+        <div class="fw-row click" onclick="focusOpenPerson(${e.idx})"><span class="fw-nm">${escapeHtml(e.name)}</span><span class="fw-sub">${e.due ? e.due + " past date" : ""}</span><span class="fw-val">${e.n}</span></div>`).join("")}</div>`);
+
+      // Areas: every category at a glance, click to scope the Focus tab to it
+      const areas = CATEGORIES.filter(c => c !== "Master").map(c => {
+        const open = todos.filter(t => !t.done && !t.isInvoiced && !t.isSales && t.category === c);
+        return { c, n: open.length, due: open.filter(t => t.dueDate && t.dueDate <= today).length, proj: projects.filter(p => p.stage !== "Done" && p.stage !== "Parked" && p.category === c).length };
+      }).filter(a => a.n || a.proj);
+      const mx = Math.max(1, ...areas.map(a => a.n));
+      out.push(`<div class="fcard"><h4>Areas${focusScope !== "All" ? `<span class="more" onclick="setFocusScope('All')">Show all</span>` : ""}</h4>${areas.map(a => `
+        <div class="fw-row click" onclick="setFocusScope('${a.c.replace(/'/g, "\\'")}')" title="${a.n} open tasks, ${a.due} at or past the due date, ${a.proj} live projects">
+          <span class="fw-nm">${escapeHtml(a.c)}</span><span class="fw-sub">${a.proj ? a.proj + " proj" : ""}${a.due ? (a.proj ? ", " : "") + a.due + " past date" : ""}</span>
+          <span class="fw-bar"><span style="width:${Math.round(100 * a.n / mx)}%"></span></span><span class="fw-val" style="min-width:22px;text-align:right;">${a.n}</span></div>`).join("")}</div>`);
+      return out.join("");
+    }
+    function renderFocus() {
+      const today = todayStr();
+      const plan = focusPlan(today);
+      const done = focusDoneLists(today);
+      const dueToday = plan.all.filter(it => it.dueToday).length;
+      const nowAll = plan.all.filter(it => it.bucket === "now").length;
+      const weekAll = plan.all.filter(it => it.bucket === "week").length;
+      const staleAll = plan.all.filter(it => it.bucket === "stale").length;
+      const doneToday = done.todayOpen.length + done.todayArch.length;
+      const inboxN = pendingInbox().length;
+      document.getElementById("badge-focus").textContent = nowAll;
+
+      document.getElementById("focus-date").textContent = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+      document.getElementById("focus-sub").textContent = nowAll + " on today's list, " + weekAll + " more this week" + (staleAll ? ", " + staleAll + " stale dates to clean up" : "");
+      const cats = ["All"].concat(CATEGORIES.filter(c => c !== "Master" && todos.some(t => !t.done && !t.isInvoiced && t.category === c)));
+      if (!cats.includes(focusScope)) cats.push(focusScope);
+      document.getElementById("focus-scope").innerHTML = cats.map(c =>
+        `<button class="${c === focusScope ? "on" : ""}" onclick="setFocusScope('${c.replace(/'/g, "\\'")}')">${escapeHtml(c)}</button>`).join("");
+
+      const tile = (label, val, sub, cls, click) => `<div class="fk ${cls || ""} ${click ? "click" : ""}" ${click ? `onclick="${click}"` : ""}><div class="fk-l">${label}</div><div class="fk-v">${val}</div><div class="fk-s">${sub}</div></div>`;
+      document.getElementById("focus-kpis").innerHTML =
+        tile("Due today", dueToday, "tasks and deadlines", dueToday ? "warm" : "") +
+        tile("Overdue", nowAll - dueToday, "last " + FOCUS_STALE_DAYS + " days, and reminders", nowAll - dueToday ? "hot" : "") +
+        tile("Next 7 days", weekAll, "coming up", "") +
+        tile("Stale dates", staleAll, "older than " + FOCUS_STALE_DAYS + " days", "", staleAll ? "focusOpen.stale=true;render();document.getElementById('focus-list-stale').scrollIntoView({behavior:'smooth'})" : "") +
+        tile("Done today", doneToday, done.week + " in the last 7 days", doneToday ? "good" : "") +
+        tile("Inbox", inboxN, "suggestions to review", inboxN ? "warm" : "", "switchTab('inbox')");
+
+      const top = plan.top;
+      document.getElementById("focus-top").innerHTML = top.length
+        ? top.map((it, k) => focusRow(it, { n: k + 1, prevRef: k > 0 && it.obj.focusPin && top[k - 1].obj.focusPin ? top[k - 1].ref : null })).join("")
+        : '<div class="fcard fw-empty">Nothing is waiting. Add a task below or pin one from the lists.</div>';
+
+      let rest = "";
+      rest += focusList("now", "Also today", plan.now);
+      rest += focusList("week", "Next 7 days", plan.week);
+      rest += focusList("later", "Next in line, no date", plan.later, { limit: 8, noSkip: true });
+      rest += focusList("stale", "Stale dates", plan.stale, { collapsible: true, stale: true, note: "Dates more than " + FOCUS_STALE_DAYS + " days old. Give each a real date, remove the date, or check it off." });
+      if (plan.skipped.length) rest += `<div class="fcard"><h4>Set aside until tomorrow (${plan.skipped.length})<span class="more" onclick="focusUnskipAll()">Bring back</span></h4>${plan.skipped.map(it => `<div class="fw-row"><span class="fw-nm" style="font-weight:400;">${escapeHtml(it.title)}</span></div>`).join("")}</div>`;
+      if (doneToday) rest += `<div class="fcard"><h4>Done today (${doneToday})</h4>${done.todayOpen.map(x => `
+        <div class="fw-row"><input type="checkbox" checked onchange="toggle(${x.i})" title="Undo" /><span class="fw-nm" style="font-weight:400;text-decoration:line-through;color:var(--done-text);">${escapeHtml(x.t.text)}</span><button class="fbtn" onclick="archiveTodo(${x.i})" title="Move to Archived">Archive</button></div>`).join("")}${done.todayArch.map(t => `
+        <div class="fw-row"><span class="fw-nm" style="font-weight:400;text-decoration:line-through;color:var(--done-text);">${escapeHtml(t.text)}</span><span class="fw-sub">archived</span></div>`).join("")}</div>`;
+      document.getElementById("focus-rest").innerHTML = rest;
+      document.getElementById("focus-widgets").innerHTML = focusWidgets(today);
+    }
+
     function checkReminders() {
       const ts = todayStr();
       todos.forEach(todo => {
@@ -3461,6 +3903,7 @@
       document.getElementById("badge-projects").textContent = projects.filter(p => p.stage !== "Done" && inCat(p)).length;
 
       updateCategoryBar();
+      renderFocus();
       renderInbox();
       renderProjects();
       renderActive();
@@ -3501,6 +3944,7 @@
         if (todo.done) tr.classList.add("done");
 
         tr.draggable = true;
+        tr.dataset.idx = i;
         tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "active"));
         tr.addEventListener("dragend", handleDragEnd);
         if (dragOk) {
@@ -3726,6 +4170,7 @@
         if (todo.done || closed) tr.classList.add("sales-closed");
 
         tr.draggable = true;
+        tr.dataset.idx = i;
         tr.addEventListener("dragstart", (e) => handleDragStart(e, i, "sales"));
         tr.addEventListener("dragend", handleDragEnd);
         if (dragOk) {
@@ -4482,6 +4927,9 @@
     document.getElementById("p-name").addEventListener("keydown", (e) => {
       if (e.key === "Enter") addProject();
     });
+    document.getElementById("focus-add-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") focusQuickAdd();
+    });
 
     // Cross-tab drag drop targets — Subs is intentionally excluded (separate data model)
     ["active", "sales", "invoiced", "archived"].forEach(tab => {
@@ -4494,7 +4942,8 @@
     loadTheme();
     updateCategoryBar();
     updateDataLists();
-    render();
+    syncFocusNote();
+    switchTab(currentTab);
     checkReminders();
     loadInbox(true);
     window.addEventListener("focus", () => loadInbox(false));
