@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-05T22:02:39Z",
+ "generatedAt": "2026-10-06T00:34:57Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -150,7 +150,9 @@
    "stage": "Review",
    "priority": 2,
    "keys": [
-    "Pioneer"
+    "Pioneer",
+    "3709B",
+    "Pioneer Equipment"
    ],
    "next": "Confirm Wed 10/7 time with Patrick; run the 10 slide review deck; collect rate code, receiver, filters, drain, 20 psi drop, leak status, WS controller OK; then "
   },
@@ -534,7 +536,7 @@
    "name": "MX3 / VidaDash iOS app",
    "short": "MX3 / VidaDash iOS app",
    "client": "Self (Blake)",
-   "stage": "Parked",
+   "stage": "Active",
    "priority": 7,
    "keys": [
     "MX3",
@@ -542,7 +544,7 @@
     "VidaDash",
     "Blake"
    ],
-   "next": "Decide on close-out. Collect from Blake."
+   "next": "Send Claude the parked domain list. Decide collect vs trade the Blake balance for a signed release (attorney review). Decide which company owns the new product."
   },
   {
    "id": "p39-customer-database",
