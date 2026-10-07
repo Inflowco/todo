@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T00:34:57Z",
+ "generatedAt": "2026-10-07T19:49:13Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -154,7 +154,7 @@
     "3709B",
     "Pioneer Equipment"
    ],
-   "next": "Confirm Wed 10/7 time with Patrick; run the 10 slide review deck; collect rate code, receiver, filters, drain, 20 psi drop, leak status, WS controller OK; then "
+   "next": "Run the 10/7 deck with Patrick; upload the transcript; trim the Gmail question draft to what is still open and send; then Version 1.0."
   },
   {
    "id": "p05-iwco-ch1-cass-3x-300-hp",
@@ -561,7 +561,7 @@
     "market map",
     "Xcel top 800"
    ],
-   "next": "Review the Accounts tab (relationship and eligibility flags), fix any wrong merges in aliases.py, then run the Q4 eligibility campaign: 29 active or recent clie"
+   "next": "FIRST: install the Claude GitHub App on the Inflowco org (https://github.com/apps/claude/installations/select_target, pick Inflowco, allow repo todo). Until the"
   },
   {
    "id": "p40-orlando-spring-break-2027",
@@ -578,7 +578,7 @@
     "Sun Country",
     "SkyMiles"
    ],
-   "next": "Sat 10/10: price MSP to MCO for 6 on Delta and Sun Country (cash and miles), Sat to Sat and a shorter Sat to Thu. Then Disney days (10/11), lodging and beach (1"
+   "next": "Sat 10/10: price the 12 cell flight grid (out Sat 6 / Sun 7 / Mon 8, back Thu 11 / Fri 12 / Sat 13 / Sun 14) for 6 seats on Delta and Sun Country; dates follow "
   },
   {
    "id": "p41-coke-line9-cads",
@@ -601,7 +601,7 @@
    "name": "Xcel prospect pipeline (Electric Machinery, Wilbert Plastics, DFA Zumbrota, Tennant)",
    "short": "Xcel prospect pipeline",
    "client": "Xcel AMs (Jim Backstrom, Ally Maney)",
-   "stage": "Sales",
+   "stage": "Active",
    "priority": 3,
    "keys": [
     "Electric Machinery",
@@ -669,6 +669,23 @@
     "retrocommissioning"
    ],
    "next": "Reply to Brian with a day in the week of Nov 9 or Nov 17; save his 5 PDFs to the project folder; build the deck in the Oct work block (recommissioning angle, SM"
+  },
+  {
+   "id": "p45-bring-it-home",
+   "name": "Bring it home: ClickUp, Keep, Google Docs, MX3 and loose ideas into the ToDo app",
+   "short": "Bring it home: ClickUp, Keep, Google Docs, MX3 and loose ideas into the ToDo app",
+   "client": "Inflow internal",
+   "stage": "Active",
+   "priority": 3,
+   "keys": [
+    "bring it home",
+    "ClickUp",
+    "Keep",
+    "Takeout",
+    "import review",
+    "todo import"
+   ],
+   "next": "Mark up ToDo-Import-Review-2026-10-07.xlsx, set Read me B8 = YES, paste the prompt so Claude runs apply_import.py. Then Takeout Drive for the 3 Google accounts,"
   }
  ]
 }
