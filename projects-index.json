@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T19:49:13Z",
+ "generatedAt": "2026-10-09T22:50:53Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -686,6 +686,21 @@
     "todo import"
    ],
    "next": "Mark up ToDo-Import-Review-2026-10-07.xlsx, set Read me B8 = YES, paste the prompt so Claude runs apply_import.py. Then Takeout Drive for the 3 Google accounts,"
+  },
+  {
+   "id": "p46-waterous-compressor-design-ieda",
+   "name": "Waterous compressor replacement design + bid spec (IEDA46304.1, Xcel study funding)",
+   "short": "Waterous compressor replacement design + bid spec",
+   "client": "Waterous",
+   "stage": "Active",
+   "priority": 2,
+   "keys": [
+    "Waterous",
+    "IEDA46304",
+    "Floysand",
+    "Larry Nelson"
+   ],
+   "next": "Confirm the $7,500 price and send the draft (attach proposal + application). Ask Mitch Dice to confirm 16-10-219 is the current study form and get premise + rat"
   }
  ]
 }
