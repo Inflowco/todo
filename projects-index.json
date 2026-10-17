@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T18:42:26Z",
+ "generatedAt": "2026-10-17T20:16:18Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -639,7 +639,7 @@
     "recommissioning",
     "retrocommissioning"
    ],
-   "next": "Send the short reply draft; 10/23 block builds the deck from notes d0.2; 10/29 breakfast questions (notes section 6); 11/3 finish + rehearse; present 11/10 11:0"
+   "next": "Send the correction draft to Brian (direct scope, not a sub); review deck v0.2; 10/23 block open items; 10/29 breakfast; 11/3 finish; present 11/10."
   },
   {
    "id": "p45-bring-it-home",
@@ -753,7 +753,7 @@
     "budgetary pricing",
     "price database"
    ],
-   "next": "DECISION API key for the structured line item pass, then Quotes tab + price curves + Budget Table workbook."
+   "next": "Peter reviews Budget Table + Price Curves; decide the CASS template numbers; thin oil free cells; monthly rerun routine (README steps 5 to 7)."
   },
   {
    "id": "p51-equipment-vendor-venture",
