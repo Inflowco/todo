@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T17:51:37Z",
+ "generatedAt": "2026-10-17T18:34:47Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -757,9 +757,9 @@
   },
   {
    "id": "p51-equipment-vendor-venture",
-   "name": "Equipment vendor venture: brand specific competitive pricing booklet + go/no-go",
-   "short": "Equipment vendor venture: brand specific competitive pricing booklet + go/no-go",
-   "client": "Inflow (new business idea)",
+   "name": "Equipment vendor venture: Bobcat Industrial Air distributor (business plan, proposal to Kyle Schafer, go/no-go)",
+   "short": "Equipment vendor venture: Bobcat Industrial Air distributor",
+   "client": "Inflow (new business) / Doosan Bobcat Industrial Air",
    "stage": "Active",
    "priority": 2,
    "keys": [
@@ -773,9 +773,11 @@
     "competitive booklet",
     "dealer",
     "distributor",
-    "equipment vendor"
+    "equipment vendor",
+    "Bobcat proposal",
+    "Industrial Air"
    ],
-   "next": "Wait for Kyle's reply with trip dates, then book the meeting (+ plant visits); Peter answers the 19 inputs (task due 10/22) and calls Kyle (task due 10/23, use "
+   "next": "Peter reads both d0.1 docs and marks changes; ask Xcel (Shari) whether a disclosed affiliate equipment sale affects study funding or the trade partner award; pr"
   },
   {
    "id": "p51-cost-saving-ideas",
