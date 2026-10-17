@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T13:50:57Z",
+ "generatedAt": "2026-10-17T15:25:39Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -753,7 +753,7 @@
     "budgetary pricing",
     "price database"
    ],
-   "next": "Peter creates the app password and stores it; Claude runs harvest_gmail.py, then extract_quotes.py (pdfminer line items) and build_database.py (Quotes, Price Cu"
+   "next": "IMAP harvest finishing; then extract_quotes.py (line items) and build_database.py."
   },
   {
    "id": "p51-equipment-vendor-venture",
@@ -766,9 +766,12 @@
     "equipment vendor",
     "competitive booklet",
     "distributor",
-    "dealer"
+    "dealer",
+    "Doosan",
+    "Bobcat",
+    "Schafer"
    ],
-   "next": "After the p50 harvest lands: build the Brands tab and the booklet draft; DECISION tasks on brands to pursue, territory, and conflict with the Xcel trade partner"
+   "next": "Call or email Kyle Schafer (Doosan Bobcat Industrial Air) with the distributor inquiry questions; then: After the p50 harvest lands: build the Brands tab and th"
   },
   {
    "id": "p51-cost-saving-ideas",
