@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T17:11:20Z",
+ "generatedAt": "2026-10-17T17:51:37Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -753,7 +753,7 @@
     "budgetary pricing",
     "price database"
    ],
-   "next": "Finish extract_quotes.py run, tally vendor quotes by brand/category/year, then build the Quotes tab and price curves (DECISION: Claude API line item pass, few d"
+   "next": "DECISION API key for the structured line item pass, then Quotes tab + price curves + Budget Table workbook."
   },
   {
    "id": "p51-equipment-vendor-venture",
