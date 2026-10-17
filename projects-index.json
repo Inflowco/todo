@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T18:37:16Z",
+ "generatedAt": "2026-10-17T18:39:18Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -764,7 +764,9 @@
    "priority": 2,
    "keys": [
     "Bobcat",
+    "Bobcat proposal",
     "Doosan",
+    "Industrial Air",
     "Northstar",
     "SalesCo",
     "Schafer",
@@ -772,12 +774,12 @@
     "business plan",
     "competitive booklet",
     "dealer",
+    "design assist",
     "distributor",
     "equipment vendor",
-    "Bobcat proposal",
-    "Industrial Air"
+    "go no go"
    ],
-   "next": "Peter answers the 19 inputs (task due 10/22); Claude reruns the model and issues d0.2 with the customer DB market tables added; Kyle call/meeting with 06; propo"
+   "next": "Call Kyle by 10/23 (doc 06); ask Mitch Dice for Xcel's written position by 11/7; call Jim Lubratt by 11/7; named pipeline by 11/14; design assist price sheet by"
   },
   {
    "id": "p51-cost-saving-ideas",
