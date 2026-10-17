@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T13:33:58Z",
+ "generatedAt": "2026-10-17T13:34:43Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -741,7 +741,7 @@
    "next": "Thu 10/22 11:00: book The Ordinary on Resy. Then Fort Sumter ferry and the spa."
   },
   {
-   "id": "p48-equipment-pricing-database",
+   "id": "p50-equipment-pricing-database",
    "name": "Equipment pricing database: compressed air budgetary pricing from 13 years of vendor quotes",
    "short": "Equipment pricing database: compressed air budgetary pricing from 13 years of vendor quotes",
    "client": "Inflow (internal)",
@@ -756,7 +756,7 @@
    "next": "Peter creates the app password and stores it; Claude runs harvest_gmail.py, then extract_quotes.py (pdfminer line items) and build_database.py (Quotes, Price Cu"
   },
   {
-   "id": "p49-equipment-vendor-venture",
+   "id": "p51-equipment-vendor-venture",
    "name": "Equipment vendor venture: brand specific competitive pricing booklet + go/no-go",
    "short": "Equipment vendor venture: brand specific competitive pricing booklet + go/no-go",
    "client": "Inflow (new business idea)",
@@ -768,7 +768,7 @@
     "distributor",
     "dealer"
    ],
-   "next": "After the p48 harvest lands: build the Brands tab and the booklet draft; DECISION tasks on brands to pursue, territory, and conflict with the Xcel trade partner"
+   "next": "After the p50 harvest lands: build the Brands tab and the booklet draft; DECISION tasks on brands to pursue, territory, and conflict with the Xcel trade partner"
   }
  ]
 }
