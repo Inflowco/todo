@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T16:39:23Z",
+ "generatedAt": "2026-10-17T17:11:20Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -549,7 +549,7 @@
     "Sun Country",
     "SkyMiles"
    ],
-   "next": "Peter books Universal Endless Summer Dockside 2-Bedroom Suite, Mon Mar 8 to Thu Mar 11 (3 nights, 2 adults + 4 kids, kids under 18 stay free), refundable rate, "
+   "next": "Peter: book Fort Myers Beach Sat Mar 6 to Mon Mar 8 for 6 (Pink Shell 2BR villa first, Lovers Key Resort 2BR or GullWing 2BR condo second), refundable. Then tic"
   },
   {
    "id": "p41-coke-line9-cads",
@@ -639,7 +639,7 @@
     "recommissioning",
     "retrocommissioning"
    ],
-   "next": "Send the short reply draft; 10/23 block builds the deck from the notes docx; 10/29 breakfast questions (notes section 6); 11/3 finish + rehearse; present 11/10 "
+   "next": "Send the short reply draft; 10/23 block builds the deck from notes d0.2; 10/29 breakfast questions (notes section 6); 11/3 finish + rehearse; present 11/10 11:0"
   },
   {
    "id": "p45-bring-it-home",
@@ -753,7 +753,7 @@
     "budgetary pricing",
     "price database"
    ],
-   "next": "IMAP harvest finishing; then extract_quotes.py (line items) and build_database.py."
+   "next": "Finish extract_quotes.py run, tally vendor quotes by brand/category/year, then build the Quotes tab and price curves (DECISION: Claude API line item pass, few d"
   },
   {
    "id": "p51-equipment-vendor-venture",
@@ -775,7 +775,7 @@
     "distributor",
     "equipment vendor"
    ],
-   "next": "Peter answers the 19 inputs (task due 10/22) and calls Kyle (task due 10/23, use doc 06); Claude then builds d0.2 of the plan + proposal with the model rerun; a"
+   "next": "Wait for Kyle's reply with trip dates, then book the meeting (+ plant visits); Peter answers the 19 inputs (task due 10/22) and calls Kyle (task due 10/23, use "
   },
   {
    "id": "p51-cost-saving-ideas",
