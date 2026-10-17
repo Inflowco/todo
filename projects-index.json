@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T16:32:41Z",
+ "generatedAt": "2026-10-17T16:39:23Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -639,7 +639,7 @@
     "recommissioning",
     "retrocommissioning"
    ],
-   "next": "Send the Brian draft; save his 5 PDFs; deck 10/23 and 11/3; breakfast 10/29; present 11/10 11:00."
+   "next": "Send the short reply draft; 10/23 block builds the deck from the notes docx; 10/29 breakfast questions (notes section 6); 11/3 finish + rehearse; present 11/10 "
   },
   {
    "id": "p45-bring-it-home",
@@ -761,17 +761,21 @@
    "short": "Equipment vendor venture: brand specific competitive pricing booklet + go/no-go",
    "client": "Inflow (new business idea)",
    "stage": "Active",
-   "priority": 3,
+   "priority": 2,
    "keys": [
-    "equipment vendor",
-    "competitive booklet",
-    "distributor",
-    "dealer",
-    "Doosan",
     "Bobcat",
-    "Schafer"
+    "Doosan",
+    "Northstar",
+    "SalesCo",
+    "Schafer",
+    "ServiceCo",
+    "business plan",
+    "competitive booklet",
+    "dealer",
+    "distributor",
+    "equipment vendor"
    ],
-   "next": "Call or email Kyle Schafer (Doosan Bobcat Industrial Air) with the distributor inquiry questions; then: After the p50 harvest lands: build the Brands tab and th"
+   "next": "Peter answers the 19 inputs (task due 10/22) and calls Kyle (task due 10/23, use doc 06); Claude then builds d0.2 of the plan + proposal with the model rerun; a"
   },
   {
    "id": "p51-cost-saving-ideas",
