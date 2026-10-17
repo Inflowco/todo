@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T15:25:39Z",
+ "generatedAt": "2026-10-17T16:32:41Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -536,8 +536,8 @@
   },
   {
    "id": "p40-orlando-spring-break-2027",
-   "name": "Orlando spring break trip (Disney World + beach day), March 2027",
-   "short": "Orlando spring break trip",
+   "name": "Spring break 2027: Fort Myers beach + Orlando parks (Disney, Universal), Mar 6 to 11",
+   "short": "Spring break 2027: Fort Myers beach + Orlando parks",
    "client": "Family",
    "stage": "Active",
    "priority": 4,
@@ -549,7 +549,7 @@
     "Sun Country",
     "SkyMiles"
    ],
-   "next": "Sat 10/10: price the 12 cell flight grid (out Sat 6 / Sun 7 / Mon 8, back Thu 11 / Fri 12 / Sat 13 / Sun 14) for 6 seats on Delta and Sun Country; dates follow "
+   "next": "Peter books Universal Endless Summer Dockside 2-Bedroom Suite, Mon Mar 8 to Thu Mar 11 (3 nights, 2 adults + 4 kids, kids under 18 stay free), refundable rate, "
   },
   {
    "id": "p41-coke-line9-cads",
@@ -675,8 +675,8 @@
   },
   {
    "id": "p47-boston-sci-b14-ac1-custom-app",
-   "name": "Boston Sci Arden Hills B14: AC-1 150 HP replacement custom application",
-   "short": "Boston Sci Arden Hills B14: AC-1 150 HP replacement custom application",
+   "name": "Boston Sci Arden Hills B14: 150 HP compressor VFD custom application (capacity add)",
+   "short": "Boston Sci Arden Hills B14: 150 HP compressor VFD custom application",
    "client": "Boston Scientific (Nick McMillan; Xcel rep Kevin Bengtson)",
    "stage": "Active",
    "priority": 2,
@@ -690,7 +690,7 @@
     "Nick McMillan",
     "14 Compressor"
    ],
-   "next": "Task in the app (due 10/20): save Kevin's xlsm + Nick's PDFs; attach the 3 files and send the Kevin draft; DECISION 1 VFD yes/no; DECISION 2 cooling source towe"
+   "next": "Task in the app (due 10/20): save Kevin's xlsm + Nick's PDFs; attach the 3 d0.2 files and send the Kevin draft; DECISION Kevin agrees capacity add baseline; CON"
   },
   {
    "id": "p48-anchor-glass-maestro-mv",
