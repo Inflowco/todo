@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-17T20:16:18Z",
+ "generatedAt": "2026-10-21T14:19:55Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -169,7 +169,7 @@
     "Metro Transit",
     "OHB"
    ],
-   "next": "Chase the rate code; make the unit cost call; Ken's leak list + three asks; flip to V1.0 and send; book the October reconvene."
+   "next": "1 wait for Jake's rate code reply (watcher running); 2 save Ken's leak list; 3 Peter's unit cost call (or accept the placeholders, flagged); 4 flip d0.9 to V1.0"
   },
   {
    "id": "p33-andersen-rba-cg2-load-check",
@@ -193,13 +193,15 @@
    "name": "Andersen Bayport CASS (B2)",
    "short": "Andersen Bayport CASS",
    "client": "Andersen Windows",
-   "stage": "Waiting",
+   "stage": "Active",
    "priority": 3,
    "keys": [
     "Andersen",
-    "Bayport"
+    "B31",
+    "Bayport",
+    "Building 31"
    ],
-   "next": "Client review. M&V now tracked as its own row above."
+   "next": "Gmail draft to Steve with the B31 budget summary PDF is in Drafts (10/20): review and send; then the d0.2 decisions (hours, trim basis, quote + repair estimate,"
   },
   {
    "id": "p13-abbott-new-brighton-argo",
@@ -315,7 +317,7 @@
     "3M CG",
     "Cottage Grove"
    ],
-   "next": "Survey days 10/19 and 10/21; scan sheets daily; transcribe; status to Mike Rogers; photos to tags; leak list into the package; JHF quotes."
+   "next": "Survey today 10/21 (new safe work permit + daily permit); scan sheets; transcribe into leak log + checklist; status note to Mike Rogers (cc Kasey, Kellen, Shawn"
   },
   {
    "id": "p38-inflow-books-taxes",
@@ -379,7 +381,7 @@
     "Garland",
     "AW "
    ],
-   "next": "Receive the loggers; read out; ask Dejan/Steve the inputs; Draft 0.1 wk of 10/26; send before 11/5; review 11/5 10:00."
+   "next": "Thu 10/22 block: settle the AC-04 CT scaling (HOBO launch settings, feeder conductors, ask Dejan for an Xe controller photo), questions to Dejan/Steve, then Dra"
   },
   {
    "id": "p08-xcel-oid-tracker",
@@ -487,7 +489,7 @@
     "Rust-Oleum",
     "Rustoleum"
    ],
-   "next": "Wait for the Xcel decision on OID5998399; then get paid."
+   "next": "Send the 10/20 draft to Paul Sarles, then wait for the Xcel decision on OID5998399; then get paid."
   },
   {
    "id": "p21-edina-daycare-partner-me",
@@ -549,7 +551,7 @@
     "Sun Country",
     "SkyMiles"
    ],
-   "next": "Peter: book Fort Myers Beach Sat Mar 6 to Mon Mar 8 for 6 (Pink Shell 2BR villa first, Lovers Key Resort 2BR or GullWing 2BR condo second), refundable. Then tic"
+   "next": "Peter: price the near beach shortlist for Sat Mar 6 + Sun Mar 7 (two rooms, 6 people): Hampton Inn Sanibel Gateway or Holiday Inn Express next door (off island,"
   },
   {
    "id": "p41-coke-line9-cads",
@@ -587,7 +589,7 @@
     "Tennant",
     "Maney"
    ],
-   "next": "Send Al the TCDC M&V package; Tennant rebate forms via McNulty; call Dan Mallory; reply to Kris; DFA touch in November."
+   "next": "Peter sends the TCDC draft to Al; Tennant rebate forms via McNulty; call Dan Mallory"
   },
   {
    "id": "p43-porch-permit-4860-johnson",
@@ -798,6 +800,23 @@
     "Direct TV"
    ],
    "next": "Winhost: inventory the DNS records, pick the new DNS home, move, verify email, cancel. Subs review by mid November."
+  },
+  {
+   "id": "p52-mn-utility-programs",
+   "name": "MN utility programs workbook (Xcel, SMMPA, Chaska, Minnesota Power, co-ops, gas, statewide)",
+   "short": "MN utility programs workbook",
+   "client": "Inflow (sales reference)",
+   "stage": "Review",
+   "priority": 4,
+   "keys": [
+    "utility programs",
+    "MN Utility Programs",
+    "rebate program",
+    "Chaska Electric",
+    "Otter Tail",
+    "Bright Energy"
+   ],
+   "next": "Peter reviews d0.1; confirm the 15 Open Items with Dillon (MP), Brian (SMMPA 10/29 breakfast), Shari/Kevin (Xcel 2027 plan); use the Study Funding Calc on the S"
   }
  ]
 }
