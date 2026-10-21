@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T13:05:18Z",
+  "generatedAt": "2026-10-21T14:07:02Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -285,6 +285,25 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a15e8f69a7f3573",
       "isSales": false,
       "createdAt": "2026-10-21T13:05:18Z"
+    },
+    {
+      "sourceId": "gm-1a15e602129d55b8",
+      "source": "email",
+      "kind": "task",
+      "title": "Send final slides for Dec 10 Best Practices webinar",
+      "detail": "Kimberly Hill (Best Practices, Kaishan sponsored) confirmed the webinar for Thu 12/10 at 2:00 PM EST; she needs final slides by Thu 11/12 to review and do a test run.",
+      "reason": "Event producer locked in the webinar date and set a slide deadline that needs prep time.",
+      "from": "Kimberly Hill",
+      "fromEmail": "kimberly@airbestpractices.com",
+      "customer": "Best Practices (Smith Onandia Communications)",
+      "project": "",
+      "projectId": "",
+      "dueDate": "2026-11-12",
+      "priority": 4,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15e602129d55b8",
+      "isSales": false,
+      "createdAt": "2026-10-21T14:07:02Z"
     }
   ]
 }
