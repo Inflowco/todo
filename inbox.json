@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T14:07:02Z",
+  "generatedAt": "2026-10-21T16:05:13Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -304,6 +304,25 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a15e602129d55b8",
       "isSales": false,
       "createdAt": "2026-10-21T14:07:02Z"
+    },
+    {
+      "sourceId": "gm-1a15f19ac8b49a30",
+      "source": "email",
+      "kind": "task",
+      "title": "Decide whether to proceed without desiccant on the Boston Sci dryer repair",
+      "detail": "Ryan Peterson (JHF) asked the Boston Sci Maple Grove team, Pete included, whether to proceed with reinstalling the dryer without new desiccant, since a top off would need a separate return trip.",
+      "reason": "Vendor needs an answer before scheduling the dryer service.",
+      "from": "Ryan Peterson",
+      "fromEmail": "ryan.peterson@jhfoster.com",
+      "customer": "Boston Scientific",
+      "project": "Boston Sci WL2 CASS + dryer custom rebate",
+      "projectId": "p18-boston-sci-wl2-cass-drye",
+      "dueDate": null,
+      "priority": 3,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15f19ac8b49a30",
+      "isSales": false,
+      "createdAt": "2026-10-21T16:05:13Z"
     }
   ]
 }
