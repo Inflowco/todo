@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T11:52:46Z",
+  "generatedAt": "2026-10-21T22:40:31Z",
   "events": [
     {
       "sourceId": "gm-1a0f7f7299c7f5db",
@@ -195,6 +195,51 @@
       "fromEmail": "peter.vinck@inflowco.com",
       "link": "https://mail.google.com/mail/u/0/#all/1a15acd2e6a1c914",
       "createdAt": "2026-10-21T11:52:46Z"
+    },
+    {
+      "sourceId": "gm-1a1543f59c3ea8c5",
+      "date": "2026-10-19",
+      "eventType": "proposal_sent",
+      "account": "Abbott",
+      "projectId": "p17-abbott-woodbury-road-com",
+      "title": "Custom preapproval application sent to Bella Halstead for Woodridge AC-1/AC-2",
+      "amount": null,
+      "oid": "",
+      "invoice": "",
+      "from": "Peter Vinck",
+      "fromEmail": "peter.vinck@inflowco.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a1543f59c3ea8c5",
+      "createdAt": "2026-10-21T22:40:31Z"
+    },
+    {
+      "sourceId": "gm-1a1596e0f4757cbb",
+      "date": "2026-10-20",
+      "eventType": "proposal_sent",
+      "account": "Andersen Windows",
+      "projectId": "p25-andersen-bayport-cass-b2",
+      "title": "B31 budget summary sent to Steve Plachinski: $40,600/yr, ~$28,000 Xcel incentive",
+      "amount": 28000,
+      "oid": "",
+      "invoice": "",
+      "from": "Peter Vinck",
+      "fromEmail": "peter.vinck@inflowco.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a1596e0f4757cbb",
+      "createdAt": "2026-10-21T22:40:31Z"
+    },
+    {
+      "sourceId": "gm-1a15ec2de31a239f",
+      "date": "2026-10-21",
+      "eventType": "proposal_sent",
+      "account": "Boston Scientific",
+      "projectId": "p47-boston-sci-b14-ac1-custom-app",
+      "title": "B14 AC-1 custom draft 0.3 application sent to Kevin Bengtson, est. $5,100 incentive",
+      "amount": 5100,
+      "oid": "",
+      "invoice": "",
+      "from": "Peter Vinck",
+      "fromEmail": "peter.vinck@inflowco.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15ec2de31a239f",
+      "createdAt": "2026-10-21T22:40:31Z"
     }
   ]
 }
