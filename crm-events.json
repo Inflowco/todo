@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T22:42:52Z",
+  "generatedAt": "2026-10-21T11:52:46Z",
   "events": [
     {
       "sourceId": "gm-1a0f7f7299c7f5db",
@@ -150,6 +150,51 @@
       "fromEmail": "Paul.Sarles@xcelenergy.com",
       "link": "https://mail.google.com/mail/u/0/#all/1a131b2e75763c9c",
       "createdAt": "2026-10-12T22:42:52Z"
+    },
+    {
+      "sourceId": "gm-1a15b60af846e564",
+      "date": "2026-10-20",
+      "eventType": "xcel_preapproval",
+      "account": "Abbott",
+      "projectId": "p01-abbott-minnetonka-cass-b",
+      "title": "Xcel issued new OIDs for Abbott Mtka: B7 OID6103606, B4 OID6103607",
+      "amount": null,
+      "oid": "OID6103606",
+      "invoice": "",
+      "from": "Bella Halstead",
+      "fromEmail": "Bella.J.Halstead@xcelenergy.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15b60af846e564",
+      "createdAt": "2026-10-21T11:52:46Z"
+    },
+    {
+      "sourceId": "gm-1a15b8fee1d2f1bc",
+      "date": "2026-10-20",
+      "eventType": "xcel_preapproval",
+      "account": "Abbott",
+      "projectId": "p17-abbott-woodbury-road-com",
+      "title": "Xcel preapproval OID6103618 issued for Abbott Woodridge AC-1/AC-2 replacement",
+      "amount": null,
+      "oid": "OID6103618",
+      "invoice": "",
+      "from": "Bella Halstead",
+      "fromEmail": "Bella.J.Halstead@xcelenergy.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15b8fee1d2f1bc",
+      "createdAt": "2026-10-21T11:52:46Z"
+    },
+    {
+      "sourceId": "gm-1a15acd2e6a1c914",
+      "date": "2026-10-20",
+      "eventType": "report_delivered",
+      "account": "TCDC",
+      "projectId": "",
+      "title": "Sent TCDC Colosio DCM5 pre/post M&V summary package to Al for MRE/Franklin",
+      "amount": null,
+      "oid": "",
+      "invoice": "",
+      "from": "Peter Vinck",
+      "fromEmail": "peter.vinck@inflowco.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15acd2e6a1c914",
+      "createdAt": "2026-10-21T11:52:46Z"
     }
   ]
 }
