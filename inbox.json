@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T17:07:42Z",
+  "generatedAt": "2026-10-21T22:07:29Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -342,6 +342,25 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a15f431781d6fb5",
       "isSales": false,
       "createdAt": "2026-10-21T17:07:42Z"
+    },
+    {
+      "sourceId": "gm-1a160763d24b3ead",
+      "source": "email",
+      "kind": "task",
+      "title": "Answer Bella: will Woodridge compressor swap finish before year end?",
+      "detail": "Bella Halstead (Xcel) opened OID6103618 for the Abbott Woodridge AC-1/AC-2 compressor replacement and is asking whether it will be implemented before year end, for her forecast.",
+      "reason": "Utility account manager is waiting on a project timing answer for her forecast.",
+      "from": "Bella Halstead",
+      "fromEmail": "Bella.J.Halstead@xcelenergy.com",
+      "customer": "Abbott",
+      "project": "Abbott Woodridge compressor design",
+      "projectId": "p17-abbott-woodbury-road-com",
+      "dueDate": null,
+      "priority": 2,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a160763d24b3ead",
+      "isSales": false,
+      "createdAt": "2026-10-21T22:07:29Z"
     }
   ]
 }
