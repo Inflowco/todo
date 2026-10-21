@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T11:55:18Z",
+  "generatedAt": "2026-10-21T13:05:18Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -266,6 +266,25 @@
       "link": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc4Y3EzNGNhNTY0c2o0Y3BoNmgyNDhoMWc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnOGdxazhoaG44b3EzNmdobzYxMTM4aGhrNnQxM2VlOWk2a3AzNGdobjhwMGowY3BnOG9zMCBwZXRlci52aW5ja0BpbmZsb3djby5jb20&ctz=America/Chicago",
       "isSales": false,
       "createdAt": "2026-10-21T11:55:18Z"
+    },
+    {
+      "sourceId": "gm-1a15e8f69a7f3573",
+      "source": "email",
+      "kind": "task",
+      "title": "Note Andersen Bayport flow meter move and CT install before Monday",
+      "detail": "David Ripley (Andersen) reports the flow meter was relocated 3 ft north and corrected, and CTs are installed on the new compressor; he also asked Jim to fill out the data logging sheet before the Monday 10/26 meeting.",
+      "reason": "Vendor reported hardware changes on the Bayport M&V project ahead of the scheduled review call.",
+      "from": "David Ripley",
+      "fromEmail": "David.Ripley@andersencorp.com",
+      "customer": "Andersen Windows",
+      "project": "Andersen Bayport B2 M&V",
+      "projectId": "p11-andersen-bayport-b2-m-v",
+      "dueDate": "2026-10-25",
+      "priority": 4,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15e8f69a7f3573",
+      "isSales": false,
+      "createdAt": "2026-10-21T13:05:18Z"
     }
   ]
 }
