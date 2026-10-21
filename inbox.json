@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T16:05:13Z",
+  "generatedAt": "2026-10-21T17:07:42Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -323,6 +323,25 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a15f19ac8b49a30",
       "isSales": false,
       "createdAt": "2026-10-21T16:05:13Z"
+    },
+    {
+      "sourceId": "gm-1a15f431781d6fb5",
+      "source": "email",
+      "kind": "task",
+      "title": "Confirm time and place for Hammarsten lunch Fri 10/23",
+      "detail": "Brian Hammarsten (SMMPA) suggested Southern Social in Chaska for lunch before the Rochester presentation prep and asked what time, proposing 11:30 AM; confirm with him.",
+      "reason": "SMMPA contact is waiting on Pete to confirm logistics for the Friday lunch meeting.",
+      "from": "Brian Hammarsten",
+      "fromEmail": "bd.hammarsten@smmpa.org",
+      "customer": "SMMPA",
+      "project": "SMMPA Rochester presentation to the ESR team",
+      "projectId": "p40-smmpa-rochester-presentation",
+      "dueDate": "2026-10-21",
+      "priority": 3,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15f431781d6fb5",
+      "isSales": false,
+      "createdAt": "2026-10-21T17:07:42Z"
     }
   ]
 }
