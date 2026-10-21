@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-21T14:19:55Z",
+ "generatedAt": "2026-10-21T20:05:00Z",
  "projects": [
   {
    "id": "p11-andersen-bayport-b2-m-v",
@@ -162,14 +162,14 @@
    "name": "Metro Transit OHB CASS (main 2x 75 HP + soot 30 HP)",
    "short": "Metro Transit OHB CASS",
    "client": "Metro Transit (Jeff Freeman)",
-   "stage": "Review",
+   "stage": "Ready",
    "priority": 2,
    "keys": [
     "MetroTransit",
     "Metro Transit",
     "OHB"
    ],
-   "next": "1 wait for Jake's rate code reply (watcher running); 2 save Ken's leak list; 3 Peter's unit cost call (or accept the placeholders, flagged); 4 flip d0.9 to V1.0"
+   "next": "1 send the V1.0 draft to Matt/Jeff/Ken/Jake; 2 save Ken's leak list to the folder; 3 Xcel prescriptive forms (15 leaks at $50, 7 drains at $200) + study report "
   },
   {
    "id": "p33-andersen-rba-cg2-load-check",
@@ -551,7 +551,7 @@
     "Sun Country",
     "SkyMiles"
    ],
-   "next": "Peter: price the near beach shortlist for Sat Mar 6 + Sun Mar 7 (two rooms, 6 people): Hampton Inn Sanibel Gateway or Holiday Inn Express next door (off island,"
+   "next": "Peter: DECIDE beach side (Fort Myers Beach Gulf, water about 68, vs Hollywood / Pompano / Deerfield / Delray on the Atlantic, water about 75, same 3 hr drive), "
   },
   {
    "id": "p41-coke-line9-cads",
