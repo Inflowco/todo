@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T12:08:00Z",
+  "generatedAt": "2026-10-22T13:10:11Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -399,6 +399,25 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a1635acced41f7d",
       "isSales": false,
       "createdAt": "2026-10-22T12:08:00Z"
+    },
+    {
+      "sourceId": "cal-ppu9itf55s55sefjsa40o7movc",
+      "source": "calendar",
+      "kind": "task",
+      "title": "Prep for Andersen Bayport B2 logger download visit",
+      "detail": "Logger download site visit for the Bayport B2 monitoring project, Mon 10/26, 9:30-11:30 AM CT; coordinate room access (use Skyler to get around).",
+      "reason": "Logger download site visit on the calendar; prep the day before.",
+      "from": "",
+      "fromEmail": "",
+      "customer": "Andersen Windows",
+      "project": "Andersen Bayport B2 M&V",
+      "projectId": "p11-andersen-bayport-b2-m-v",
+      "dueDate": "2026-10-25",
+      "priority": 3,
+      "when": "Mon 10/26, 9:30-11:30 AM CT",
+      "link": "https://www.google.com/calendar/event?eid=cHB1OWl0ZjU1czU1c2VmanNhNDBvN21vdmMgcGV0ZXIudmluY2tAaW5mbG93Y28uY29t",
+      "isSales": false,
+      "createdAt": "2026-10-22T13:10:11Z"
     }
   ]
 }
