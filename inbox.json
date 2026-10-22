@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T13:10:11Z",
+  "generatedAt": "2026-10-22T16:06:23Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -418,6 +418,44 @@
       "link": "https://www.google.com/calendar/event?eid=cHB1OWl0ZjU1czU1c2VmanNhNDBvN21vdmMgcGV0ZXIudmluY2tAaW5mbG93Y28uY29t",
       "isSales": false,
       "createdAt": "2026-10-22T13:10:11Z"
+    },
+    {
+      "sourceId": "gm-1a164298f49c5bd2",
+      "source": "email",
+      "kind": "task",
+      "title": "Confirm OK to run this month's payroll",
+      "detail": "AnneMarie Moberg (DHA CPAs) needs confirmation to run October payroll; she needs to hear back at least 2 business days before month end for timely filing.",
+      "reason": "Accountant needs payroll approval ahead of the month-end filing deadline.",
+      "from": "AnneMarie Moberg",
+      "fromEmail": "AnneMarie@dha-cpa.com",
+      "customer": "",
+      "project": "Inflow Books and Taxes",
+      "projectId": "p38-inflow-books-taxes",
+      "dueDate": "2026-10-29",
+      "priority": 3,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a164298f49c5bd2",
+      "isSales": false,
+      "createdAt": "2026-10-22T16:06:23Z"
+    },
+    {
+      "sourceId": "cal-_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g6923gd256934ae1n6l248h1g64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g8oqjah2368p3ee1l8opj4d1k610jid1l8oq42d1g8914cchh74rg",
+      "source": "calendar",
+      "kind": "task",
+      "title": "Prep findings for Garland compressed air study review call",
+      "detail": "Review call with Steve Plachinski and Dejan Markovik (Andersen) on the Garland CA study preliminary findings, Thu 11/5, 10:00-10:55 AM CT (Teams).",
+      "reason": "Client review call on the calendar; prep the day before.",
+      "from": "Steve Plachinski",
+      "fromEmail": "steven.plachinski@andersencorp.com",
+      "customer": "AW / Garland",
+      "project": "AW Garland TX CA study + leaks",
+      "projectId": "p19-aw-garland-tx-leak-study",
+      "dueDate": "2026-11-04",
+      "priority": 2,
+      "when": "Thu 11/5, 10:00-10:55 AM CT",
+      "link": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc2OTIzZ2QyNTY5MzRhZTFuNmwyNDhoMWc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnOG9xamFoMjM2OHAzZWUxbDhvcGo0ZDFrNjEwamlkMWw4b3E0MmQxZzg5MTRjY2hoNzRyZyBwZXRlci52aW5ja0BpbmZsb3djby5jb20&ctz=America/Chicago",
+      "isSales": false,
+      "createdAt": "2026-10-22T16:06:23Z"
     }
   ]
 }
