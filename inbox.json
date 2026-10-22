@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T22:07:29Z",
+  "generatedAt": "2026-10-22T12:08:00Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -361,6 +361,44 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a160763d24b3ead",
       "isSales": false,
       "createdAt": "2026-10-21T22:07:29Z"
+    },
+    {
+      "sourceId": "gm-1a1634e600f8411a",
+      "source": "email",
+      "kind": "task",
+      "title": "Tell Steve your availability for the Nov 17 Garland/Leidos review",
+      "detail": "Steve Plachinski (Andersen) wants to add a Leidos utility review after the Nov 5 internal Garland findings review, and is eyeing the morning of Nov 17 to add Pete to his standing Leidos meeting; he wants Leidos to have the report by Fri Nov 13.",
+      "reason": "Client is scheduling a utility review and needs Pete's availability to lock the date.",
+      "from": "Steve Plachinski",
+      "fromEmail": "Steven.Plachinski@andersencorp.com",
+      "customer": "AW / Garland",
+      "project": "AW Garland TX CA study + leaks",
+      "projectId": "p19-aw-garland-tx-leak-study",
+      "dueDate": null,
+      "priority": 3,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a1634e600f8411a",
+      "isSales": false,
+      "createdAt": "2026-10-22T12:08:00Z"
+    },
+    {
+      "sourceId": "gm-1a1635acced41f7d",
+      "source": "email",
+      "kind": "task",
+      "title": "File Jim's Quincy setpoint sheet for the Bayport B2 record",
+      "detail": "David Ripley (Andersen) forwarded Jim Heyer's filled-out setpoint sheet for the North and East Quincy compressors in building 2, for the Bayport B2 monitoring record.",
+      "reason": "Vendor reported completed setpoint documentation for the active M&V project.",
+      "from": "David Ripley",
+      "fromEmail": "David.Ripley@andersencorp.com",
+      "customer": "Andersen Windows",
+      "project": "Andersen Bayport B2 M&V",
+      "projectId": "p11-andersen-bayport-b2-m-v",
+      "dueDate": null,
+      "priority": 5,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a1635acced41f7d",
+      "isSales": false,
+      "createdAt": "2026-10-22T12:08:00Z"
     }
   ]
 }
