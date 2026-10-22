@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T22:40:31Z",
+  "generatedAt": "2026-10-22T22:41:18Z",
   "events": [
     {
       "sourceId": "gm-1a0f7f7299c7f5db",
@@ -240,6 +240,36 @@
       "fromEmail": "peter.vinck@inflowco.com",
       "link": "https://mail.google.com/mail/u/0/#all/1a15ec2de31a239f",
       "createdAt": "2026-10-21T22:40:31Z"
+    },
+    {
+      "sourceId": "gm-1a165382d6a0fd9d",
+      "date": "2026-10-22",
+      "eventType": "xcel_preapproval",
+      "account": "Rust-Oleum",
+      "projectId": "p15-rust-oleum-bp-cass",
+      "title": "Xcel engineer approved Rust-Oleum CASS OID5998399 to move forward",
+      "amount": null,
+      "oid": "OID5998399",
+      "invoice": "",
+      "from": "Paul Sarles",
+      "fromEmail": "Paul.Sarles@xcelenergy.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a165382d6a0fd9d",
+      "createdAt": "2026-10-22T22:41:18Z"
+    },
+    {
+      "sourceId": "gm-1a16499b5e391d9d",
+      "date": "2026-10-22",
+      "eventType": "proposal_sent",
+      "account": "Boston Scientific",
+      "projectId": "p37-boston-sci-wl3-wl4-cass",
+      "title": "CADS46317.1 campus integration $25,000 proposal sent to Lucas Berry",
+      "amount": 25000,
+      "oid": "",
+      "invoice": "",
+      "from": "Peter Vinck",
+      "fromEmail": "peter.vinck@inflowco.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a16499b5e391d9d",
+      "createdAt": "2026-10-22T22:41:18Z"
     }
   ]
 }
