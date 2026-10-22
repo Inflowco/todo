@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T17:07:27Z",
+  "generatedAt": "2026-10-22T18:07:54Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -494,6 +494,25 @@
       "link": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc3MHNrMmgxbTZwMTMyaGkyNmwxNDhoMWc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnNzBvNGFjOWw4aDFqZWNoazc0bzMwYzFrNmtzamlncGs4bDE0NGM5aDZvb2pnZHBoOGNxZyBwZXRlci52aW5ja0BpbmZsb3djby5jb20",
       "isSales": false,
       "createdAt": "2026-10-22T17:07:27Z"
+    },
+    {
+      "sourceId": "cal-_8kpk6c226d0k8b9n892j6b9k6ksk6b9p850j4b9l74r4ae1m8d0j0h1j6c",
+      "source": "calendar",
+      "kind": "task",
+      "title": "Prep for Hammarsten lunch at Southern Social Chaska",
+      "detail": "Lunch meeting with Brian Hammarsten (SMMPA) at Southern Social Chaska, Fri 10/23 11:30 AM-12:30 PM CT, to talk through the Rochester ESR presentation and open items.",
+      "reason": "Client lunch meeting on the calendar; prep the same day since it is tomorrow.",
+      "from": "Brian Hammarsten",
+      "fromEmail": "brianhammarsten@gmail.com",
+      "customer": "SMMPA",
+      "project": "SMMPA Rochester presentation to the ESR team",
+      "projectId": "p40-smmpa-rochester-presentation",
+      "dueDate": "2026-10-23",
+      "priority": 3,
+      "when": "Fri 10/23, 11:30 AM-12:30 PM CT",
+      "link": "https://www.google.com/calendar/event?eid=XzhrcGs2YzIyNmQwazhiOW44OTJqNmI5azZrc2s2YjlwODUwajRiOWw3NHI0YWUxbThkMGowaDFqNmMgcGV0ZXIudmluY2tAaW5mbG93Y28uY29t",
+      "isSales": false,
+      "createdAt": "2026-10-22T18:07:54Z"
     }
   ]
 }
