@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T21:07:47Z",
+  "generatedAt": "2026-10-22T22:07:09Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -532,6 +532,25 @@
       "link": "https://www.google.com/calendar/event?eid=ajRhZXRkdGwwdTlndW9vbzc0Mmd1dDZtcGMgcGV0ZXIudmluY2tAaW5mbG93Y28uY29t",
       "isSales": false,
       "createdAt": "2026-10-22T21:07:47Z"
+    },
+    {
+      "sourceId": "gm-1a165382d6a0fd9d",
+      "source": "email",
+      "kind": "task",
+      "title": "Close out Rust-Oleum OID5998399 now that Xcel approved ECO 3.2",
+      "detail": "Paul Sarles (Xcel) accepted Pete's explanation of the ECO 3.2 savings calc and approved it to move forward, thanking him for the help.",
+      "reason": "Utility reviewer approved the ECO, clearing the way to finish the Xcel review and get paid.",
+      "from": "Paul Sarles",
+      "fromEmail": "Paul.Sarles@xcelenergy.com",
+      "customer": "Rust-Oleum",
+      "project": "Rust-Oleum BP CASS",
+      "projectId": "p15-rust-oleum-bp-cass",
+      "dueDate": null,
+      "priority": 3,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a165382d6a0fd9d",
+      "isSales": false,
+      "createdAt": "2026-10-22T22:07:09Z"
     }
   ]
 }
