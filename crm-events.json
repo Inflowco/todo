@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T22:41:18Z",
+  "generatedAt": "2026-10-23T22:39:27Z",
   "events": [
     {
       "sourceId": "gm-1a0f7f7299c7f5db",
@@ -270,6 +270,21 @@
       "fromEmail": "peter.vinck@inflowco.com",
       "link": "https://mail.google.com/mail/u/0/#all/1a16499b5e391d9d",
       "createdAt": "2026-10-22T22:41:18Z"
+    },
+    {
+      "sourceId": "gm-1a15ffda95a7f565",
+      "date": "2026-10-21",
+      "eventType": "xcel_preapproval",
+      "account": "Metro Transit",
+      "projectId": "p04-metro-transit-ohb-cass-m",
+      "title": "Xcel issued OIDs for Metro Transit Overhaul Base: main OID5994950, soot OID6038994",
+      "amount": null,
+      "oid": "OID5994950",
+      "invoice": "",
+      "from": "Jake Sedlacek",
+      "fromEmail": "Jake.Sedlacek@xcelenergy.com",
+      "link": "https://mail.google.com/mail/u/0/#all/1a15ffda95a7f565",
+      "createdAt": "2026-10-23T22:39:27Z"
     }
   ]
 }
