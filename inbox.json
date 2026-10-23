@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T22:07:09Z",
+  "generatedAt": "2026-10-23T19:05:57Z",
   "items": [
     {
       "sourceId": "gm-1a1314156384233c",
@@ -551,6 +551,44 @@
       "link": "https://mail.google.com/mail/u/0/#all/1a165382d6a0fd9d",
       "isSales": false,
       "createdAt": "2026-10-22T22:07:09Z"
+    },
+    {
+      "sourceId": "gm-1a16a23afa0bfa62",
+      "source": "email",
+      "kind": "task",
+      "title": "Accept Justin's Teams invite for the Wed WDRG kickoff call",
+      "detail": "Justin Konopaski (Abbott) sent a Teams meeting for Wed 10/28 9:30 AM to kick off the Woodridge AC-1/AC-2 design; accept it and decide the site walk date on that call.",
+      "reason": "Abbott engineer needs Pete to accept the kickoff meeting invite.",
+      "from": "Justin Konopaski",
+      "fromEmail": "justin.konopaski@abbott.com",
+      "customer": "Abbott",
+      "project": "Abbott Woodridge compressor design",
+      "projectId": "p17-abbott-woodbury-road-com",
+      "dueDate": "2026-10-27",
+      "priority": 4,
+      "when": "",
+      "link": "https://mail.google.com/mail/u/0/#all/1a16a23afa0bfa62",
+      "isSales": false,
+      "createdAt": "2026-10-23T19:05:57Z"
+    },
+    {
+      "sourceId": "cal-_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g8ko3gcq670sj4hhm6op48h1g64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g84pk6cq66d1k4d1p60o4adhk650jch9n69348c2489242ha66spg",
+      "source": "calendar",
+      "kind": "task",
+      "title": "Prep for Abbott Woodridge AC1/AC2 design kickoff call",
+      "detail": "Teams kickoff call for the Woodridge AC-1/AC-2 compressor replacement design with Justin Konopaski and Andy Kohlmeyer (Abbott), Wed 10/28, 9:30-10:00 AM CT.",
+      "reason": "Design kickoff call on the calendar; prep the day before.",
+      "from": "Justin Konopaski",
+      "fromEmail": "justin.konopaski@abbott.com",
+      "customer": "Abbott",
+      "project": "Abbott Woodridge compressor design",
+      "projectId": "p17-abbott-woodbury-road-com",
+      "dueDate": "2026-10-27",
+      "priority": 3,
+      "when": "Wed 10/28, 9:30-10:00 AM CT",
+      "link": "https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc4a28zZ2NxNjcwc2o0aGhtNm9wNDhoMWc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnODRwazZjcTY2ZDFrNGQxcDYwbzRhZGhrNjUwamNoOW42OTM0OGMyNDg5MjQyaGE2NnNwZyBwZXRlci52aW5ja0BpbmZsb3djby5jb20&ctz=America/Chicago",
+      "isSales": false,
+      "createdAt": "2026-10-23T19:05:57Z"
     }
   ]
 }
